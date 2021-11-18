@@ -19,10 +19,13 @@ const addNewUser = (username, socketId) => {
       onlineUsers.push({ username, socketId });
 };
 
+const addComputer = (username, socketId, code) => {
+    !onlineUsers.some((user) => user.username === username) &&
+      onlineUsers.push({ username, socketId, code });
+};
+
 const getGameCode = (username, code) => {
     const user = onlineUsers.findIndex((user) => user.username === username);
-    console.log(user);
-    // console.log(`username: ${username}, socket: ${socketId}, code: ${code}`);
     onlineUsers[user].code = code;
 }
 
@@ -44,10 +47,13 @@ io.on("connection", (socket) => {
            addNewUser("computer", socket.id);
         }
     });
+    socket.on("initialComputer", (username, code) => {
+        addComputer(username, socket.id, code);
+    })
 
     socket.on("insertCode", (username, code) => {
         getGameCode(username, code);
-        console.log(onlineUsers)
+        console.log(onlineUsers);
     })
 
     socket.on("disconnect", () => {
