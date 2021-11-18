@@ -1,8 +1,13 @@
 import './App.css';
 import Homescreen from './components/Homescreen.js';
+import { io } from 'socket.io-client';
+import { useEffect } from 'react';
 
-function App() {
+const App= () => {
 
+  useEffect(() => {
+    const socket = io("http://localhost:5000");
+  }, [])
   return (
     <div className="App">
       <header className="App-header">
