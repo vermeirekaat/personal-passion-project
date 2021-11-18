@@ -1,19 +1,19 @@
 import React from "react";
-import Homescreen from "../components/Homescreen";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 const Computer = ({ socket }) => {
-    const [username, setUsername] = useState("");
-    console.log(username);
+    const username = "computer";
+
+    const code = Math.floor(1000 + Math.random() * 9000);
 
     useEffect(() => {
-        socket?.emit("newUser", username);
-    }, [socket, username]);
+        socket?.emit("newUser", username, code);
+    }, [socket, username, code]);
 
     return (
         <div>
             <h2>Computer Screen</h2>
-            <Homescreen getUsername={(user) => setUsername(user)}/>
+            <p>{code}</p>
         </div>
        
     )

@@ -1,8 +1,9 @@
 import { useState } from "react";
 
-const Homescreen = ({ socket, getUsername }) => {
+const Login = ({ getUsername, getCode }) => {
 
     const [username, setUsername] = useState("");
+    const [code, setCode] = useState("");
     const [user, setUser] = useState(false);
 
     const handleClick = () => {
@@ -12,7 +13,13 @@ const Homescreen = ({ socket, getUsername }) => {
     return (
         <div className="homescreen">
         { user ? 
-            <p>Welcome to the game!</p> :
+        <div>
+            <p>Welcome to the game!</p> 
+
+            <input type="number" placeholder="code" onChange={(e) => setCode(e.target.value)}></input>
+            <button onClick={() => getCode(code)}>Enter</button>
+        </div>  
+            :
             <div>
                 <input type="text" placeholder="username" onChange={(e) => setUsername(e.target.value)}></input>
                 <button onClick={() => handleClick()}>Start</button>
@@ -22,4 +29,4 @@ const Homescreen = ({ socket, getUsername }) => {
     )
 };
 
-export default Homescreen;
+export default Login;
