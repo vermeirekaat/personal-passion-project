@@ -11,8 +11,12 @@ const Player = ({ socket }) => {
 
     const generateCode = code => {
         socket?.emit("insertCode", username, code);
+        socket?.emit("sendConfirmation", {
+            player: username,
+            code
+        })
     };
-    
+
     return (
         <div>
             <h2>Player Screen</h2>

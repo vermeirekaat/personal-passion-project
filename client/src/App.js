@@ -12,6 +12,8 @@ const App = () => {
 
   const width = window.innerWidth;
   const navigate = useNavigate();
+  const generateCode = Math.floor(1000 + Math.random() * 9000);
+
 
   useEffect(() => {
     setSocket(io("http://localhost:5000"));
@@ -29,7 +31,7 @@ const App = () => {
 
   return (
       <Routes>
-        <Route exact path="/computer" element={<Computer socket={socket}/>}/> 
+        <Route exact path="/computer" element={<Computer socket={socket} code={generateCode}/>}/> 
         <Route exact path="/player" element={<Player socket={socket}/>}/> 
       </Routes>
   );
