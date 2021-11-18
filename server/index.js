@@ -49,7 +49,7 @@ const getOneUser = (username) => {
 }
 
 io.on("connection", (socket) => {
-    console.log(`new connection ${socket.id}`);
+    // console.log(`new connection ${socket.id}`);
 
     socket.on("newUser", (username) => {
         addNewUser(username, socket.id);
@@ -74,6 +74,7 @@ io.on("connection", (socket) => {
             playerName, 
             correct,
         });
+        console.log(onlineUsers);
     })
 
     socket.on("disconnect", () => {

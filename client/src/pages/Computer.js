@@ -11,18 +11,29 @@ const Computer = ({ socket, code }) => {
 
     useEffect(() => {
         socket?.on("codeConfirmation", (data) => {
-            console.log(data);
             setConfirmation((prev) => [...prev, data]);
         });
     }, [socket]);
 
-    console.log(confirmation);
+    const checkStatus = () => {
+        confirmation.map((item) => {
+            return item.correct.includes(true);
+        })
+    };
 
+    if (confirmation.length === 2 && checkStatus) {
+        return (
+            <div>
+                <h2>HOORAY!</h2>
+            </div>
+        )
+    }
+ 
     return (
         <div>
             <h2>Computer Screen</h2>
             <p>{code}</p>
-            { confirmation.length >= 0 ? 
+            { confirmation.length > 0 ? 
             confirmation.map((item) => (
                 item.correct ? 
                 <p key={item.playerName.username}> {item.playerName.username} is connected</p> : <p>Opniew proberen</p>
