@@ -6,11 +6,32 @@ const io = new Server({
     }
 });
 
+let onlineUsers = [];
+
+const addNewUser = (username, socketId) => {
+    !onlineUsers.some((user) => user.username === username) &&
+      onlineUsers.push({ username, socketId });
+  };
+
+const removeUser = (socketId) => {
+    onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
+};
+
+const getOneUser = (socketId) => {
+    return onlineUsers.find((user) => user.username === username);
+}
+
 io.on("connection", (socket) => {
     console.log(`new connection ${socket.id}`);
 
+    socket.on("newUser", (username) => {
+        addNewUser(username, socket.id);
+        console.log(onlineUsers)
+    });
+
     socket.on("disconnect", () => {
-        console.log(`someone has left`);
+        removeUser(socket.id);
+        console.log(onlineUsers);
     })
 });
 
