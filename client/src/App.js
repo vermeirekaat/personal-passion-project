@@ -1,30 +1,37 @@
 import './App.css';
-import Homescreen from './components/Homescreen.js';
+import Computer from './pages/Computer.js';
+import Player from './pages/Player.js';
 import { io } from 'socket.io-client';
 import { useEffect, useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 
-const App= () => {
+
+const App = () => {
 
   const [socket, setSocket] = useState(null);
-  const [username, setUsername] = useState("");
+
+  const width = window.innerWidth;
+  const navigate = useNavigate();
 
   useEffect(() => {
     setSocket(io("http://localhost:5000"));
   }, []);
 
   useEffect(() => {
-    socket?.emit("newUser", username);
-  }, [socket, username]);
+    if (width >= 780) {
+      navigate('/computer');
+    } else {
+      navigate('/player');
+    };
+  }, [navigate, width]);
+
+
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h2>React x Websockets</h2>
-
-        <Homescreen getUsername={(user) => setUsername(user)} socket={socket}/>
-
-      </header>
-    </div>
+      <Routes>
+        <Route exact path="/computer" element={<Computer socket={socket}/>}/> 
+        <Route exact path="/player" element={<Player socket={socket}/>}/> 
+      </Routes>
   );
 }
 
