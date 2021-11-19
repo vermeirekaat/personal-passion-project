@@ -60,7 +60,11 @@ io.on("connection", (socket) => {
     });
     socket.on("initialComputer", (username, code) => {
         addComputer(username, socket.id, code);
-    })
+    });
+    socket.on("insertName", (input) => {
+        const computer = onlineUsers.find((id) => id.username === 'computer');
+        io.to(computer.socketId).emit("inputPlayer", input);
+    });
 
     socket.on("insertCode", (username, code) => {
         getGameCode(username, code);

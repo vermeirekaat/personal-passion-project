@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 const Computer = ({ socket, code }) => {
     const username = "computer";
     const [confirmation, setConfirmation] = useState([]);
+    const [input, setInput] = useState([]);
 
     useEffect(() => {
         socket?.emit("initialComputer", username, code.toString());
@@ -12,6 +13,12 @@ const Computer = ({ socket, code }) => {
     useEffect(() => {
         socket?.on("codeConfirmation", (data) => {
             setConfirmation((prev) => [...prev, data]);
+        });
+    }, [socket]);
+
+    useEffect(() => {
+        socket?.on("inputPlayer", (inputServer) => {
+            setInput((prev) => [...prev, inputServer]);
         });
     }, [socket]);
 
@@ -33,6 +40,13 @@ const Computer = ({ socket, code }) => {
         <div>
             <h2>Computer Screen</h2>
             <p>{code}</p>
+
+            { input.length > 0 ?
+            
+            input.map((item) => (
+                <p key={item}>{item}</p>
+            )) : <p>Naam invoeren</p> }
+
             { confirmation.length > 0 ? 
             confirmation.map((item) => (
                 item.correct ? 

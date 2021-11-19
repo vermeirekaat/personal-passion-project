@@ -1,10 +1,16 @@
 import { useState } from "react";
 
-const Login = ({ getUsername, getCode }) => {
+const Login = ({ getInput, getUsername, getCode }) => {
 
     const [username, setUsername] = useState("");
     const [code, setCode] = useState("");
     const [user, setUser] = useState(false);
+
+    const handleNameChange = (e) => {
+        const input = e.target.value;
+        getInput(input);
+        setUsername(input);
+    }
 
     const handleClick = () => {
         getUsername(username);
@@ -21,7 +27,7 @@ const Login = ({ getUsername, getCode }) => {
         </div>  
             :
             <div>
-                <input type="text" placeholder="username" onChange={(e) => setUsername(e.target.value)}></input>
+                <input type="text" placeholder="username" onChange={(e) => handleNameChange(e)}></input>
                 <button onClick={() => handleClick()}>Start</button>
             </div>
         } 
