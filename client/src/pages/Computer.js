@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 const Computer = ({ socket, code }) => {
     const username = "computer";
     const [confirmation, setConfirmation] = useState([]);
-    const [input, setInput] = useState("");
+    const [input, setInput] = useState([]);
 
     useEffect(() => {
         socket?.emit("initialComputer", username, code.toString());
@@ -17,10 +17,18 @@ const Computer = ({ socket, code }) => {
     }, [socket]);
 
     useEffect(() => {
-        socket?.on("inputPlayer", (inputServer) => {
-            setInput(inputServer);
+        socket?.on("inputPlayer", (data) => {
+            const socketServer = data.socket;
+            const index = input.findIndex((item) => item.socket === socketServer);
+            console.log(index);
+            if (index === -1) {
+                setInput((prev) => [...prev, data]);
+            } else {
+                input[index].input = data.input;
+                setInput(input);
+            }
         });
-    }, [socket]);
+    }, [input, socket]);
 
     const checkStatus = () => {
         confirmation.map((item) => {
@@ -41,7 +49,10 @@ const Computer = ({ socket, code }) => {
             <h2>Computer Screen</h2>
             <p>{code}</p>
 
-            { input === "" ? <p>Naam invoeren</p> : <p>{input}</p>}
+            {input.length > 0 ? 
+                input.map((item) => (
+                    <p key={item.input}>{item.input}</p>
+                )) : <p>Naam invoeren</p> }
 
             { confirmation.length > 0 ? 
             confirmation.map((item) => (
