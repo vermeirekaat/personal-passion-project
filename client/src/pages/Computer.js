@@ -20,7 +20,7 @@ const Computer = ({ socket, code }) => {
         socket?.on("inputPlayer", (data) => {
             const socketServer = data.socket;
             const index = input.findIndex((item) => item.socket === socketServer);
-            console.log(index);
+            // console.log(index);
             if (index === -1) {
                 setInput((prev) => [...prev, data]);
             } else {

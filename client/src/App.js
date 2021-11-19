@@ -32,7 +32,7 @@ const App = () => {
   return (
       <Routes>
         <Route exact path="/computer" element={<Computer socket={socket} code={generateCode}/>}/> 
-        <Route exact path="/player" element={<Player socket={socket}/>}/> 
+        <Route exact path="/player" element={<Player socket={socket} code={generateCode}/> }/> 
       </Routes>
   );
 }
