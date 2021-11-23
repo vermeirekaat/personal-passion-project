@@ -1,5 +1,6 @@
 const fs = require('fs');
 const express = require('express');
+const path = require("path");
 const app = express();
 const server = require('http').Server(app);
 const port = process.env.PORT || 5000;
@@ -84,10 +85,20 @@ io.on("connection", (socket) => {
         removeUser(socket.id);
     });
 
-    // app.use(express.static('public')); 
+    
     // server.listen(port, () => {
     //     console.log(`App listening on port ${port}`);
     // })
 });
 
-io.listen(port);
+// add middlewares
+app.use(express.static(path.join(__dirname, "..", "build")));
+app.use(express.static("public"));
+
+app.use((req, res, next) => {
+  res.sendFile(path.join(__dirname, "..", "build", "index.html"));
+});
+server.listen(port, () => {
+    console.log(`App listening on port ${port}`);
+});
+// io.listen(port);
