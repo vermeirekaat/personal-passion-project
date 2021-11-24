@@ -24,32 +24,13 @@ const addNewUser = (username, socketId) => {
       onlineUsers.push({ username, socketId });
 };
 
-const addCaptain = (username, socketId, code) => {
-    !onlineUsers.some((user) => user.username === username) &&
-      onlineUsers.push({ username, socketId, code });
-};
-
-const getGameCode = (username, code) => {
-    const user = onlineUsers.findIndex((user) => user.username === username);
-    onlineUsers[user].code = code;
-};
-
-const checkGameCode = (code) => {
-    const computer = onlineUsers.find((id) => id.username === 'computer');
-    if (computer.code === code) {
-        return true;
-    } else {
-        return false
-    }
-}
-
 const removeUser = (socketId) => {
     onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
 };
 
-const getOneUser = (username) => {
-    return onlineUsers.find((user) => user.username === username);
-}
+// const getOneUser = (username) => {
+//     return onlineUsers.find((user) => user.username === username);
+// }
 
 io.on("connection", (socket) => {
     // console.log(`new connection ${socket.id}`);
@@ -58,22 +39,6 @@ io.on("connection", (socket) => {
         addNewUser(username, socket.id);
         console.log(onlineUsers);
     });
-    socket.on("initialCaptain", (username, code) => {
-        addCaptain(username, socket.id, code);
-    });
-
-    socket.on("insertCode", (username, code) => {
-        getGameCode(username, code);
-    });
-    socket.on("sendConfirmation", ({ player, code }) => {
-        const playerName = getOneUser(player);
-        const correct = checkGameCode(code);
-        io.emit("codeConfirmation", {
-            playerName, 
-            correct,
-        });
-        console.log(onlineUsers);
-    })
 
     socket.on("disconnect", () => {
         removeUser(socket.id);
