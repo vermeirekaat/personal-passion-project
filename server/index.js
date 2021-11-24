@@ -7,7 +7,7 @@ const port = process.env.PORT || 5000;
 
 const io = require('socket.io')(server, {
     cors: {
-        origin: "http://localhost:3000", 
+        origin: "http://localhost:3001", 
         // origin: "http://192.168.0.252:3000",
         methods: ["GET", "POST"],
     }, 
@@ -52,20 +52,14 @@ const getOneUser = (username) => {
 }
 
 io.on("connection", (socket) => {
-    console.log(`new connection ${socket.id}`);
+    // console.log(`new connection ${socket.id}`);
 
     socket.on("newUser", (username) => {
         addNewUser(username, socket.id);
+        console.log(onlineUsers);
     });
     socket.on("initialCaptain", (username, code) => {
         addCaptain(username, socket.id, code);
-    });
-    socket.on("insertName", (input) => {
-        const computer = onlineUsers.find((id) => id.username === 'computer');
-        io.to(computer.socketId).emit("inputPlayer", {
-            input,
-            socket: socket.id,
-        });
     });
 
     socket.on("insertCode", (username, code) => {

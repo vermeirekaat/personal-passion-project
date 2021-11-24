@@ -17,10 +17,6 @@ const Sailor = ({ socket }) => {
     }, [socket]);
     console.log(confirmation);
 
-    const generateName = input => {
-        socket?.emit("insertName", input);
-    }
-
     const generateCode = code => {
         socket?.emit("insertCode", username, code);
         socket?.emit("sendConfirmation", {
@@ -49,7 +45,7 @@ const Sailor = ({ socket }) => {
         <div>
             <h2>Player Screen</h2>
             {/*<Login getUsername={(user) => setUsername(user)} getCode={(code) => generateCode(code)}/>*/}
-            <Login getInput={(input) => generateName(input)} getUsername={(user) => setUsername(user)} getCode={(code) => generateCode(code)}/>
+            <Login getUsername={(user) => setUsername(user)} getCode={(code) => generateCode(code)}/>
         </div>
        
     )
