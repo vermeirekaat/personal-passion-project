@@ -1,13 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-const Computer = ({ socket, code }) => {
-    const username = "computer";
+const Captain = ({ socket, code }) => {
+    const username = "captain";
     const [confirmation, setConfirmation] = useState([]);
     const [input, setInput] = useState([]);
 
     useEffect(() => {
-        socket?.emit("initialComputer", username, code.toString());
+        socket?.emit("initialCaptain", username, code.toString());
     }, [socket, username, code]);
 
     useEffect(() => {
@@ -46,7 +46,7 @@ const Computer = ({ socket, code }) => {
  
     return (
         <div>
-            <h2>Computer Screen</h2>
+            <h2>Captain Screen</h2>
             <p>{code}</p>
 
             {input.length > 0 ? 
@@ -64,4 +64,4 @@ const Computer = ({ socket, code }) => {
     )
 };
 
-export default Computer;
+export default Captain;

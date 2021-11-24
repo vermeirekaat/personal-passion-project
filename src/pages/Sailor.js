@@ -2,7 +2,7 @@ import React from "react";
 import Login from "../components/Login";
 import { useState, useEffect } from "react";
 
-const Player = ({ socket }) => {
+const Sailor = ({ socket }) => {
     const [username, setUsername] = useState("");
     const [confirmation, setConfirmation] = useState([]);
 
@@ -55,4 +55,4 @@ const Player = ({ socket }) => {
     )
 };
 
-export default Player;
+export default Sailor;

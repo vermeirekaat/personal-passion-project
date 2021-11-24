@@ -24,7 +24,7 @@ const addNewUser = (username, socketId) => {
       onlineUsers.push({ username, socketId });
 };
 
-const addComputer = (username, socketId, code) => {
+const addCaptain = (username, socketId, code) => {
     !onlineUsers.some((user) => user.username === username) &&
       onlineUsers.push({ username, socketId, code });
 };
@@ -57,8 +57,8 @@ io.on("connection", (socket) => {
     socket.on("newUser", (username) => {
         addNewUser(username, socket.id);
     });
-    socket.on("initialComputer", (username, code) => {
-        addComputer(username, socket.id, code);
+    socket.on("initialCaptain", (username, code) => {
+        addCaptain(username, socket.id, code);
     });
     socket.on("insertName", (input) => {
         const computer = onlineUsers.find((id) => id.username === 'computer');

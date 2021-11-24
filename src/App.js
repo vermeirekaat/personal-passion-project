@@ -1,6 +1,6 @@
 import './App.css';
-import Computer from './pages/Computer.js';
-import Player from './pages/Player.js';
+import Captain from './pages/Captain.js';
+import Sailor from './pages/Sailor.js';
 import { io } from 'socket.io-client';
 import { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
@@ -22,9 +22,9 @@ const App = () => {
 
   useEffect(() => {
     if (width >= 780) {
-      navigate('/computer');
+      navigate('/captain');
     } else {
-      navigate('/player');
+      navigate('/sailor');
     };
   }, [navigate, width]);
 
@@ -32,8 +32,8 @@ const App = () => {
 
   return (
       <Routes>
-        <Route exact path="/computer" element={<Computer socket={socket} code={generateCode}/>}/> 
-        <Route exact path="/player" element={<Player socket={socket} code={generateCode}/> }/> 
+        <Route exact path="/captain" element={<Captain socket={socket} code={generateCode}/>}/> 
+        <Route exact path="/sailor" element={<Sailor socket={socket} code={generateCode}/> }/> 
       </Routes>
   );
 }
