@@ -18,9 +18,18 @@ const io = require('socket.io')(server, {
 });
 
 let onlineUsers = [];
+const players = ["captain", "sailor"];
+let amount = 0;
 
-const addNewUser = (username, socketId) => {
-    !onlineUsers.some((user) => user.username === username) &&
+const addNewUser = (socketId) => {
+    let username = players[amount];
+    amount++;
+
+    if (username === undefined) {
+        amount = 0;
+        username = players[amount];
+    }
+    !onlineUsers.some((user) => user.socketId === socketId) &&
       onlineUsers.push({ username, socketId });
 };
 
@@ -38,6 +47,7 @@ io.on("connection", (socket) => {
     socket.on("newUser", (username) => {
         addNewUser(username, socket.id);
         console.log(onlineUsers);
+        io.to(socket.id).emit("onlineUsers", onlineUsers);
     });
 
     socket.on("disconnect", () => {

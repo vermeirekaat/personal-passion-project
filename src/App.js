@@ -10,7 +10,7 @@ import { Route, Routes, /*useNavigate*/ } from 'react-router-dom';
 const App = () => {
 
   const [socket, setSocket] = useState(null);
-  const generateCode = Math.floor(1000 + Math.random() * 9000);
+  // const generateCode = Math.floor(1000 + Math.random() * 9000);
 
 
   useEffect(() => {
@@ -23,8 +23,8 @@ const App = () => {
   return (
       <Routes>
         <Route exact path="/" element={<Welcome socket={socket}/>}/>
-        <Route exact path="/captain" element={<Captain username="captain" socket={socket} code={generateCode}/>}/> 
-        <Route exact path="/sailor" element={<Sailor username="sailor" socket={socket} code={generateCode}/> }/>
+        <Route exact path="/captain" element={<Captain username="captain" socket={socket}/>}/> 
+        <Route exact path="/sailor" element={<Sailor username="sailor" socket={socket}/> }/>
       </Routes>
   );
 }

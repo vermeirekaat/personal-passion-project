@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Welcome = ({ socket }) => {
 
-    const players = ["captain", "sailor"]; 
-    let amount = 0;
+    const navigate = useNavigate();
+    const [player, setPlayer] = useState("");
+
+    useEffect(() => {
+        socket?.on("onlineUsers", (data) => {
+            const socketIndex = data.findIndex((user) => user.socketId === socket.id);
+            setPlayer(data[socketIndex].username);
+        });
+    }, [socket]);
 
     const handleClickButton = () => {
         console.log(socket.id);
 
-        socket?.emit("newUser", players[amount]);
-        amount++;
+        socket?.emit("newUser", socket.id);
+    };
+
+    if (player !== "") {
+        navigate(`/${player}`);
+    } if (player === undefined) {
+        return false;
     }
 
     return(
