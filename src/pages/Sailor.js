@@ -4,6 +4,7 @@ import Lives from "../components/Lives";
 import Storm from "../components/Storm";
 import Morse from "../components/Morse";
 import Result from "../components/Result";
+import Options from "../components/Options";
 
 const Sailor = ({ socket }) => {
 
@@ -15,6 +16,7 @@ const Sailor = ({ socket }) => {
             <Storm/>
             <Morse/>
             <Result/>
+            <Options/>
         </div>
        
     )
