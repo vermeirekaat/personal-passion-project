@@ -1,4 +1,4 @@
-import React from "react";
+import styles from "./Captain.module.css";
 import Avatar from "../components/Avatar";
 import Lives from "../components/Lives";
 import Route from "../components/Route";
@@ -10,15 +10,28 @@ import CheatSheet from "../components/CheatSheet";
 const Captain = ({ socket }) => {
     
     return (
-        <div>
-            <h2>Captain Screen</h2>
-            <Avatar/>
-            <Lives/>
-            <Route/>
-            <Morse/>
-            <Result/>
-            <Obstacle/>
-            <CheatSheet/>
+        <div className={styles.grid}>
+             <div className={styles.avatar}>
+                <Avatar/>
+            </div>
+            <div className={styles.lives}>
+                <Lives/>
+            </div>
+            <div className={styles.route}>
+                <Route/>
+            </div>
+            <div className={styles.morse}>
+                <Morse/>
+            </div>
+            <div className={styles.result}>
+                <Result/>
+            </div>
+            <div className={styles.obstacle}>
+                <Obstacle/>
+            </div>
+            <div className={styles.cheatsheet}>
+                <CheatSheet/>
+            </div>
         </div>
     )
 };

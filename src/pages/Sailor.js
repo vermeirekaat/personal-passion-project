@@ -1,4 +1,4 @@
-import React from "react";
+import styles from "./Sailor.module.css";
 import Avatar from "../components/Avatar";
 import Lives from "../components/Lives";
 import Storm from "../components/Storm";
@@ -10,15 +10,28 @@ import CheatSheet from "../components/CheatSheet";
 const Sailor = ({ socket }) => {
 
     return (
-        <div>
-            <h2>Sailor Screen</h2>
-            <Avatar/>
-            <Lives/>
-            <Storm/>
-            <Morse/>
-            <Result/>
-            <Options/>
-            <CheatSheet/>
+        <div className={styles.grid}>
+            <div className={styles.avatar}>
+                <Avatar/>
+            </div>
+            <div className={styles.lives}>
+                <Lives/>
+            </div>
+            <div className={styles.storm}>
+                <Storm/>
+            </div>
+            <div className={styles.morse}>
+                <Morse/>
+            </div>
+            <div className={styles.result}>
+                <Result/>
+            </div>
+            <div className={styles.options}>
+                <Options/>
+            </div>
+            <div className={styles.cheatsheet}>
+                <CheatSheet/>
+            </div>
         </div>
        
     )

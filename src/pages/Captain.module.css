@@ -1,0 +1,37 @@
+.grid {
+    display: grid; 
+    grid-template-areas: 
+    "avatar avatar avatar"
+    "lives morse obstacle"
+    "route morse obstacle"
+    "route result cheatsheet"
+    ;
+}
+
+.avatar {
+    grid-area: avatar;
+}
+
+.lives {
+    grid-area: lives;
+}
+
+.route {
+    grid-area: route;
+}
+
+.morse {
+    grid-area: morse;
+}
+
+.result {
+    grid-area: result;
+}
+
+.obstacle {
+    grid-area: obstacle;
+}
+
+.cheatsheet {
+    grid-area: cheatsheet
+}
