@@ -1,53 +1,38 @@
 .grid {
     display: grid; 
-    /* grid-template-columns: 20vw 5vw 35vw 5vw 35vw; 
-    grid-template-rows: repeat(12, 8vh); */
     grid-template-areas: 
     "avatar avatar avatar"
     "lives morse options"
     "storm morse options"
     "storm result cheatsheet"
     ;
+    max-height: 100vh;
 }
 
 .avatar {
-    /* grid-row: 1 / span 3;
-    grid-column: 1/ span 3; */
     grid-area: avatar;
 }
 
 .lives {
-    /* grid-row: 4;
-    grid-column: 1; */
     grid-area: lives;
 }
 
 .storm {
-    /* grid-row: 6 / span 12;
-    grid-column: 1; */
     grid-area: storm;
 }
 
 .morse {
-    /* grid-row: 4 / span 8;
-    grid-column: 2; */
     grid-area: morse;
 }
 
 .result {
-    /* grid-row: 9 / span 12;
-    grid-column: 2; */
     grid-area: result;
 }
 
 .options {
-    /* grid-row: 4 / span 8; 
-    grid-column: 3; */
     grid-area: options;
 }
 
 .cheatsheet {
-    /* grid-row: 9 / span 12;
-    grid-column: 3; */
     grid-area: cheatsheet
 }

@@ -5,7 +5,7 @@ const Lives = () => {
 
     return (
         <div className={styles.container}>
-            <p>3 lives</p>
+            <p>&#9829; &#9829; &#9829;</p>
         </div>
     )
 }; 

@@ -8,7 +8,10 @@ const Avatar = () => {
         <div className={styles.container}>
             <img className={styles.avatar} src={pirate} alt="Avatar"/>
 
-            <p className={styles.caption}>Ahoy maatje, welkom op het Schip van Morse! <br></br>Help je mee om de schat op te halen op het eiland?</p>
+            <div className={styles.captionContainer}>
+                <p className={styles.caption}>Ahoy maatje, welkom op het Schip van Morse! <br></br>Help je mee om de schat op te halen op het eiland?</p>
+                <button className={styles.next}>&#10145;</button>
+            </div>
         </div>
     )
 };

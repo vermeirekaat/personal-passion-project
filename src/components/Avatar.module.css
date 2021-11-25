@@ -3,14 +3,26 @@
     flex-direction: row;
     justify-content: space-around;
     height: 20vh;
+    margin: 1rem 0;
 }
+
 .avatar {
     width: 20vw;
 }
 
-.caption {
+.captionContainer {
+    display: flex; 
+    flex-direction: column;
+    justify-content: space-evenly;
     width: 60vw; 
     padding: 2rem;
     border: .2rem solid black;
     border-radius: .5rem;
+}
+
+.next {
+    display: flex; 
+    align-self: flex-end;
+    border-radius: 3rem;
+    padding: .5rem;
 }
