@@ -19,7 +19,7 @@ const Avatar = ({ player }) => {
                 arduino: false,
             }, 
             {
-                text: "De boodschap die je zal versturen is in morse code. Dit is een verzameling van bolletjes en streepjesdie de letters voorstellen. In het onderste venster kan je een overzicht vinden dat je hiermee kan helpen.", 
+                text: "De boodschap die je zal versturen is in morse code. Dit is een verzameling van bolletjes en streepjes die de letters voorstellen. In het onderste venster kan je een overzicht vinden dat je hiermee kan helpen.", 
                 button: true, 
                 topic: "CheatSheet",
                 arduino: false,
@@ -31,7 +31,7 @@ const Avatar = ({ player }) => {
                 arduino: false,
             }, 
             {
-                text: "Laten we eens oefen om de morse code te vormen. De code die je vormt kan je in onderstaand scherm zien. Vorm de code om links te spellen, want dat is de richting die wordt aangegeven. Gebruik de knoppen om de juiste combinatie te maken van bollen en strepen.",
+                text: "Laten we eens oefenen om de morse code te vormen. De code die je vormt kan je in onderstaand scherm zien. Vorm de code om links te spellen, want dat is de richting die wordt aangegeven. Gebruik de knoppen om de juiste combinatie te maken van bollen en strepen.",
                 button: false,
                 topic: "Morse", 
                 arduino: true,
@@ -94,9 +94,9 @@ const Avatar = ({ player }) => {
             }, 
             {
                 text: "Tijdens het varen zal je ook enkele obstakels tegenkomen. Het is jouw taak om deze te ontwijken. Je kan dit doen door de boodschap te ontcijferen zoals in de vorige stap. Om je te helpen krijg je drie verschillende opties te zien in onderstaand venster. Druk één, twee of drie keer op de knop om het juiste antwoord te kiezen.", 
-                button: true,
+                button: false,
                 topic: "",
-                arduino: false,
+                arduino: true,
             }, 
             {
                 text: "Goed zo, nu ben je helemaal klaar om aan het spel te beginnen. Ahoy, veel succes!", 
