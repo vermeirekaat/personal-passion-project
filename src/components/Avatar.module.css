@@ -1,0 +1,16 @@
+.container {
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-around;
+    height: 20vh;
+}
+.avatar {
+    width: 20vw;
+}
+
+.caption {
+    width: 60vw; 
+    padding: 2rem;
+    border: .2rem solid black;
+    border-radius: .5rem;
+}
