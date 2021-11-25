@@ -1,4 +1,5 @@
 import styles from "./Sailor.module.css";
+import { useState } from "react";
 import Avatar from "../components/Avatar";
 import Lives from "../components/Lives";
 import Storm from "../components/Storm";
@@ -9,27 +10,32 @@ import CheatSheet from "../components/CheatSheet";
 
 const Sailor = ({ username, socket }) => {
 
+    const [currentItem, setCurrentItem] = useState("");
+    // console.log(currentItem);
+    console.log(currentItem);
+
+
     return (
         <div className={styles.grid}>
-            <div className={styles.avatar}>
-                <Avatar player={username}/>
+             <div className={styles.avatar}>
+                <Avatar player={username} showItem={(item) => setCurrentItem(item)}/>
             </div>
-            <div className={styles.lives}>
+            <div className={`${currentItem === "Lives" ? styles.opacity : styles.lives}`}>
                 <Lives/>
             </div>
-            <div className={styles.storm}>
+            <div className={`${currentItem === "Storm" ? styles.opacity : styles.storm}`}>
                 <Storm/>
             </div>
-            <div className={styles.morse}>
+            <div className={`${currentItem === "Morse" ? styles.opacity : styles.morse }`}>
                 <Morse/>
             </div>
-            <div className={styles.result}>
+            <div className={`${currentItem === "Result" ? styles.opacity : styles.result }`}>
                 <Result/>
             </div>
-            <div className={styles.options}>
+            <div className={`${currentItem === "Options" ? styles.opacity : styles.options }`}>
                 <Options/>
             </div>
-            <div className={styles.cheatsheet}>
+            <div className={`${currentItem === "CheatSheet" ? styles.opacity : styles.cheatsheet}`}>
                 <CheatSheet/>
             </div>
         </div>

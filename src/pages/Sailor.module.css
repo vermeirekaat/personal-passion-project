@@ -7,32 +7,44 @@
     "storm result cheatsheet"
     ;
     max-height: 100vh;
+};
+
+.opacity {
+    opacity: 1;
+    background-color: red;
 }
 
 .avatar {
     grid-area: avatar;
+    opacity: 1;
 }
 
 .lives {
     grid-area: lives;
+    opacity: .2;
 }
 
 .storm {
     grid-area: storm;
+    opacity: .2;
 }
 
 .morse {
     grid-area: morse;
+    opacity: .2;
 }
 
 .result {
     grid-area: result;
+    opacity: .2;
 }
 
 .options {
     grid-area: options;
+    opacity: .2;
 }
 
 .cheatsheet {
-    grid-area: cheatsheet
+    grid-area: cheatsheet;
+    opacity: .2;
 }

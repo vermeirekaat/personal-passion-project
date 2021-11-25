@@ -116,13 +116,13 @@ const Avatar = ({ player, showItem }) => {
     const handleClickButton = (topic) => {
         setAmount(amount + 1);
         showItem(topic);
+        console.log(topic);
     }
     const handleKeyDown = (e) => {
         if (e.key === "x") {
             setAmount(amount + 1);
         }
-    }
-
+    };
 
     if (amount >= newArray.length) {
         return (
