@@ -1,0 +1,8 @@
+.container {
+    height: 45vh;
+    width: 20vw; 
+    padding: .2rem .5rem;
+    border: .2rem solid black;
+    border-radius: .5rem;
+    margin: 2rem;
+}
