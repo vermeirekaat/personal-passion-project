@@ -1,4 +1,5 @@
 import styles from "./Avatar.module.css";
+import { useState } from "react";
 import pirate from "../img/pirate.jpeg";
 
 const Avatar = ({ player }) => {
@@ -18,7 +19,7 @@ const Avatar = ({ player }) => {
                 arduino: false,
             }, 
             {
-                text: "De boodschap die je zal versturen is in morse code. <br></br> Dit is een verzameling van bolletjes en streepjesdie de letters voorstellen. In het onderste venster kan je een overzicht vinden dat je hiermee kan helpen.", 
+                text: "De boodschap die je zal versturen is in morse code. Dit is een verzameling van bolletjes en streepjesdie de letters voorstellen. In het onderste venster kan je een overzicht vinden dat je hiermee kan helpen.", 
                 button: true, 
                 topic: "CheatSheet",
                 arduino: false,
@@ -80,7 +81,7 @@ const Avatar = ({ player }) => {
                 arduino: false,
             }, 
             {
-                text: "Opgepast, je krijgt een boodschap van de kapitein. <br></br> Dit is de morse code voor links. Draai het stuur naar de juiste kant om verder te gaan.", 
+                text: "Opgepast, je krijgt een boodschap van de kapitein. Dit is de morse code voor links. Draai het stuur naar de juiste kant om verder te gaan.", 
                 button: false,
                 topic: "Morse",
                 arduino: true,
@@ -105,10 +106,16 @@ const Avatar = ({ player }) => {
             }
         ]
     };
-    let amount = 0;
+
     const filteredByKey = Object.fromEntries(Object.entries(dialogue).filter(([key, value]) => key === player) );
     const array = Object.values(filteredByKey);
     const newArray = array[0];
+
+    const [amount, setAmount] = useState(0);
+    const handleClickNext = () => {
+        setAmount(amount + 1); 
+        console.log(amount);
+    }
 
 
     return (
@@ -117,7 +124,7 @@ const Avatar = ({ player }) => {
 
             <div className={styles.captionContainer}>
                 <p className={styles.caption}>{newArray[amount].text}</p>
-                {newArray[amount].button === true ? <button className={styles.next}>&#10145;</button> : false }
+                {newArray[amount].button === true ? <button className={styles.next} onClick={() => handleClickNext()}>&#10145;</button> : false }
                 
             </div>
         </div>
