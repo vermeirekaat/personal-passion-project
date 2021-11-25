@@ -12,7 +12,7 @@ const Captain = ({ socket }) => {
     return (
         <div className={styles.grid}>
              <div className={styles.avatar}>
-                <Avatar/>
+                <Avatar socket={socket}/>
             </div>
             <div className={styles.lives}>
                 <Lives/>
