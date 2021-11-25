@@ -112,11 +112,25 @@ const Avatar = ({ player }) => {
     const newArray = array[0];
 
     const [amount, setAmount] = useState(0);
-    const handleClickNext = () => {
-        setAmount(amount + 1); 
-        console.log(amount);
+
+    const handleKeyDown = (e) => {
+        if (e.key === "x") {
+            setAmount(amount + 1);
+        }
     }
 
+
+    if (amount >= newArray.length) {
+        return (
+            <div className={styles.container}>
+            <img className={styles.avatar} src={pirate} alt="Avatar"/>
+
+            <div className={styles.captionContainer}>
+                <p className={styles.caption}> Start Game</p>
+            </div>
+        </div>
+        )
+    }
 
     return (
         <div className={styles.container}>
@@ -124,8 +138,7 @@ const Avatar = ({ player }) => {
 
             <div className={styles.captionContainer}>
                 <p className={styles.caption}>{newArray[amount].text}</p>
-                {newArray[amount].button === true ? <button className={styles.next} onClick={() => handleClickNext()}>&#10145;</button> : false }
-                
+                {newArray[amount].button === true ? <button className={styles.next} onClick={() => setAmount(amount + 1)}>&#10145;</button> : <input readOnly value="&#9747;" onKeyPress={handleKeyDown}></input> } 
             </div>
         </div>
     )
