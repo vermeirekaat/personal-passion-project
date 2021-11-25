@@ -14,7 +14,7 @@ const Welcome = ({ socket }) => {
     }, [socket]);
 
     const handleClickButton = () => {
-        console.log(socket.id);
+        // console.log(socket.id);
 
         socket?.emit("newUser", socket.id);
     };

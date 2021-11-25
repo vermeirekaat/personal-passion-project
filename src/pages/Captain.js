@@ -7,12 +7,12 @@ import Result from "../components/Result";
 import Obstacle from "../components/Obstacle";
 import CheatSheet from "../components/CheatSheet";
 
-const Captain = ({ socket }) => {
-    
+const Captain = ({ username, socket }) => {
+
     return (
         <div className={styles.grid}>
              <div className={styles.avatar}>
-                <Avatar socket={socket}/>
+                <Avatar player={username}/>
             </div>
             <div className={styles.lives}>
                 <Lives/>

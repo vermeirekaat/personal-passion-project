@@ -7,12 +7,12 @@ import Result from "../components/Result";
 import Options from "../components/Options";
 import CheatSheet from "../components/CheatSheet";
 
-const Sailor = ({ socket }) => {
+const Sailor = ({ username, socket }) => {
 
     return (
         <div className={styles.grid}>
             <div className={styles.avatar}>
-                <Avatar socket={socket}/>
+                <Avatar player={username}/>
             </div>
             <div className={styles.lives}>
                 <Lives/>

@@ -18,8 +18,6 @@ const App = () => {
     // setSocket(io("http://192.168.0.252:5000"));
   }, []);
 
-
-
   return (
       <Routes>
         <Route exact path="/" element={<Welcome socket={socket}/>}/>
