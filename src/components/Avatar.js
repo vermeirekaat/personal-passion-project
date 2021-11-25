@@ -2,7 +2,7 @@ import styles from "./Avatar.module.css";
 import { useState } from "react";
 import pirate from "../img/pirate.jpeg";
 
-const Avatar = ({ player }) => {
+const Avatar = ({ player, showItem }) => {
 
     const dialogue = {
         captain: [
@@ -113,6 +113,10 @@ const Avatar = ({ player }) => {
 
     const [amount, setAmount] = useState(0);
 
+    const handleClickButton = (topic) => {
+        setAmount(amount + 1);
+        showItem(topic);
+    }
     const handleKeyDown = (e) => {
         if (e.key === "x") {
             setAmount(amount + 1);
@@ -137,8 +141,8 @@ const Avatar = ({ player }) => {
             <img className={styles.avatar} src={pirate} alt="Avatar"/>
 
             <div className={styles.captionContainer}>
-                <p className={styles.caption}>{newArray[amount].text}</p>
-                {newArray[amount].button === true ? <button className={styles.next} onClick={() => setAmount(amount + 1)}>&#10145;</button> : <input readOnly value="&#9747;" onKeyPress={handleKeyDown}></input> } 
+                <p className={styles.caption}>{newArray[amount].text}</p><p>{newArray[amount].topic}</p>
+                {newArray[amount].button === true ? <button className={styles.next} onClick={() => handleClickButton(newArray[amount].topic)}>&#10145;</button> : <input readOnly value="&#9747;" onKeyPress={handleKeyDown}></input>} 
             </div>
         </div>
     )

@@ -9,10 +9,14 @@ import CheatSheet from "../components/CheatSheet";
 
 const Captain = ({ username, socket }) => {
 
+    const handleShowItem = (item) => {
+        console.log(item);
+    }
+
     return (
         <div className={styles.grid}>
              <div className={styles.avatar}>
-                <Avatar player={username}/>
+                <Avatar player={username} showItem={(item) => handleShowItem(item)}/>
             </div>
             <div className={styles.lives}>
                 <Lives/>
