@@ -1,5 +1,5 @@
 import styles from "./Avatar.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import pirate from "../img/pirate.jpeg";
 
 const Avatar = ({ player, showItem }) => {
@@ -9,7 +9,7 @@ const Avatar = ({ player, showItem }) => {
             {
                 text: "Ahoy maatje, welkom op het Schip van Morse! Help je mee om de schat op te halen op het eiland?", 
                 button: true,
-                topic: "",
+                topic: "Start",
                 arduino: false,
             },
             {
@@ -101,7 +101,7 @@ const Avatar = ({ player, showItem }) => {
             {
                 text: "Goed zo, nu ben je helemaal klaar om aan het spel te beginnen. Ahoy, veel succes!", 
                 button: true,
-                topic: "",
+                topic: "End",
                 arduino: false,
             }
         ]
@@ -113,11 +113,12 @@ const Avatar = ({ player, showItem }) => {
 
     const [amount, setAmount] = useState(0);
 
-    const handleClickButton = (topic) => {
-        setAmount(amount + 1);
-        showItem(topic);
-        console.log(topic);
-    }
+    useEffect(() => {
+        if (amount < newArray.length) {
+            showItem(newArray[amount].topic);
+        }
+    }, [showItem, newArray, amount]);
+
     const handleKeyDown = (e) => {
         if (e.key === "x") {
             setAmount(amount + 1);
@@ -142,7 +143,7 @@ const Avatar = ({ player, showItem }) => {
 
             <div className={styles.captionContainer}>
                 <p className={styles.caption}>{newArray[amount].text}</p><p>{newArray[amount].topic}</p>
-                {newArray[amount].button === true ? <button className={styles.next} onClick={() => handleClickButton(newArray[amount].topic)}>&#10145;</button> : <input readOnly value="&#9747;" onKeyPress={handleKeyDown}></input>} 
+                {newArray[amount].button === true ? <button className={styles.next} onClick={() => setAmount(amount + 1)}>&#10145;</button> : <input readOnly value="&#9747;" onKeyPress={handleKeyDown}></input>} 
             </div>
         </div>
     )

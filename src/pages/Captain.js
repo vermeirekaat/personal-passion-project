@@ -11,10 +11,6 @@ import CheatSheet from "../components/CheatSheet";
 const Captain = ({ username, socket }) => {
     
     const [currentItem, setCurrentItem] = useState("");
-    // console.log(currentItem);
-    console.log(currentItem);
-
-    // {`container${isContainerActive ? " right-panel-active" : ""}`}
 
     return (
         <div className={styles.grid}>
