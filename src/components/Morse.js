@@ -1,13 +1,13 @@
 import styles from "./Morse.module.css";
 import { useState } from "react";
 
-const Morse = () => {
+const Morse = ({ morseCode }) => {
     
     const [input, setInput] = useState([]);
+    morseCode(input);
 
     const handleMorseCode = (e) => {
         const copy = [...input];
-
             if (e.key === "a") {
                 copy.push(".");
                 setInput(copy);
@@ -18,7 +18,6 @@ const Morse = () => {
             }; 
     };
 
-    console.log(input);
     return (
         <div className={styles.container}>
             <p>Morse Code</p>

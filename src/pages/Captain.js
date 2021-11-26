@@ -12,6 +12,10 @@ const Captain = ({ username, socket }) => {
     
     const [currentItem, setCurrentItem] = useState("");
 
+    const handleInput = (input) => {
+        console.log(input);
+    }
+
     return (
         <div className={styles.grid}>
              <div className={styles.avatar}>
@@ -24,7 +28,7 @@ const Captain = ({ username, socket }) => {
                 <Route/>
             </div>
             <div className={`${currentItem === "Morse" ? styles.opacity : styles.morse }`}>
-                <Morse/>
+                <Morse morseCode={(input) => handleInput(input)}/>
             </div>
             <div className={`${currentItem === "Result" ? styles.opacity : styles.result }`}>
                 <Result/>
