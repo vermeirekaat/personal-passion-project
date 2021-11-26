@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Welcome = ({ socket }) => {
+const Welcome = ({ socket, username }) => {
 
     const navigate = useNavigate();
     const [player, setPlayer] = useState("");
@@ -20,6 +20,7 @@ const Welcome = ({ socket }) => {
     };
 
     if (player !== "") {
+        username(player);
         navigate(`/${player}`);
     } if (player === undefined) {
         return false;

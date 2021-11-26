@@ -11,10 +11,7 @@ import CheatSheet from "../components/CheatSheet";
 const Sailor = ({ username, socket }) => {
 
     const [currentItem, setCurrentItem] = useState("");
-    // console.log(currentItem);
-    console.log(currentItem);
-
-
+    
     return (
         <div className={styles.grid}>
              <div className={styles.avatar}>
@@ -39,7 +36,6 @@ const Sailor = ({ username, socket }) => {
                 <CheatSheet/>
             </div>
         </div>
-       
     )
 };
 
