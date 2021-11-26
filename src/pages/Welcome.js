@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Welcome = ({ socket, username }) => {
+const Welcome = ({ socket }) => {
 
     const navigate = useNavigate();
     const [player, setPlayer] = useState("");
+    // username(player);
 
     useEffect(() => {
         socket?.on("onlineUsers", (data) => {
@@ -20,7 +21,6 @@ const Welcome = ({ socket, username }) => {
     };
 
     if (player !== "") {
-        username(player);
         navigate(`/${player}`);
     } if (player === undefined) {
         return false;

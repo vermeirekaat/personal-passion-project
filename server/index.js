@@ -21,6 +21,8 @@ let onlineUsers = [];
 const players = ["captain", "sailor"];
 let amount = 0;
 
+let morseCode;
+
 const addNewUser = (socketId) => {
     let username = players[amount];
     amount++;
@@ -31,6 +33,10 @@ const addNewUser = (socketId) => {
     }
     !onlineUsers.some((user) => user.socketId === socketId) &&
       onlineUsers.push({ username, socketId });
+};
+
+const generateMorseInput = (input) => {
+    morseCode = input;
 };
 
 const removeUser = (socketId) => {
@@ -49,6 +55,17 @@ io.on("connection", (socket) => {
         console.log(onlineUsers);
         io.to(socket.id).emit("onlineUsers", onlineUsers);
     });
+
+    socket.on("morseInput", (input) => {
+        generateMorseInput(input);
+        console.log(socket.id, input);
+        const otherSocket = onlineUsers.findIndex((user) => user.socketId !== socket.id);
+        console.log(otherSocket);
+        // console.log(otherSocket);
+        if (!morseCode) {
+            // console.log(morseCode);
+        }
+    })
 
     socket.on("disconnect", () => {
         removeUser(socket.id);

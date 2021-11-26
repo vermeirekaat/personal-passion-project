@@ -14,6 +14,7 @@ const Captain = ({ username, socket }) => {
 
     const handleInput = (input) => {
         console.log(input);
+        socket?.emit("morseInput", input);
     }
 
     return (
