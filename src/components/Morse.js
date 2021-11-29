@@ -1,7 +1,13 @@
 import styles from "./Morse.module.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
+
+import { Context } from "../context/Store";
 
 const Morse = ({ morseCode }) => {
+
+    // eslint-disable-next-line
+    const [state, dispatch] = useContext(Context);
+    const indexCaptain = state.users.findIndex((user) => user.user === "captain");
     
     const [input, setInput] = useState([]);
     morseCode(input);
@@ -18,11 +24,25 @@ const Morse = ({ morseCode }) => {
             }; 
     };
 
+    if (indexCaptain > -1) {
+        return (
+            <div className={styles.container}>
+                <p>Morse Code</p>
+                <p>{input.toString()}</p>
+                <input readOnly onKeyPress={handleMorseCode}></input>
+            </div>
+        )
+    } else if (indexCaptain === -1 ) {
+        return (
+            <div className={styles.container}>
+                <p>Morse Code - Sailor</p>
+            </div>
+        )
+    };
+
     return (
         <div className={styles.container}>
-            <p>Morse Code</p>
-            <p>{input.toString()}</p>
-            <input readOnly onKeyPress={handleMorseCode}></input>
+            <p>Morse Code - Try</p>
         </div>
     )
 }; 

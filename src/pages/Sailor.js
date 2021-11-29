@@ -1,5 +1,5 @@
 import styles from "./Sailor.module.css";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import Avatar from "../components/Avatar";
 import Lives from "../components/Lives";
 import Storm from "../components/Storm";
@@ -8,18 +8,13 @@ import Result from "../components/Result";
 import Options from "../components/Options";
 import CheatSheet from "../components/CheatSheet";
 
-import { Context } from "../context/Store";
-
 const Sailor = ({ username, socket }) => {
 
     const [currentItem, setCurrentItem] = useState("");
-    const [state, dispatch] = useContext(Context);
 
     const handleInput = (input) => {
         console.log(input);
     };
-
-    console.log(state.users);
     
     return (
         <div className={styles.grid}>
