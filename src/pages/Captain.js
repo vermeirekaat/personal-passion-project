@@ -1,5 +1,5 @@
 import styles from "./Captain.module.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Avatar from "../components/Avatar";
 import Lives from "../components/Lives";
 import Route from "../components/Route";
@@ -8,9 +8,14 @@ import Result from "../components/Result";
 import Obstacle from "../components/Obstacle";
 import CheatSheet from "../components/CheatSheet";
 
+import { Context } from "../context/Store";
+
 const Captain = ({ username, socket }) => {
     
     const [currentItem, setCurrentItem] = useState("");
+    const [state, dispatch] = useContext(Context);
+
+    console.log(state.users);
 
     const handleInput = (input) => {
         console.log(input);
