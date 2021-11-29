@@ -13,7 +13,7 @@ const Captain = ({ username, socket }) => {
     const [currentItem, setCurrentItem] = useState("");
 
     const handleInput = (input) => {
-        console.log(input);
+        // console.log(input);
         socket?.emit("morseInput", input);
     }
 

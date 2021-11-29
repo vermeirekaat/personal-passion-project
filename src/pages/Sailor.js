@@ -1,5 +1,5 @@
 import styles from "./Sailor.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Avatar from "../components/Avatar";
 import Lives from "../components/Lives";
 import Storm from "../components/Storm";
@@ -11,10 +11,13 @@ import CheatSheet from "../components/CheatSheet";
 const Sailor = ({ username, socket }) => {
 
     const [currentItem, setCurrentItem] = useState("");
+    const [input, setInput] = useState("");
 
-    const handleInput = (input) => {
-        console.log(input);
-    };
+    useEffect(() => {
+        socket?.on("inputMorse", (data) => {
+            setInput(data);
+        });
+    }, [socket]);
     
     return (
         <div className={styles.grid}>
@@ -28,7 +31,7 @@ const Sailor = ({ username, socket }) => {
                 <Storm/>
             </div>
             <div className={`${currentItem === "Morse" ? styles.opacity : styles.morse }`}>
-                <Morse morseCode={(input) => handleInput(input)}/>
+                <Morse morseInput={input}/>
             </div>
             <div className={`${currentItem === "Result" ? styles.opacity : styles.result }`}>
                 <Result/>
