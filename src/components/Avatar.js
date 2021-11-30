@@ -2,7 +2,7 @@ import styles from "./Avatar.module.css";
 import { useEffect, useState } from "react";
 import pirate from "../img/pirate.jpeg";
 
-const Avatar = ({ player, showItem }) => {
+const Avatar = ({ player, showItem, socket }) => {
 
     const dialogue = {
         captain: [
@@ -117,7 +117,8 @@ const Avatar = ({ player, showItem }) => {
         if (amount < newArray.length) {
             showItem(newArray[amount].topic);
         }
-    }, [showItem, newArray, amount]);
+        socket?.emit("currentStep", amount);
+    }, [showItem, newArray, amount, socket]);
 
     const handleKeyDown = (e) => {
         if (e.key === "x") {

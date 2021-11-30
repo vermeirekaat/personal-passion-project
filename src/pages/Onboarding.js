@@ -42,7 +42,7 @@ const Onboarding = ({ socket }) => {
         return (
             <div className={styles.grid}>
                 <div className={styles.avatar}>
-                    <Avatar player={currentUser} showItem={(item) => setCurrentItem(item)}/>
+                    <Avatar player={currentUser} showItem={(item) => setCurrentItem(item)} socket={socket}/>
                 </div>
                 <div className={`${currentItem === "Lives" ? styles.opacity : styles.lives}`}>
                     <Lives/>
@@ -70,7 +70,7 @@ const Onboarding = ({ socket }) => {
         return (
             <div className={styles.grid}>
                 <div className={styles.avatar}>
-                    <Avatar player={currentUser} showItem={(item) => setCurrentItem(item)}/>
+                    <Avatar player={currentUser} showItem={(item) => setCurrentItem(item)} socket={socket}/>
                 </div>
                 <div className={`${currentItem === "Lives" ? styles.opacity : styles.lives}`}>
                     <Lives/>

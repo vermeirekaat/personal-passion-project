@@ -21,6 +21,8 @@ let onlineUsers = [];
 const players = ["captain", "sailor"];
 let amount = 0;
 
+let saveSteps = [];
+
 const addNewUser = (socketId) => {
     let username = players[amount];
     amount++;
@@ -33,8 +35,13 @@ const addNewUser = (socketId) => {
       onlineUsers.push({ username, socketId });
 };
 
-const removeUser = (socketId) => {
-    onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
+const saveCurrentStep = (currentStep, socketId) => {
+    const index = saveSteps.findIndex((socket) => socket.socketId === socketId); 
+    if (index === -1) {
+        saveSteps.push({currentStep, socketId});
+    } else {
+        saveSteps[index].currentStep = currentStep;
+    }
 };
 
 // const getOneUser = (username) => {
@@ -50,6 +57,11 @@ io.on("connection", (socket) => {
         io.to(socket.id).emit("onlineUsers", onlineUsers);
     });
 
+    socket.on("currentStep", (step) => {
+        saveCurrentStep(step, socket.id);
+        console.log(saveSteps);
+    })
+
     socket.on("morseInput", (input) => {
         if (onlineUsers.length > 1) {
             const otherSocket = onlineUsers.find((user) => user.socketId !== socket.id);
@@ -59,7 +71,8 @@ io.on("connection", (socket) => {
     })
 
     socket.on("disconnect", () => {
-        removeUser(socket.id);
+        onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
+        saveSteps = saveSteps.filter((user) => user.socketId !== socket.id);
     });
 });
 
