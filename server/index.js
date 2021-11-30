@@ -29,7 +29,7 @@ const addNewUser = (socketId) => {
         amount = 0;
         username = players[amount];
     }
-    !onlineUsers.some((user) => user.socketId === socketId) &&
+    !onlineUsers.some((user) => user.username === username) &&  !onlineUsers.some((user) => user.username === username) &&
       onlineUsers.push({ username, socketId });
 };
 
