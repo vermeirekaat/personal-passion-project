@@ -26,13 +26,11 @@ const Onboarding = ({ socket }) => {
     }
 
     const [currentItem, setCurrentItem] = useState("");
+    const [input, setInput] = useState("");
 
     const handleInput = (input) => {
-        // console.log(input);
         socket?.emit("morseInput", input);
     };
-
-    const [input, setInput] = useState("");
 
     useEffect(() => {
         socket?.on("inputMorse", (data) => {

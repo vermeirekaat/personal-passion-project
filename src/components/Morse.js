@@ -34,7 +34,7 @@ const Morse = ({ morseCode, morseInput }) => {
             </div>
         )
     } else if (indexCaptain === -1 ) {
-        console.log(morseInput);
+        // console.log(morseInput);
         return (
             <div className={styles.container}>
                 <p>Morse Code - Sailor</p>

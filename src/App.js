@@ -2,8 +2,6 @@ import './App.css';
 import Store from './context/Store';
 import Welcome from './pages/Welcome';
 import Onboarding from './pages/Onboarding';
-import Captain from './pages/Captain';
-import Sailor from './pages/Sailor';
 import { io } from 'socket.io-client';
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
@@ -24,8 +22,6 @@ const App = () => {
       <Routes>
         <Route exact path="/" element={<Welcome socket={socket}/>}/>
         <Route exact path="/onboarding" element={<Onboarding socket={socket}/>}/> 
-          <Route exact path="/captain" element={<Captain username="captain" socket={socket}/>}/> 
-          <Route exact path="/sailor" element={<Sailor username="sailor" socket={socket}/> }/>
       </Routes>
     </Store>
   );

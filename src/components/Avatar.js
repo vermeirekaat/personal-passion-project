@@ -9,7 +9,7 @@ const Avatar = ({ player, showItem }) => {
             {
                 text: "Ahoy maatje, welkom op het Schip van Morse! Help je mee om de schat op te halen op het eiland?", 
                 button: true,
-                topic: "Start",
+                topic: "Captain",
                 arduino: false,
             },
             {
@@ -59,7 +59,7 @@ const Avatar = ({ player, showItem }) => {
             {
                 text: "Ahoy maatje, welkom op het Schip van Morse! Help je mee om de schat op te halen op het eiland?", 
                 button: true,
-                topic: "",
+                topic: "Sailor",
                 arduino: false,
             },
             {
