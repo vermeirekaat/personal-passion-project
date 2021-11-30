@@ -23,7 +23,7 @@ const App = () => {
     <Store>
       <Routes>
         <Route exact path="/" element={<Welcome socket={socket}/>}/>
-        <Route exact path="/onboarding" element={<Onboarding/>}/> 
+        <Route exact path="/onboarding" element={<Onboarding socket={socket}/>}/> 
           <Route exact path="/captain" element={<Captain username="captain" socket={socket}/>}/> 
           <Route exact path="/sailor" element={<Sailor username="sailor" socket={socket}/> }/>
       </Routes>

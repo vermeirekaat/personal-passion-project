@@ -1,0 +1,59 @@
+.grid {
+    display: grid; 
+    grid-template-areas: 
+    "avatar avatar avatar"
+    "lives morse options"
+    "storm morse options"
+    "storm result cheatsheet"
+    ;
+    max-height: 100vh;
+};
+
+.opacity {
+    opacity: 1;
+}
+
+.avatar {
+    grid-area: avatar;
+    opacity: 1;
+}
+
+.lives {
+    grid-area: lives;
+    opacity: .2;
+}
+
+.storm {
+    grid-area: storm;
+    opacity: .2;
+}
+
+.route {
+    grid-area: storm;
+    opacity: .2;
+}
+
+.morse {
+    grid-area: morse;
+    opacity: .2;
+}
+
+.result {
+    grid-area: result;
+    opacity: .2;
+}
+
+.obstacle {
+    grid-area: options;
+    opacity: .2;
+}
+
+.options {
+    grid-area: options;
+    opacity: .2;
+}
+
+.cheatsheet {
+    grid-area: cheatsheet;
+    opacity: .2;
+}

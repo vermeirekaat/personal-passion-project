@@ -1,30 +1,98 @@
-import { useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../context/Store";
+import styles from "./Onboarding.module.css";
 
-const Onboarding = () => {
+import Avatar from "../components/Avatar";
+import Lives from "../components/Lives";
+import Route from "../components/Route";
+import Storm from "../components/Storm";
+import Morse from "../components/Morse";
+import Result from "../components/Result";
+import Obstacle from "../components/Obstacle";
+import Options from "../components/Options";
+import CheatSheet from "../components/CheatSheet";
+
+const Onboarding = ({ socket }) => {
+
     // eslint-disable-next-line
     const [state, dispatch] = useContext(Context);
 
-    console.log(state.users);
     let currentUser;
-    let socketId;
+    // let socketId;
     if (state.users.length > 0) {
         currentUser = state.users[0].user;
-        socketId = state.users[0].socket;
+        // socketId = state.users[0].socket;
     }
-    
-    console.log(currentUser, socketId);
+
+    const [currentItem, setCurrentItem] = useState("");
+
+    const handleInput = (input) => {
+        // console.log(input);
+        socket?.emit("morseInput", input);
+    };
+
+    const [input, setInput] = useState("");
+
+    useEffect(() => {
+        socket?.on("inputMorse", (data) => {
+            setInput(data);
+        });
+    }, [socket]);
 
     if (currentUser === "captain") {
         return (
-            <p>Captain</p>
+            <div className={styles.grid}>
+                <div className={styles.avatar}>
+                    <Avatar player={currentUser} showItem={(item) => setCurrentItem(item)}/>
+                </div>
+                <div className={`${currentItem === "Lives" ? styles.opacity : styles.lives}`}>
+                    <Lives/>
+                </div>
+                <div className={`${currentItem === "Route" ? styles.opacity : styles.route}`}>
+                    <Route/>
+                </div>
+                <div className={`${currentItem === "Morse" ? styles.opacity : styles.morse }`}>
+                    <Morse morseCode={(input) => handleInput(input)}/>
+                </div>
+                <div className={`${currentItem === "Result" ? styles.opacity : styles.result }`}>
+                    <Result/>
+                </div>
+                <div className={`${currentItem === "Obstacle" ? styles.opacity : styles.obstacle }`}>
+                    <Obstacle/>
+                </div>
+                <div className={`${currentItem === "CheatSheet" ? styles.opacity : styles.cheatsheet}`}>
+                    <CheatSheet/>
+                </div>
+            </div>
         )
     }; 
 
     if (currentUser === "sailor") {
         return (
-            <p>Sailor</p>
+            <div className={styles.grid}>
+                <div className={styles.avatar}>
+                    <Avatar player={currentUser} showItem={(item) => setCurrentItem(item)}/>
+                </div>
+                <div className={`${currentItem === "Lives" ? styles.opacity : styles.lives}`}>
+                    <Lives/>
+                </div>
+                <div className={`${currentItem === "Storm" ? styles.opacity : styles.storm}`}>
+                    <Storm/>
+                </div>
+                <div className={`${currentItem === "Morse" ? styles.opacity : styles.morse }`}>
+                    <Morse morseInput={input}/>
+                </div>
+                <div className={`${currentItem === "Result" ? styles.opacity : styles.result }`}>
+                    <Result/>
+                </div>
+                <div className={`${currentItem === "Options" ? styles.opacity : styles.options }`}>
+                    <Options/>
+                </div>
+                <div className={`${currentItem === "CheatSheet" ? styles.opacity : styles.cheatsheet}`}>
+                    <CheatSheet/>
+                </div>
+            </div>
         )
     };
 

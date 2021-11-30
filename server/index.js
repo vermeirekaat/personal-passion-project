@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
     socket.on("morseInput", (input) => {
         if (onlineUsers.length > 1) {
             const otherSocket = onlineUsers.find((user) => user.socketId !== socket.id);
-            console.log(input);
+            // console.log(input);
             io.to(otherSocket.socketId).emit("inputMorse", input);
         }
     })
