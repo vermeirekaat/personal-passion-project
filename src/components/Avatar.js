@@ -51,7 +51,7 @@ const Avatar = ({ player, showItem }) => {
             {
                 text: "Nu ben je helemaal klaar om aan het spel te beginnen. Ahoy, veel succes!", 
                 button: true, 
-                topic: "", 
+                topic: "End", 
                 arduino: false,
             },
         ], 

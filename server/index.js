@@ -29,7 +29,7 @@ const addNewUser = (socketId) => {
         amount = 0;
         username = players[amount];
     }
-    !onlineUsers.some((user) => user.username === username) &&  !onlineUsers.some((user) => user.username === username) &&
+    !onlineUsers.some((user) => user.username === username) &&
       onlineUsers.push({ username, socketId });
 };
 
@@ -61,11 +61,6 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         removeUser(socket.id);
     });
-
-    
-    // server.listen(port, () => {
-    //     console.log(`App listening on port ${port}`);
-    // })
 });
 
 // add middlewares
@@ -78,4 +73,3 @@ app.use((req, res, next) => {
 server.listen(port, () => {
     console.log(`App listening on port ${port}`);
 });
-// io.listen(port);
