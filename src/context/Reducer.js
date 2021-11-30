@@ -13,7 +13,7 @@ const Reducer = (state, action) => {
         case 'REMOVE_USER':
             return {
                 ...state,
-                users: state.users.filter(post => post.id !== action.payload)
+                users: state.users.filter(user => user.id !== action.payload)
             };
         case 'SET_ERROR':
             return {

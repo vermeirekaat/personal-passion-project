@@ -8,14 +8,14 @@ import Result from "../components/Result";
 import Obstacle from "../components/Obstacle";
 import CheatSheet from "../components/CheatSheet";
 
-const Captain = ({ username, socket }) => {
+const Captain = ({ props, username, socket }) => {
     
     const [currentItem, setCurrentItem] = useState("");
 
     const handleInput = (input) => {
         // console.log(input);
         socket?.emit("morseInput", input);
-    }
+    };
 
     return (
         <div className={styles.grid}>
