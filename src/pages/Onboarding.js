@@ -32,6 +32,10 @@ const Onboarding = ({ socket }) => {
         socket?.emit("morseInput", input);
     };
 
+    const handleDirection = (direction) => {
+        socket?.emit("direction", direction);
+    }
+
     useEffect(() => {
         socket?.on("inputMorse", (data) => {
             setInput(data);
@@ -76,7 +80,7 @@ const Onboarding = ({ socket }) => {
         return (
             <div className={styles.grid}>
                 <div className={styles.avatar}>
-                    <Avatar player={currentUser} showItem={(item) => setCurrentItem(item)} socket={socket}/>
+                    <Avatar player={currentUser} showItem={(item) => setCurrentItem(item)} socket={socket} getDirection={(direction) => handleDirection(direction)}/>
                 </div>
                 <div className={`${currentItem === "Lives" ? styles.opacity : styles.lives}`}>
                     <Lives/>

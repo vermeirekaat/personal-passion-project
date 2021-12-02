@@ -94,7 +94,11 @@ io.on("connection", (socket) => {
             // console.log(input);
             io.to(otherSocket.socketId).emit("inputMorse", input);
         }
-    })
+    });
+
+    socket.on("direction", (direction) => {
+        console.log(direction);
+    });
 
     socket.on("disconnect", () => {
         onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);

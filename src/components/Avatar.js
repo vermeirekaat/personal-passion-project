@@ -2,7 +2,7 @@ import styles from "./Avatar.module.css";
 import { useEffect, useState } from "react";
 import pirate from "../img/pirate.jpeg";
 
-const Avatar = ({ player, showItem, socket }) => {
+const Avatar = ({ player, showItem, socket, getDirection}) => {
 
     const dialogue = {
         captain: [
@@ -112,7 +112,6 @@ const Avatar = ({ player, showItem, socket }) => {
     const newArray = array[0];
 
     const [amount, setAmount] = useState(0);
-    const [direction, setDirection] = useState("");
 
     useEffect(() => {
         if (amount < newArray.length) {
@@ -126,10 +125,10 @@ const Avatar = ({ player, showItem, socket }) => {
             setAmount(amount + 1);
         } else if (e.key === "o") {
             console.log("left");
-            setDirection("left");
+            getDirection("left");
         }else if (e.key === "p") {
             console.log("right");
-            setDirection("right");
+            getDirection("right");
         }
     };
 
