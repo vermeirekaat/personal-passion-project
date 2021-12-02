@@ -35,14 +35,36 @@ const addNewUser = (socketId) => {
       onlineUsers.push({ username, socketId });
 };
 
+const checkStepsOther = (socketId) => {
+    // const indexOtherUser = getOtherUser(socketId);
+    const indexUser = saveSteps.find((socket) => socket.socketId !== socketId); 
+    const otherSocket = getOtherUser(socketId);
+    console.log(otherSocket);
+    // console.log(indexUser);
+
+    if (indexUser.currentStep < 4) {
+        io.to(socketId).emit("stepsMessage", "wait for other user");
+    } else if (indexUser.currentStep === 4) {
+        io.to(otherSocket.socketId).emit("stepsMessage", "ready to play");
+    }
+}
+
 const saveCurrentStep = (currentStep, socketId) => {
     const index = saveSteps.findIndex((socket) => socket.socketId === socketId); 
     const indexUser = onlineUsers.findIndex((user) => user.socketId === socketId);
-    const username = onlineUsers[indexUser].username;
+    let username;
+    if (onlineUsers.length > 0) {
+        username = onlineUsers[indexUser].username;
+    }
+    
     if (index === -1) {
         saveSteps.push({currentStep, username, socketId});
     } else {
         saveSteps[index].currentStep = currentStep;
+    }
+
+    if (currentStep === 4) {
+        checkStepsOther(socketId);
     }
 };
 
@@ -59,13 +81,13 @@ io.on("connection", (socket) => {
 
     socket.on("newUser", (username) => {
         addNewUser(username, socket.id);
-        console.log(onlineUsers);
+        // console.log(onlineUsers);
         io.to(socket.id).emit("onlineUsers", onlineUsers);
     });
 
     socket.on("currentStep", (step) => {
         saveCurrentStep(step, socket.id);
-        console.log(saveSteps);
+        // console.log(saveSteps);
     })
 
     socket.on("morseInput", (input) => {

@@ -38,6 +38,12 @@ const Onboarding = ({ socket }) => {
         });
     }, [socket]);
 
+    useEffect(() => {
+        socket?.on("stepsMessage", (message) => {
+            console.log(message);
+        });
+    }, [socket]);
+
     if (currentUser === "captain") {
         return (
             <div className={styles.grid}>
