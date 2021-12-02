@@ -29,7 +29,7 @@ const Morse = ({ morseCode, morseInput }) => {
         return (
             <div className={styles.container}>
                 <p>Morse Code</p>
-                <p>{input.toString()}</p>
+                <p>{input}</p>
                 <input readOnly onKeyPress={handleMorseCode}></input>
             </div>
         )

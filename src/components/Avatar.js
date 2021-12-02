@@ -112,6 +112,7 @@ const Avatar = ({ player, showItem, socket }) => {
     const newArray = array[0];
 
     const [amount, setAmount] = useState(0);
+    const [direction, setDirection] = useState("");
 
     useEffect(() => {
         if (amount < newArray.length) {
@@ -123,6 +124,12 @@ const Avatar = ({ player, showItem, socket }) => {
     const handleKeyDown = (e) => {
         if (e.key === "x") {
             setAmount(amount + 1);
+        } else if (e.key === "o") {
+            console.log("left");
+            setDirection("left");
+        }else if (e.key === "p") {
+            console.log("right");
+            setDirection("right");
         }
     };
 

@@ -39,8 +39,6 @@ const checkStepsOther = (socketId) => {
     // const indexOtherUser = getOtherUser(socketId);
     const indexUser = saveSteps.find((socket) => socket.socketId !== socketId); 
     const otherSocket = getOtherUser(socketId);
-    console.log(otherSocket);
-    // console.log(indexUser);
 
     if (indexUser.currentStep < 4) {
         io.to(socketId).emit("stepsMessage", "wait for other user");
