@@ -7,7 +7,7 @@ const port = process.env.PORT || 5000;
 
 const io = require('socket.io')(server, {
     cors: {
-        origin: "http://localhost:3002", 
+        origin: "http://localhost:3003", 
         // origin: "http://192.168.0.252:3000",
         methods: ["GET", "POST"],
     }, 
@@ -37,8 +37,10 @@ const addNewUser = (socketId) => {
 
 const saveCurrentStep = (currentStep, socketId) => {
     const index = saveSteps.findIndex((socket) => socket.socketId === socketId); 
+    const indexUser = onlineUsers.findIndex((user) => user.socketId === socketId);
+    const username = onlineUsers[indexUser].username;
     if (index === -1) {
-        saveSteps.push({currentStep, socketId});
+        saveSteps.push({currentStep, username, socketId});
     } else {
         saveSteps[index].currentStep = currentStep;
     }
@@ -47,6 +49,10 @@ const saveCurrentStep = (currentStep, socketId) => {
 // const getOneUser = (username) => {
 //     return onlineUsers.find((user) => user.username === username);
 // }
+
+const getOtherUser = (socketId) => {
+    return onlineUsers.find((user) => user.socketId !== socketId);
+}
 
 io.on("connection", (socket) => {
     // console.log(`new connection ${socket.id}`);
@@ -64,7 +70,7 @@ io.on("connection", (socket) => {
 
     socket.on("morseInput", (input) => {
         if (onlineUsers.length > 1) {
-            const otherSocket = onlineUsers.find((user) => user.socketId !== socket.id);
+            const otherSocket = getOtherUser(socket.id);
             // console.log(input);
             io.to(otherSocket.socketId).emit("inputMorse", input);
         }

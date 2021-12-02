@@ -95,7 +95,7 @@ const Avatar = ({ player, showItem, socket }) => {
             {
                 text: "Tijdens het varen zal je ook enkele obstakels tegenkomen. Het is jouw taak om deze te ontwijken. Je kan dit doen door de boodschap te ontcijferen zoals in de vorige stap. Om je te helpen krijg je drie verschillende opties te zien in onderstaand venster. Druk één, twee of drie keer op de knop om het juiste antwoord te kiezen.", 
                 button: false,
-                topic: "",
+                topic: "Obstacle",
                 arduino: true,
             }, 
             {
