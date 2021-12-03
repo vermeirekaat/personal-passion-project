@@ -1,0 +1,42 @@
+.grid {
+    display: grid; 
+    grid-template-areas: 
+    "avatar avatar avatar"
+    "lives morse options"
+    "storm morse options"
+    "storm result cheatsheet"
+    ;
+    max-height: 100vh;
+};
+
+.lives {
+    grid-area: lives;
+}
+
+.storm {
+    grid-area: storm;
+}
+
+.route {
+    grid-area: storm;
+}
+
+.morse {
+    grid-area: morse;
+}
+
+.result {
+    grid-area: result;
+}
+
+.obstacle {
+    grid-area: options;
+}
+
+.options {
+    grid-area: options;
+}
+
+.cheatsheet {
+    grid-area: cheatsheet;
+}
