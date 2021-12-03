@@ -2,6 +2,7 @@ import './App.css';
 import Store from './context/Store';
 import Welcome from './pages/Welcome';
 import Onboarding from './pages/Onboarding';
+import Game from './pages/Game';
 import { io } from 'socket.io-client';
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
@@ -22,6 +23,7 @@ const App = () => {
       <Routes>
         <Route exact path="/" element={<Welcome socket={socket}/>}/>
         <Route exact path="/onboarding" element={<Onboarding socket={socket}/>}/> 
+        <Route exact path="/game" element={<Game socket={socket}/>}/>
       </Routes>
     </Store>
   );

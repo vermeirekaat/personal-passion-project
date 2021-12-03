@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { Context } from "../context/Store";
 import styles from "./Onboarding.module.css";
@@ -17,6 +18,7 @@ const Onboarding = ({ socket }) => {
 
     // eslint-disable-next-line
     const [state, dispatch] = useContext(Context);
+    const navigate = useNavigate();
 
     let currentUser;
     // let socketId;
@@ -61,6 +63,12 @@ const Onboarding = ({ socket }) => {
             setResult(message);
         });
     }, [socket]);
+
+    useEffect(() => {
+        if (currentItem === "Game") {
+            navigate("/game");
+        }
+    }, [currentItem, navigate]);
 
     if (currentUser === "captain") {
         return (

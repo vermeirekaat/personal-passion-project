@@ -116,6 +116,8 @@ const Avatar = ({ player, showItem, socket, getDirection}) => {
     useEffect(() => {
         if (amount < newArray.length) {
             showItem(newArray[amount].topic);
+        } else if (amount >= newArray.length) {
+            showItem("Game");
         }
         socket?.emit("currentStep", amount);
     }, [showItem, newArray, amount, socket]);
