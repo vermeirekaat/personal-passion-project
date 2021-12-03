@@ -28,6 +28,7 @@ const Onboarding = ({ socket }) => {
     const [currentItem, setCurrentItem] = useState("");
     const [route, setRoute] = useState("");
     const [input, setInput] = useState("");
+    const [result, setResult] = useState("");
 
     const handleInput = (input) => {
         socket?.emit("morseInput", input);
@@ -55,6 +56,12 @@ const Onboarding = ({ socket }) => {
         });
     }, [socket]);
 
+    useEffect(() => {
+        socket?.on("result", (message) => {
+            setResult(message);
+        });
+    }, [socket]);
+
     if (currentUser === "captain") {
         return (
             <div className={styles.grid}>
@@ -71,7 +78,7 @@ const Onboarding = ({ socket }) => {
                     <Morse morseCode={(input) => handleInput(input)}/>
                 </div>
                 <div className={`${currentItem === "Result" ? styles.opacity : styles.result }`}>
-                    <Result/>
+                    <Result result={result}/>
                 </div>
                 <div className={`${currentItem === "Obstacle" ? styles.opacity : styles.obstacle }`}>
                     <Obstacle/>
@@ -99,7 +106,7 @@ const Onboarding = ({ socket }) => {
                     <Morse morseInput={input}/>
                 </div>
                 <div className={`${currentItem === "Result" ? styles.opacity : styles.result }`}>
-                    <Result/>
+                    <Result result={result}/>
                 </div>
                 <div className={`${currentItem === "Options" ? styles.opacity : styles.options }`}>
                     <Options/>

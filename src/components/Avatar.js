@@ -124,11 +124,11 @@ const Avatar = ({ player, showItem, socket, getDirection}) => {
         if (e.key === "x") {
             setAmount(amount + 1);
         } else if (e.key === "o") {
-            console.log("left");
-            getDirection("left");
+            console.log("links");
+            getDirection("links");
         } else if (e.key === "p") {
-            console.log("right");
-            getDirection("right");
+            console.log("rechts");
+            getDirection("rechts");
         }
     };
 

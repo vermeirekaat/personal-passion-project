@@ -32,6 +32,8 @@ const directions = [
     }
 ];
 
+let validateAnswer;
+
 const addNewUser = (socketId) => {
     let username = players[amount];
     amount++;
@@ -74,12 +76,14 @@ io.on("connection", (socket) => {
         const currentUser = getOneUser(socket.id);
         currentUser.currentStep = step;
 
-        if (step === 4) {
+        if (currentUser.username === "captain" && step === 4) {
             const choosenDirection = directions[Math.floor(Math.random()*directions.length)];
-            console.log(choosenDirection);
+            validateAnswer = choosenDirection;
             io.to(socket.id).emit("direction", choosenDirection.word);
             checkStepsOther(socket.id);
-        };
+        } else if (currentUser.username === "sailor" && step === 4) {
+            checkStepsOther(socket.id);
+        }
     })
 
     socket.on("morseInput", (input) => {
@@ -90,7 +94,11 @@ io.on("connection", (socket) => {
     });
 
     socket.on("direction", (direction) => {
-        console.log(direction);
+        if (direction === validateAnswer.word) {
+            io.emit("result", "success");
+        } else {
+            io.emit("result", "fail")
+        }
     });
 
     socket.on("disconnect", () => {
