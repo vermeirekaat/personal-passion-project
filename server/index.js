@@ -21,9 +21,8 @@ let onlineUsers = [];
 const players = ["captain", "sailor"];
 let amount = 0;
 
-let saveSteps = [];
-
 const addNewUser = (socketId) => {
+    let currentStep = 0;
     let username = players[amount];
     amount++;
 
@@ -32,43 +31,24 @@ const addNewUser = (socketId) => {
         username = players[amount];
     }
     !onlineUsers.some((user) => user.username === username) &&
-      onlineUsers.push({ username, socketId });
+      onlineUsers.push({ username, socketId, currentStep });
 };
 
 const checkStepsOther = (socketId) => {
     // const indexOtherUser = getOtherUser(socketId);
-    const indexUser = saveSteps.find((socket) => socket.socketId !== socketId); 
+    // const indexUser = saveSteps.find((socket) => socket.socketId !== socketId); 
     const otherSocket = getOtherUser(socketId);
 
-    if (indexUser.currentStep < 4) {
+    if (otherSocket.currentStep < 4) {
         io.to(socketId).emit("stepsMessage", "wait for other user");
-    } else if (indexUser.currentStep === 4) {
+    } else if (otherSocket.currentStep === 4) {
         io.to(otherSocket.socketId).emit("stepsMessage", "ready to play");
     }
 }
 
-const saveCurrentStep = (currentStep, socketId) => {
-    const index = saveSteps.findIndex((socket) => socket.socketId === socketId); 
-    const indexUser = onlineUsers.findIndex((user) => user.socketId === socketId);
-    let username;
-    if (onlineUsers.length > 0) {
-        username = onlineUsers[indexUser].username;
-    }
-    
-    if (index === -1) {
-        saveSteps.push({currentStep, username, socketId});
-    } else {
-        saveSteps[index].currentStep = currentStep;
-    }
-
-    if (currentStep === 4) {
-        checkStepsOther(socketId);
-    }
-};
-
-// const getOneUser = (username) => {
-//     return onlineUsers.find((user) => user.username === username);
-// }
+const getOneUser = (socketId) => {
+    return onlineUsers.find((user) => user.socketId === socketId);
+}
 
 const getOtherUser = (socketId) => {
     return onlineUsers.find((user) => user.socketId !== socketId);
@@ -84,8 +64,12 @@ io.on("connection", (socket) => {
     });
 
     socket.on("currentStep", (step) => {
-        saveCurrentStep(step, socket.id);
-        // console.log(saveSteps);
+        const currentUser = getOneUser(socket.id);
+        currentUser.currentStep = step;
+
+        if (step === 4) {
+            checkStepsOther(socket.id);
+        }
     })
 
     socket.on("morseInput", (input) => {
@@ -102,7 +86,6 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
-        saveSteps = saveSteps.filter((user) => user.socketId !== socket.id);
     });
 });
 
