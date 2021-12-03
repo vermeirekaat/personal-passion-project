@@ -1,6 +1,7 @@
 .grid {
     display: grid; 
-    grid-template-areas: 
+    grid-template-areas:
+    "skip skip skip" 
     "avatar avatar avatar"
     "lives morse options"
     "storm morse options"
@@ -16,6 +17,10 @@
 .avatar {
     grid-area: avatar;
     opacity: 1;
+}
+
+.skip {
+    grid-area: skip;
 }
 
 .lives {

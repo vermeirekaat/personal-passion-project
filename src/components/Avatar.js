@@ -135,15 +135,7 @@ const Avatar = ({ player, showItem, socket, getDirection}) => {
     };
 
     if (amount >= newArray.length) {
-        return (
-            <div className={styles.container}>
-            <img className={styles.avatar} src={pirate} alt="Avatar"/>
-
-            <div className={styles.captionContainer}>
-                <p className={styles.caption}> Start Game</p>
-            </div>
-        </div>
-        )
+        return false;
     }
 
     return (
