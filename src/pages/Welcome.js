@@ -7,7 +7,6 @@ const Welcome = ({ socket }) => {
     const navigate = useNavigate();
     const [player, setPlayer] = useState("");
     const [state, dispatch] = useContext(Context);
-    // username(player);
 
     useEffect(() => {
         socket?.on("onlineUsers", (data) => {
@@ -16,21 +15,21 @@ const Welcome = ({ socket }) => {
         });
     }, [socket]);
 
-    const handleClickButton = () => {
-        // console.log(socket.id);
+    useEffect(() => {
+        if (state.error) {
+            return <p>Something went wrong: <span>{state.error}</span></p>;
+        }
+        if (player !== "") {
+            dispatch({type: 'ADD_USER', payload: { socket: socket.id, user: player }});
+            navigate("/onboarding");
+        } if (player === undefined) {
+            return false;
+        }
+    }, [dispatch, navigate, player, socket, state.error]);
 
+    const handleClickButton = () => {
         socket?.emit("newUser", socket.id);
     };
-
-    if (state.error) {
-        return <p>Something went wrong: <span>{state.error}</span></p>;
-    }
-    if (player !== "") {
-        dispatch({type: 'ADD_USER', payload: { socket: socket.id, user: player }});
-        navigate("/onboarding");
-    } if (player === undefined) {
-        return false;
-    }
 
     return(
         <div>
