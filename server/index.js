@@ -21,8 +21,18 @@ let onlineUsers = [];
 const players = ["captain", "sailor"];
 let amount = 0;
 
+const directions = [
+    {
+        "word": "links", 
+        "morse": ".-....-.-.-...",
+    },
+    {
+        "word": "rechts", 
+        "morse": ".-..-.-.....-...",
+    }
+];
+
 const addNewUser = (socketId) => {
-    let currentStep = 0;
     let username = players[amount];
     amount++;
 
@@ -31,7 +41,7 @@ const addNewUser = (socketId) => {
         username = players[amount];
     }
     !onlineUsers.some((user) => user.username === username) &&
-      onlineUsers.push({ username, socketId, currentStep });
+      onlineUsers.push({ username, socketId, currentStep: 0 });
 };
 
 const checkStepsOther = (socketId) => {
@@ -65,8 +75,11 @@ io.on("connection", (socket) => {
         currentUser.currentStep = step;
 
         if (step === 4) {
+            const choosenDirection = directions[Math.floor(Math.random()*directions.length)];
+            console.log(choosenDirection);
+            io.to(socket.id).emit("direction", choosenDirection.word);
             checkStepsOther(socket.id);
-        }
+        };
     })
 
     socket.on("morseInput", (input) => {

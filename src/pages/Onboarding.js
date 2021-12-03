@@ -26,6 +26,7 @@ const Onboarding = ({ socket }) => {
     }
 
     const [currentItem, setCurrentItem] = useState("");
+    const [route, setRoute] = useState("");
     const [input, setInput] = useState("");
 
     const handleInput = (input) => {
@@ -39,6 +40,12 @@ const Onboarding = ({ socket }) => {
     useEffect(() => {
         socket?.on("inputMorse", (data) => {
             setInput(data);
+        });
+    }, [socket]);
+
+    useEffect(() => {
+        socket?.on("direction", (direction) => {
+            setRoute(direction);
         });
     }, [socket]);
 
@@ -58,7 +65,7 @@ const Onboarding = ({ socket }) => {
                     <Lives/>
                 </div>
                 <div className={`${currentItem === "Route" ? styles.opacity : styles.route}`}>
-                    <Route/>
+                    <Route currentDirection={route}/>
                 </div>
                 <div className={`${currentItem === "Morse" ? styles.opacity : styles.morse }`}>
                     <Morse morseCode={(input) => handleInput(input)}/>
