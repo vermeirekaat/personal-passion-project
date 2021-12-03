@@ -54,14 +54,18 @@ const checkStepsOther = (socketId) => {
     } else if (otherSocket.currentStep === 4) {
         io.to(otherSocket.socketId).emit("stepsMessage", "ready to play");
     }
-}
+}; 
 
 const getOneUser = (socketId) => {
     return onlineUsers.find((user) => user.socketId === socketId);
-}
+};
 
 const getOtherUser = (socketId) => {
     return onlineUsers.find((user) => user.socketId !== socketId);
+};
+
+const getRandomIndex = (array) => {
+    return array[Math.floor(Math.random()*array.length)];
 }
 
 io.on("connection", (socket) => {
@@ -77,7 +81,7 @@ io.on("connection", (socket) => {
         currentUser.currentStep = step;
 
         if (currentUser.username === "captain" && step === 4) {
-            const choosenDirection = directions[Math.floor(Math.random()*directions.length)];
+            const choosenDirection = getRandomIndex(directions);
             validateAnswer = choosenDirection;
             io.to(socket.id).emit("direction", choosenDirection.word);
             checkStepsOther(socket.id);
