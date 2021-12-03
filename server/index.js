@@ -35,8 +35,6 @@ const addNewUser = (socketId) => {
 };
 
 const checkStepsOther = (socketId) => {
-    // const indexOtherUser = getOtherUser(socketId);
-    // const indexUser = saveSteps.find((socket) => socket.socketId !== socketId); 
     const otherSocket = getOtherUser(socketId);
 
     if (otherSocket.currentStep < 4) {
@@ -59,7 +57,6 @@ io.on("connection", (socket) => {
 
     socket.on("newUser", (username) => {
         addNewUser(username, socket.id);
-        // console.log(onlineUsers);
         io.to(socket.id).emit("onlineUsers", onlineUsers);
     });
 
@@ -75,7 +72,6 @@ io.on("connection", (socket) => {
     socket.on("morseInput", (input) => {
         if (onlineUsers.length > 1) {
             const otherSocket = getOtherUser(socket.id);
-            // console.log(input);
             io.to(otherSocket.socketId).emit("inputMorse", input);
         }
     });
