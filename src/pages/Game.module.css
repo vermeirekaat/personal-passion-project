@@ -1,7 +1,6 @@
 .grid {
     display: grid; 
     grid-template-areas: 
-    "avatar avatar avatar"
     "lives morse options"
     "storm morse options"
     "storm result cheatsheet"
