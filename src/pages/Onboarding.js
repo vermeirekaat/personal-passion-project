@@ -66,14 +66,15 @@ const Onboarding = ({ socket }) => {
 
     useEffect(() => {
         if (currentItem === "Game") {
+            socket?.emit("startGame", true);
             navigate("/game");
         }
-    }, [currentItem, navigate]);
+    }, [currentItem, socket, navigate]);
 
     if (currentUser === "captain") {
         return (
             <div className={styles.grid}>
-                <button className={styles.skip} onClick={() => navigate("/game")}>Skip Onboarding</button>
+                <button className={styles.skip} onClick={() => setCurrentItem("Game")}>Skip Onboarding</button>
                 <div className={styles.avatar}>
                     <Avatar player={currentUser} showItem={(item) => setCurrentItem(item)} socket={socket}/>
                 </div>

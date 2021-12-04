@@ -49,12 +49,6 @@ const Game = ({ socket }) => {
     }, [socket]);
 
     useEffect(() => {
-        socket?.on("stepsMessage", (message) => {
-            console.log(message);
-        });
-    }, [socket]);
-
-    useEffect(() => {
         socket?.on("result", (message) => {
             setResult(message);
         });

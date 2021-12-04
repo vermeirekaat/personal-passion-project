@@ -53,7 +53,7 @@ const obstacles = [
         "word": "ijsberg", 
         "morse": "...---...-.....-.--.",
     },
-]
+];
 
 let validateAnswer;
 
@@ -66,7 +66,7 @@ const addNewUser = (socketId) => {
         username = players[amount];
     }
     !onlineUsers.some((user) => user.username === username) &&
-      onlineUsers.push({ username, socketId, currentStep: 0 });
+      onlineUsers.push({ username, socketId, currentStep: 0, startGame: false });
 };
 
 const checkStepsOther = (socketId) => {
@@ -111,7 +111,19 @@ io.on("connection", (socket) => {
         } else if (currentUser.username === "sailor" && step === 4) {
             checkStepsOther(socket.id);
         }
-    })
+    });
+
+    socket.on("startGame", (boolean) => {
+        const currentUser = getOneUser(socket.id);
+        currentUser.startGame = boolean;
+
+        const otherUser = getOtherUser(socket.id); 
+        if (currentUser.startGame && otherUser.startGame) {
+            console.log("start game");
+        } else {
+            console.log("wait for other user");
+        }
+    });
 
     socket.on("morseInput", (input) => {
         if (onlineUsers.length > 1) {
