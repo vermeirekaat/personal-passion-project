@@ -56,6 +56,7 @@ const obstacles = [
 ];
 
 let route = [];
+let warning = [];
 
 let validateAnswer;
 
@@ -91,10 +92,50 @@ const generateRoute = () => {
     }, 5000);
 };
 
+const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+
+const generateObstacles = () => {
+    warning = shuffleArray(obstacles);
+
+    const captain = getUserByUsername("captain");
+    io.to(captain.socketId).emit("obstacle", warning[0].word);
+    validateAnswer = route[0];
+    route.shift();
+
+    const sailor = getUserByUsername("sailor");
+    io.to(sailor.socketId).emit("message", "wait for message");
+}
+
+/* function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+} */
+
 const emitRoute = () => {
     const captain = getUserByUsername("captain");
     io.to(captain.socketId).emit("direction", route[0].word);
-    validateAnswer = route[0].word;
+    validateAnswer = route[0];
     route.shift();
 
     const sailor = getUserByUsername("sailor");
@@ -147,6 +188,7 @@ io.on("connection", (socket) => {
         if (currentUser.startGame && otherUser.startGame) {
             io.emit("message", "ready to play");
             generateRoute();
+            generateObstacles();
         } else {
             io.to(socket.id).emit("message", "wait for other player");
         }
