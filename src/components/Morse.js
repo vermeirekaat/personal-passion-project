@@ -1,7 +1,7 @@
 import styles from "./Morse.module.css";
 import { useState, useContext } from "react";
 
-import { Context } from "../context/Store";
+import { Context } from "../context/Users";
 
 const Morse = ({ morseCode, morseInput, getDirection }) => {
 

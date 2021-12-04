@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-import { Context } from "../context/Store";
+import { Context } from "../context/Users";
 import styles from "./Onboarding.module.css";
 
 import Avatar from "../components/Avatar";

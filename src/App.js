@@ -1,5 +1,5 @@
 import './App.css';
-import Store from './context/Store';
+import Users from './context/Users';
 import Welcome from './pages/Welcome';
 import Onboarding from './pages/Onboarding';
 import Game from './pages/Game';
@@ -19,13 +19,13 @@ const App = () => {
 
 
   return (
-    <Store>
+    <Users>
       <Routes>
         <Route exact path="/" element={<Welcome socket={socket}/>}/>
         <Route exact path="/onboarding" element={<Onboarding/>}/> 
         <Route exact path="/game" element={<Game/>}/>
       </Routes>
-    </Store>
+    </Users>
   );
 }
 

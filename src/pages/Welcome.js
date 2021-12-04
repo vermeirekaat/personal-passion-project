@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Context } from "../context/Store";
+import { Context } from "../context/Users";
 
 const Welcome = ({ socket }) => {
 

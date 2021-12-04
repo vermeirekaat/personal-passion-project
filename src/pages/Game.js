@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Context } from "../context/Store";
+import { Context } from "../context/Users";
 import styles from "./Game.module.css";
 
 import Lives from "../components/Lives";

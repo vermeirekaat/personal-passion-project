@@ -6,7 +6,7 @@ const initialState = {
     error: null
 };
 
-const Store = ({ children }) => {
+const Users = ({ children }) => {
     const [state, dispatch] = useReducer(Reducer, initialState);
     return (
         <Context.Provider value={[state, dispatch]}>
@@ -16,4 +16,4 @@ const Store = ({ children }) => {
 };
 
 export const Context = createContext(initialState);
-export default Store;
+export default Users;
