@@ -103,7 +103,7 @@ const Onboarding = ({ socket }) => {
     if (currentUser === "sailor") {
         return (
             <div className={styles.grid}>
-                <button className={styles.skip} onClick={() => navigate("/game")}>Skip Onboarding</button>
+                <button className={styles.skip} onClick={() => setCurrentItem("Game")}>Skip Onboarding</button>
                 <div className={styles.avatar}>
                     <Avatar player={currentUser} showItem={(item) => setCurrentItem(item)} socket={socket} getDirection={(direction) => handleDirection(direction)}/>
                 </div>
