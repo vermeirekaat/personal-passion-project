@@ -36,7 +36,11 @@ const Game = ({ socket }) => {
 
     const handleDirection = (direction) => {
         socket?.emit("inputDirection", direction);
-    }
+    }; 
+
+    const handleAnswer = (answer) => {
+        socket?.emit("inputAnswer", answer);
+    };
 
     useEffect(() => {
         socket?.on("message", (message) => {
@@ -117,7 +121,7 @@ const Game = ({ socket }) => {
                     <Result result={result}/>
                 </div>
                 <div className={styles.options}>
-                    <Options currentOptions={options}/>
+                    <Options currentOptions={options} getAnswer={(answer) => handleAnswer(answer)}/>
                 </div>
                 <div className={styles.cheatsheet}>
                     <CheatSheet/>

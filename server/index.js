@@ -117,6 +117,8 @@ const generateObstacles = () => {
     };
     const optionsShuffle = shuffleArray(options);
     io.to(sailor.socketId).emit("options", shuffleArray(optionsShuffle));
+    optionsShuffle.length = 0;
+    options.length = 0;
 }
 
 const emitRoute = () => {
@@ -151,11 +153,7 @@ const getRandomIndex = (array) => {
     copy.splice(index, 1);
 
     return item;
- };
-
-// const getRandomIndex = (array) => {
-//     return array[Math.floor(Math.random()*array.length)];
-// }
+};
 
 io.on("connection", (socket) => {
     // console.log(`new connection ${socket.id}`);
@@ -186,7 +184,7 @@ io.on("connection", (socket) => {
         const otherUser = getOtherUser(socket.id); 
         if (currentUser.startGame && otherUser.startGame) {
             io.emit("message", "ready to play");
-            generateRoute();
+            // generateRoute();
             generateObstacles();
         } else {
             io.to(socket.id).emit("message", "wait for other player");
@@ -202,6 +200,14 @@ io.on("connection", (socket) => {
 
     socket.on("inputDirection", (direction) => {
         if (direction === validateAnswer.word) {
+            io.emit("result", "success");
+        } else {
+            io.emit("result", "fail")
+        }
+    });
+
+    socket.on("inputAnswer", (answer) => {
+        if (answer === validateAnswer.word) {
             io.emit("result", "success");
         } else {
             io.emit("result", "fail")
