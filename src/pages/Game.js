@@ -64,8 +64,7 @@ const Game = ({ socket }) => {
 
     useEffect(() => {
         socket?.on("options", (options) => {
-            console.log(options);
-            // setOptions(options);
+            setOptions(options);
         });
     }, [socket]);
 

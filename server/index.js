@@ -108,14 +108,15 @@ const generateObstacles = () => {
     const captain = getUserByUsername("captain");
     io.to(captain.socketId).emit("obstacle", warning[0].word);
     validateAnswer = warning[0];
-    route.shift();
+    warning.shift();
 
     const sailor = getUserByUsername("sailor");
     options.push(validateAnswer);
     for (let i = 0; i < 2; i++) {
         options.push(getRandomIndex(warning));
     };
-    io.to(sailor.socketId).emit("options", options);
+    const optionsShuffle = shuffleArray(options);
+    io.to(sailor.socketId).emit("options", shuffleArray(optionsShuffle));
 }
 
 const emitRoute = () => {
@@ -148,7 +149,7 @@ const getRandomIndex = (array) => {
     const index = Math.floor(Math.random() * copy.length);
     const item = copy[index];
     copy.splice(index, 1);
-    
+
     return item;
  };
 
