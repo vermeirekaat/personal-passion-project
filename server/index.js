@@ -32,6 +32,29 @@ const directions = [
     }
 ];
 
+const obstacles = [
+    {
+        "word": "vuurtoren", 
+        "morse": "...-..-..-.-.----.-..-.",
+    },
+    {
+        "word": "eiland", 
+        "morse": "....-...--.-..",
+    },
+    {
+        "word": "tegenligger", 
+        "morse": "-.--..-..-....--.--...-.",
+    },
+    {
+        "word": "anker", 
+        "morse": ".--.-.-..-.",
+    },
+    {
+        "word": "ijsberg", 
+        "morse": "...---...-.....-.--.",
+    },
+]
+
 let validateAnswer;
 
 const addNewUser = (socketId) => {
