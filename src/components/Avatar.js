@@ -1,8 +1,9 @@
 import styles from "./Avatar.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { Context } from "../context/Users";
 import pirate from "../img/pirate.jpeg";
 
-const Avatar = ({ player, showItem, socket }) => {
+const Avatar = ({ showItem }) => {
 
     const dialogue = {
         captain: [
@@ -106,6 +107,16 @@ const Avatar = ({ player, showItem, socket }) => {
             }
         ]
     };
+
+    // eslint-disable-next-line
+    const [state, dispatch] = useContext(Context);
+    let player;
+    let socket;
+    if (state.users.length > 0) {
+        player = state.users[0].user;
+        socket = state.users[0].socket;
+    }
+
 
     const filteredByKey = Object.fromEntries(Object.entries(dialogue).filter(([key, value]) => key === player) );
     const array = Object.values(filteredByKey);

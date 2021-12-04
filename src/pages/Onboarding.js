@@ -76,7 +76,7 @@ const Onboarding = () => {
             <div className={styles.grid}>
                 <button className={styles.skip} onClick={() => setCurrentItem("Game")}>Skip Onboarding</button>
                 <div className={styles.avatar}>
-                    <Avatar player={currentUser} showItem={(item) => setCurrentItem(item)} socket={socket}/>
+                    <Avatar showItem={(item) => setCurrentItem(item)}/>
                 </div>
                 <div className={`${currentItem === "Lives" ? styles.opacity : styles.lives}`}>
                     <Lives/>
@@ -90,7 +90,7 @@ const Onboarding = () => {
                 <div className={`${currentItem === "Result" ? styles.opacity : styles.result }`}>
                     <Result result={result}/>
                 </div>
-                <div className={`${currentItem === "Obstacle" ? styles.opacity : styles.obstacle }`}>
+                <div className={`${currentItem === "Obstacle" ? styles.opacity : styles.obstacle}`}>
                     <Obstacle/>
                 </div>
                 <div className={`${currentItem === "CheatSheet" ? styles.opacity : styles.cheatsheet}`}>
@@ -105,7 +105,7 @@ const Onboarding = () => {
             <div className={styles.grid}>
                 <button className={styles.skip} onClick={() => setCurrentItem("Game")}>Skip Onboarding</button>
                 <div className={styles.avatar}>
-                    <Avatar player={currentUser} showItem={(item) => setCurrentItem(item)} socket={socket}/>
+                    <Avatar showItem={(item) => setCurrentItem(item)}/>
                 </div>
                 <div className={`${currentItem === "Lives" ? styles.opacity : styles.lives}`}>
                     <Lives/>
@@ -116,10 +116,10 @@ const Onboarding = () => {
                 <div className={`${currentItem === "Morse" ? styles.opacity : styles.morse }`}>
                     <Morse morseInput={input} getDirection={(direction) => handleDirection(direction)}/>
                 </div>
-                <div className={`${currentItem === "Result" ? styles.opacity : styles.result }`}>
+                <div className={`${currentItem === "Result" ? styles.opacity : styles.result}`}>
                     <Result result={result}/>
                 </div>
-                <div className={`${currentItem === "Options" ? styles.opacity : styles.options }`}>
+                <div className={`${currentItem === "Options" ? styles.opacity : styles.options}`}>
                     <Options/>
                 </div>
                 <div className={`${currentItem === "CheatSheet" ? styles.opacity : styles.cheatsheet}`}>
