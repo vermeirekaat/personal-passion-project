@@ -10,7 +10,6 @@ import { Route, Routes } from 'react-router-dom';
 const App = () => {
 
   const [socket, setSocket] = useState(null);
-  // const generateCode = Math.floor(1000 + Math.random() * 9000);
   
   useEffect(() => {
     setSocket(io("http://localhost:5000"));

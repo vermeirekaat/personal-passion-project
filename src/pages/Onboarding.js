@@ -37,7 +37,7 @@ const Onboarding = () => {
     };
 
     const handleDirection = (direction) => {
-        socket?.emit("direction", direction);
+        socket?.emit("inputDirection", direction);
     }
 
     useEffect(() => {
@@ -105,7 +105,7 @@ const Onboarding = () => {
             <div className={styles.grid}>
                 <button className={styles.skip} onClick={() => setCurrentItem("Game")}>Skip Onboarding</button>
                 <div className={styles.avatar}>
-                    <Avatar player={currentUser} showItem={(item) => setCurrentItem(item)} socket={socket} getDirection={(direction) => handleDirection(direction)}/>
+                    <Avatar player={currentUser} showItem={(item) => setCurrentItem(item)} socket={socket}/>
                 </div>
                 <div className={`${currentItem === "Lives" ? styles.opacity : styles.lives}`}>
                     <Lives/>
@@ -114,7 +114,7 @@ const Onboarding = () => {
                     <Storm/>
                 </div>
                 <div className={`${currentItem === "Morse" ? styles.opacity : styles.morse }`}>
-                    <Morse morseInput={input}/>
+                    <Morse morseInput={input} getDirection={(direction) => handleDirection(direction)}/>
                 </div>
                 <div className={`${currentItem === "Result" ? styles.opacity : styles.result }`}>
                     <Result result={result}/>

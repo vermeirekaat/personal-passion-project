@@ -2,7 +2,7 @@ import styles from "./Avatar.module.css";
 import { useEffect, useState } from "react";
 import pirate from "../img/pirate.jpeg";
 
-const Avatar = ({ player, showItem, socket, getDirection}) => {
+const Avatar = ({ player, showItem, socket }) => {
 
     const dialogue = {
         captain: [
@@ -124,12 +124,6 @@ const Avatar = ({ player, showItem, socket, getDirection}) => {
 
     const handleKeyDown = (e) => {
         if (e.key === "x") {
-            setAmount(amount + 1);
-        } else if (e.key === "o") {
-            getDirection("links");
-            setAmount(amount + 1);
-        } else if (e.key === "p") {
-            getDirection("rechts");
             setAmount(amount + 1);
         }
     };
