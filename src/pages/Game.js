@@ -33,7 +33,7 @@ const Game = ({ socket }) => {
     };
 
     const handleDirection = (direction) => {
-        socket?.emit("direction", direction);
+        socket?.emit("inputDirection", direction);
     }
 
     useEffect(() => {
@@ -50,6 +50,7 @@ const Game = ({ socket }) => {
 
     useEffect(() => {
         socket?.on("direction", (direction) => {
+            console.log(direction);
             setRoute(direction);
         });
     }, [socket]);

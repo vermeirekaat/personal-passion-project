@@ -55,6 +55,8 @@ const obstacles = [
     },
 ];
 
+let route = [];
+
 let validateAnswer;
 
 const addNewUser = (socketId) => {
@@ -79,9 +81,33 @@ const checkStepsOther = (socketId) => {
     }
 }; 
 
+const generateRoute = () => {
+    for (let i = 0; i < 4; i++) {
+        route.push(getRandomIndex(directions));
+    };
+    // console.log(route);
+    setTimeout(() => {
+        emitRoute();
+    }, 5000);
+};
+
+const emitRoute = () => {
+    const captain = getUserByUsername("captain");
+    io.to(captain.socketId).emit("direction", route[0].word);
+    validateAnswer = route[0].word;
+    route.shift();
+
+    const sailor = getUserByUsername("sailor");
+    io.to(sailor.socketId).emit("message", "wait for message");
+}
+
 const getOneUser = (socketId) => {
     return onlineUsers.find((user) => user.socketId === socketId);
 };
+
+const getUserByUsername = (username) => {
+    return onlineUsers.find((user) => user.username === username);
+}
 
 const getOtherUser = (socketId) => {
     return onlineUsers.find((user) => user.socketId !== socketId);
@@ -120,6 +146,7 @@ io.on("connection", (socket) => {
         const otherUser = getOtherUser(socket.id); 
         if (currentUser.startGame && otherUser.startGame) {
             io.emit("message", "ready to play");
+            generateRoute();
         } else {
             io.to(socket.id).emit("message", "wait for other player");
         }
@@ -132,7 +159,7 @@ io.on("connection", (socket) => {
         }
     });
 
-    socket.on("direction", (direction) => {
+    socket.on("inputDirection", (direction) => {
         if (direction === validateAnswer.word) {
             io.emit("result", "success");
         } else {
