@@ -37,6 +37,12 @@ const Game = ({ socket }) => {
     }
 
     useEffect(() => {
+        socket?.on("message", (message) => {
+            console.log(message);
+        });
+    }, [socket]);
+
+    useEffect(() => {
         socket?.on("inputMorse", (data) => {
             setInput(data);
         });

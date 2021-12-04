@@ -73,9 +73,9 @@ const checkStepsOther = (socketId) => {
     const otherSocket = getOtherUser(socketId);
 
     if (otherSocket.currentStep < 4) {
-        io.to(socketId).emit("stepsMessage", "wait for other user");
+        io.to(socketId).emit("message", "wait for other user");
     } else if (otherSocket.currentStep === 4) {
-        io.to(otherSocket.socketId).emit("stepsMessage", "ready to play");
+        io.to(otherSocket.socketId).emit("message", "ready to play");
     }
 }; 
 
@@ -119,9 +119,9 @@ io.on("connection", (socket) => {
 
         const otherUser = getOtherUser(socket.id); 
         if (currentUser.startGame && otherUser.startGame) {
-            console.log("start game");
+            io.emit("message", "ready to play");
         } else {
-            console.log("wait for other user");
+            io.to(socket.id).emit("message", "wait for other player");
         }
     });
 

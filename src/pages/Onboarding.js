@@ -53,7 +53,7 @@ const Onboarding = ({ socket }) => {
     }, [socket]);
 
     useEffect(() => {
-        socket?.on("stepsMessage", (message) => {
+        socket?.on("message", (message) => {
             console.log(message);
         });
     }, [socket]);
