@@ -57,6 +57,7 @@ const obstacles = [
 
 let route = [];
 let warning = [];
+let options = [];
 
 let validateAnswer;
 
@@ -106,11 +107,15 @@ const generateObstacles = () => {
 
     const captain = getUserByUsername("captain");
     io.to(captain.socketId).emit("obstacle", warning[0].word);
-    validateAnswer = route[0];
+    validateAnswer = warning[0];
     route.shift();
 
     const sailor = getUserByUsername("sailor");
-    io.to(sailor.socketId).emit("message", "wait for message");
+    options.push(validateAnswer);
+    for (let i = 0; i < 2; i++) {
+        options.push(getRandomIndex(warning));
+    };
+    io.to(sailor.socketId).emit("options", options);
 }
 
 const emitRoute = () => {
@@ -136,8 +141,20 @@ const getOtherUser = (socketId) => {
 };
 
 const getRandomIndex = (array) => {
-    return array[Math.floor(Math.random()*array.length)];
-}
+    let copy = array.slice(0);
+    if (copy.length < 1) {
+        copy = array.slice(0);
+    }
+    const index = Math.floor(Math.random() * copy.length);
+    const item = copy[index];
+    copy.splice(index, 1);
+    
+    return item;
+ };
+
+// const getRandomIndex = (array) => {
+//     return array[Math.floor(Math.random()*array.length)];
+// }
 
 io.on("connection", (socket) => {
     // console.log(`new connection ${socket.id}`);

@@ -26,6 +26,7 @@ const Game = ({ socket }) => {
 
     const [route, setRoute] = useState("");
     const [obstacle, setObstacle] = useState("");
+    const [options, setOptions] = useState([]);
     const [input, setInput] = useState("");
     const [result, setResult] = useState("");
 
@@ -58,6 +59,13 @@ const Game = ({ socket }) => {
     useEffect(() => {
         socket?.on("obstacle", (obstacle) => {
             setObstacle(obstacle);
+        });
+    }, [socket]);
+
+    useEffect(() => {
+        socket?.on("options", (options) => {
+            console.log(options);
+            // setOptions(options);
         });
     }, [socket]);
 
@@ -110,7 +118,7 @@ const Game = ({ socket }) => {
                     <Result result={result}/>
                 </div>
                 <div className={styles.options}>
-                    <Options/>
+                    <Options currentOptions={options}/>
                 </div>
                 <div className={styles.cheatsheet}>
                     <CheatSheet/>
