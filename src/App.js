@@ -22,8 +22,8 @@ const App = () => {
     <Store>
       <Routes>
         <Route exact path="/" element={<Welcome socket={socket}/>}/>
-        <Route exact path="/onboarding" element={<Onboarding socket={socket}/>}/> 
-        <Route exact path="/game" element={<Game socket={socket}/>}/>
+        <Route exact path="/onboarding" element={<Onboarding/>}/> 
+        <Route exact path="/game" element={<Game/>}/>
       </Routes>
     </Store>
   );

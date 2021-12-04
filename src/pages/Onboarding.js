@@ -14,17 +14,17 @@ import Obstacle from "../components/Obstacle";
 import Options from "../components/Options";
 import CheatSheet from "../components/CheatSheet";
 
-const Onboarding = ({ socket }) => {
+const Onboarding = () => {
 
     // eslint-disable-next-line
     const [state, dispatch] = useContext(Context);
     const navigate = useNavigate();
 
     let currentUser;
-    // let socketId;
+    let socket;
     if (state.users.length > 0) {
         currentUser = state.users[0].user;
-        // socketId = state.users[0].socket;
+        socket = state.users[0].socket;
     }
 
     const [currentItem, setCurrentItem] = useState("");

@@ -20,7 +20,7 @@ const Welcome = ({ socket }) => {
             return <p>Something went wrong: <span>{state.error}</span></p>;
         }
         if (player !== "") {
-            dispatch({type: 'ADD_USER', payload: { socket: socket.id, user: player }});
+            dispatch({type: 'ADD_USER', payload: { socket: socket, user: player }});
             navigate("/onboarding");
         } if (player === undefined) {
             return false;
