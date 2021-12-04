@@ -1,9 +1,16 @@
 .container {
-    width: 20vw;
-    height: 30vh;
+    width: 45vw;
+    height: 35vh;
     text-align: center;
     padding: .2rem .5rem;
     border: .2rem solid black;
     border-radius: .5rem;
     margin: 2rem;
+
+    display: grid; 
+    grid-template-columns: repeat(6, 4rem);
+}
+
+.letter span {
+    color: red;
 }
