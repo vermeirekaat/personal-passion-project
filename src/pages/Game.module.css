@@ -1,12 +1,17 @@
 .grid {
     display: grid; 
     grid-template-areas: 
+    "user user user"
     "lives morse options"
     "storm morse options"
     "storm result cheatsheet"
     ;
     max-height: 100vh;
 };
+
+.user {
+    grid-area: user;
+}
 
 .lives {
     grid-area: lives;

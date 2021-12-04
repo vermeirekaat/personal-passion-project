@@ -84,7 +84,7 @@ const Onboarding = ({ socket }) => {
                     <Route currentDirection={route}/>
                 </div>
                 <div className={`${currentItem === "Morse" ? styles.opacity : styles.morse }`}>
-                    <Morse morseCode={(input) => handleInput(input)}/>
+                    <Morse morseCode={(input) => handleInput(input)} />
                 </div>
                 <div className={`${currentItem === "Result" ? styles.opacity : styles.result }`}>
                     <Result result={result}/>

@@ -3,7 +3,7 @@ import { useState, useContext } from "react";
 
 import { Context } from "../context/Store";
 
-const Morse = ({ morseCode, morseInput }) => {
+const Morse = ({ morseCode, morseInput, getDirection }) => {
 
     // eslint-disable-next-line
     const [state, dispatch] = useContext(Context);
@@ -34,11 +34,20 @@ const Morse = ({ morseCode, morseInput }) => {
             </div>
         )
     } else if (indexCaptain === -1 ) {
+
+        const handleSubmitAnswer = (e) => {
+            if (e.key === "o") {
+                getDirection("links");
+            } else if (e.key === "p") {
+                getDirection("rechts");
+            }
+        }
         // console.log(morseInput);
         return (
             <div className={styles.container}>
                 <p>Morse Code - Sailor</p>
                 <p>{morseInput}</p>
+                <input readOnly onKeyPress={handleSubmitAnswer}></input>
             </div>
         )
     };

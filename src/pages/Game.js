@@ -63,6 +63,7 @@ const Game = ({ socket }) => {
     if (currentUser === "captain") {
         return (
             <div className={styles.grid}>
+                <h2 className={styles.username}>{currentUser}</h2>
                 <div className={styles.lives}>
                     <Lives/>
                 </div>
@@ -88,6 +89,7 @@ const Game = ({ socket }) => {
     if (currentUser === "sailor") {
         return (
             <div className={styles.grid}>
+                <h2 className={styles.username}>{currentUser}</h2>
                 <div className={styles.lives}>
                     <Lives/>
                 </div>
@@ -95,7 +97,7 @@ const Game = ({ socket }) => {
                     <Storm/>
                 </div>
                 <div className={styles.morse }>
-                    <Morse morseInput={input}/>
+                    <Morse morseInput={input} getDirection={(direction) => handleDirection(direction)}/>
                 </div>
                 <div className={styles.result}>
                     <Result result={result}/>
