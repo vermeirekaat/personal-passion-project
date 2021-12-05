@@ -1,13 +1,14 @@
 const fs = require('fs');
 const express = require('express');
 const path = require("path");
+const { emit } = require('process');
 const app = express();
 const server = require('http').Server(app);
 const port = process.env.PORT || 5000;
 
 const io = require('socket.io')(server, {
     cors: {
-        origin: "http://localhost:3003", 
+        origin: "http://localhost:3004", 
         // origin: "http://192.168.0.252:3000",
         methods: ["GET", "POST"],
     }, 
@@ -58,6 +59,11 @@ const obstacles = [
 let route = [];
 let warning = [];
 let options = [];
+let isRoute = true;
+let levelDone = {
+    "route": false,
+    "obstacles": false,
+};
 
 let validateAnswer;
 
@@ -83,13 +89,25 @@ const checkStepsOther = (socketId) => {
     }
 }; 
 
+const startLevel = () => {
+    if (isRoute === true) {
+        generateRoute();
+    } else {
+        generateObstacles();
+    }
+}; 
+
+const checkLevel = () => {
+    if (levelDone.route && levelDone.obstacles) {
+        console.log("next level");
+    }
+}
+
 const generateRoute = () => {
     for (let i = 0; i < 4; i++) {
         route.push(getRandomIndex(directions));
     };
-    setTimeout(() => {
-        emitRoute();
-    }, 5000);
+    emitRoute();
 };
 
 const shuffleArray = (array) => {
@@ -117,8 +135,14 @@ const generateObstacles = () => {
     };
     const optionsShuffle = shuffleArray(options);
     io.to(sailor.socketId).emit("options", shuffleArray(optionsShuffle));
+    
     optionsShuffle.length = 0;
     options.length = 0;
+
+    if (warning.length <= 0) {
+        levelDone.obstacles = true
+    };
+    checkLevel();
 }
 
 const emitRoute = () => {
@@ -129,6 +153,11 @@ const emitRoute = () => {
 
     const sailor = getUserByUsername("sailor");
     io.to(sailor.socketId).emit("message", "wait for message");
+
+    if (route.length <= 0) {
+        levelDone.route = true
+    };
+    checkLevel();
 }
 
 const getOneUser = (socketId) => {
@@ -184,8 +213,7 @@ io.on("connection", (socket) => {
         const otherUser = getOtherUser(socket.id); 
         if (currentUser.startGame && otherUser.startGame) {
             io.emit("message", "ready to play");
-            // generateRoute();
-            generateObstacles();
+            startLevel();
         } else {
             io.to(socket.id).emit("message", "wait for other player");
         }
@@ -201,6 +229,10 @@ io.on("connection", (socket) => {
     socket.on("inputDirection", (direction) => {
         if (direction === validateAnswer.word) {
             io.emit("result", "success");
+            setTimeout(() => {
+                isRoute = !isRoute;
+                startLevel();
+            });
         } else {
             io.emit("result", "fail")
         }
@@ -209,6 +241,10 @@ io.on("connection", (socket) => {
     socket.on("inputAnswer", (answer) => {
         if (answer === validateAnswer.word) {
             io.emit("result", "success");
+            setTimeout(() => {
+                isRoute = !isRoute;
+                startLevel();
+            })
         } else {
             io.emit("result", "fail")
         }
