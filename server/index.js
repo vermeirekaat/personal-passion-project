@@ -89,6 +89,19 @@ const checkStepsOther = (socketId) => {
     }
 }; 
 
+const checkMorseInput = (socket, input) => {
+    let correctInput;
+    if (validateAnswer !== undefined) {
+        correctInput = validateAnswer.morse;
+
+        if (input.join("") === correctInput) {
+            io.to(socket.id).emit("message", "correct");
+        } else {
+            io.to(socket.id).emit("message", "try again");
+        }
+    }
+}
+
 const startLevel = () => {
     warning = [];
     options = [];
@@ -145,7 +158,6 @@ const generateObstacles = () => {
         options.push(getRandomIndex(warning));
     };
     let optionsShuffle = shuffleArray(options);
-    console.log(optionsShuffle);
     io.to(sailor.socketId).emit("options", shuffleArray(optionsShuffle));
 
     checkLevel();
@@ -228,6 +240,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("morseInput", (input) => {
+        checkMorseInput(socket, input);
         if (onlineUsers.length > 1) {
             const otherSocket = getOtherUser(socket.id);
             io.to(otherSocket.socketId).emit("inputMorse", input);
