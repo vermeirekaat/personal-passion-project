@@ -31,6 +31,7 @@ const Morse = ({ morseCode, morseInput, getDirection }) => {
                 <p>Morse Code</p>
                 <p>{input}</p>
                 <input readOnly onKeyPress={handleMorseCode}></input>
+                <button onClick={() => setInput([])}>Try Again</button>
             </div>
         )
     } else if (indexCaptain === -1 ) {

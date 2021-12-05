@@ -96,8 +96,6 @@ const checkMorseInput = (socket, input) => {
 
         if (input.join("") === correctInput) {
             io.to(socket.id).emit("message", "correct");
-        } else {
-            io.to(socket.id).emit("message", "try again");
         }
     }
 }
