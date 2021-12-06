@@ -144,7 +144,26 @@ const emitMessageSailor = (type) => {
         io.to(sailor.socketId).emit("options", shuffleArray(options));
     }
     checkLevel();
-}
+}; 
+
+const emitResult = (answer) => {
+    if (answer === validateAnswer.word) {
+        io.emit("result", "success");
+        setTimeout(() => {
+            isRoute = !isRoute;   
+            if (nextLevel === false) {
+                startLevel();
+                io.emit("result", "");
+            } else {
+                route = [];
+                warning = [];
+                options = [];
+            }
+        }, 5000)
+    } else {
+        io.emit("result", "fail")
+    }
+};
 
 const checkMorseInput = (socket, input) => {
     let correctInput;
@@ -152,7 +171,7 @@ const checkMorseInput = (socket, input) => {
         correctInput = validateAnswer.morse;
 
         if (input.join("") === correctInput) {
-            io.to(socket.id).emit("message", "correct");
+            io.to(socket.id).emit("result", "correct");
         }
     }
 } 
@@ -164,17 +183,7 @@ const checkLevel = () => {
     } else {
         nextLevel = false
     }
-}
-
-const shuffleArray = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        let temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    return array;
-}
+};
 
 const getOneUser = (socketId) => {
     return onlineUsers.find((user) => user.socketId === socketId);
@@ -198,6 +207,16 @@ const getRandomIndex = (array) => {
     copy.splice(index, 1);
 
     return item;
+};
+
+const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
 };
 
 io.on("connection", (socket) => {
@@ -244,38 +263,11 @@ io.on("connection", (socket) => {
     });
 
     socket.on("inputDirection", (direction) => {
-        if (direction === validateAnswer.word) {
-            io.emit("result", "success");
-            setTimeout(() => {
-                isRoute = !isRoute;
-                if (nextLevel === false) {
-                    startLevel();
-                    io.emit("result", "");
-                } else {
-                    route = [];
-                }
-            }, 5000);
-        } else {
-            io.emit("result", "fail")
-        }
+        emitResult(direction);
     });
 
     socket.on("inputAnswer", (answer) => {
-        if (answer === validateAnswer.word) {
-            io.emit("result", "success");
-            setTimeout(() => {
-                isRoute = !isRoute;   
-                if (nextLevel === false) {
-                    startLevel();
-                    io.emit("result", "");
-                } else {
-                    warning = [];
-                    options = [];
-                }
-            }, 5000)
-        } else {
-            io.emit("result", "fail")
-        }
+        emitResult(answer);
     });
 
     socket.on("disconnect", () => {
