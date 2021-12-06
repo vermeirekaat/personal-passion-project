@@ -140,7 +140,14 @@ const emitMessageSailor = (type) => {
     if (type === "direction") {
         io.to(sailor.socketId).emit("message", "wait for message");
     } else if (type === "obstacle") {
-        const options = generateMessage("options");
+        options = generateMessage("options");
+
+        const findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== index);
+        console.log(findDuplicates(options));
+        if (findDuplicates(options).length > 0) {
+            options = [];
+            options = generateMessage("options");    
+        }
         io.to(sailor.socketId).emit("options", shuffleArray(options));
     }
     checkLevel();
@@ -159,7 +166,7 @@ const emitResult = (answer) => {
                 warning = [];
                 options = [];
             }
-        }, 5000)
+        }, 3000)
     } else {
         io.emit("result", "fail")
     }
@@ -174,7 +181,7 @@ const checkMorseInput = (socket, input) => {
             io.to(socket.id).emit("result", "correct");
         }
     }
-} 
+};
 
 const checkLevel = () => {
     if (levelDone.obstacles === true) {
