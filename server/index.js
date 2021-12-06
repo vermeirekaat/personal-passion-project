@@ -7,7 +7,7 @@ const port = process.env.PORT || 5000;
 
 const io = require('socket.io')(server, {
     cors: {
-        origin: "http://localhost:3004", 
+        origin: "http://localhost:3005", 
         // origin: "http://192.168.0.252:3000",
         methods: ["GET", "POST"],
     }, 
@@ -70,7 +70,7 @@ let validateAnswer;
 const addNewUser = (socketId) => {
     let username = players[amount];
     amount++;
-
+    // Check on Arduino which player it is
     if (username === undefined) {
         amount = 0;
         username = players[amount];
@@ -89,6 +89,63 @@ const checkStepsOther = (socketId) => {
     }
 }; 
 
+const startLevel = () => {
+    if (isRoute === true) {
+        // generateRoute();
+        emitMessageCaptain("direction");
+    } else {
+        emitMessageCaptain("obstacle");
+    }
+};
+
+const generateMessage = (type) => {
+    if (type === "direction") {
+        for (let i = 0; i < 5; i++) {
+            route.push(getRandomIndex(directions));
+        };
+        return route;
+    } else if (type === "obstacle") {
+        warning = shuffleArray(obstacles);
+        return warning;
+    } else if (type === "options") {
+        options.push(validateAnswer);
+        for (let i = 0; i < 2; i++) {
+            options.push(getRandomIndex(warning));
+        };
+        let optionsShuffle = shuffleArray(options);
+        return optionsShuffle;
+    }
+}
+
+const emitMessageCaptain = (type) => {
+    const captain = getUserByUsername("captain");
+
+    const array = generateMessage(type);
+
+    io.to(captain.socketId).emit(type, array[0].word);
+    validateAnswer = array[0];
+    array.shift();
+
+    if (array.length <= 0) {
+        levelDone[array] = true
+        console.log(`no more ${type}`);
+    };
+
+    emitMessageSailor(type);
+};
+
+const emitMessageSailor = (type) => {
+    const sailor = getUserByUsername("sailor");
+
+    if (type === "direction") {
+        io.to(sailor.socketId).emit("message", "wait for message");
+    } else if (type === "obstacle") {
+        const options = generateMessage("options");
+        io.to(sailor.socketId).emit("options", shuffleArray(options));
+    }
+    checkLevel();
+}
+
 const checkMorseInput = (socket, input) => {
     let correctInput;
     if (validateAnswer !== undefined) {
@@ -98,33 +155,16 @@ const checkMorseInput = (socket, input) => {
             io.to(socket.id).emit("message", "correct");
         }
     }
-}
-
-const startLevel = () => {
-    warning = [];
-    options = [];
-    if (isRoute === true) {
-        generateRoute();
-    } else {
-        generateObstacles();
-    }
-}; 
+} 
 
 const checkLevel = () => {
     if (levelDone.obstacles === true) {
-        io.emit("message", "next level");
+        io.emit("result", "next level");
         nextLevel = true;
     } else {
         nextLevel = false
     }
 }
-
-const generateRoute = () => {
-    for (let i = 0; i < 5; i++) {
-        route.push(getRandomIndex(directions));
-    };
-    emitRoute();
-};
 
 const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -134,48 +174,6 @@ const shuffleArray = (array) => {
         array[j] = temp;
     }
     return array;
-}
-
-const generateObstacles = () => {
-    warning = shuffleArray(obstacles);
-
-    const captain = getUserByUsername("captain");
-    io.to(captain.socketId).emit("obstacle", warning[0].word);
-    validateAnswer = warning[0];
-    warning.shift();
-
-    if (warning.length <= 0) {
-        levelDone.obstacles = true
-        console.log("no more warnings");
-        return;
-    };
-
-    const sailor = getUserByUsername("sailor");
-    options.push(validateAnswer);
-    for (let i = 0; i < 2; i++) {
-        options.push(getRandomIndex(warning));
-    };
-    let optionsShuffle = shuffleArray(options);
-    io.to(sailor.socketId).emit("options", shuffleArray(optionsShuffle));
-
-    checkLevel();
-}
-
-const emitRoute = () => {
-    const captain = getUserByUsername("captain");
-    io.to(captain.socketId).emit("direction", route[0].word);
-    validateAnswer = route[0];
-    route.shift();
-
-    if (route.length <= 0) {
-        levelDone.route = true
-        console.log("no more directions");
-    };
-
-    const sailor = getUserByUsername("sailor");
-    io.to(sailor.socketId).emit("message", "wait for message");
-
-    checkLevel();
 }
 
 const getOneUser = (socketId) => {
@@ -252,9 +250,8 @@ io.on("connection", (socket) => {
                 isRoute = !isRoute;
                 if (nextLevel === false) {
                     startLevel();
+                    io.emit("result", "");
                 } else {
-                    options = [];
-                    warning = [];
                     route = [];
                 }
             }, 5000);
@@ -270,10 +267,10 @@ io.on("connection", (socket) => {
                 isRoute = !isRoute;   
                 if (nextLevel === false) {
                     startLevel();
+                    io.emit("result", "");
                 } else {
-                    options = [];
                     warning = [];
-                    route = [];
+                    options = [];
                 }
             }, 5000)
         } else {
