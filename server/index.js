@@ -69,29 +69,38 @@ let nextLevel;
 
 let validateAnswer;
 
-let firstMorse; 
-let secondMorse; 
-
 board.on("ready", () => {
     const led = new five.Led(10);
     led.blink(500);
 
-    const morse = {
-        first: { pin: 2, value: "."},
-        // second: { pin: 6, value: "-"},
+    const buttonsCollection = {
+        first: { pin: 2, type: "morse", value: "." },
+        second: { pin: 6, type: "morse", value: "-" },
+        third: { pin: 9, type:"submit", value: 0 },
     }; 
 
-    Object.keys(morse).forEach((key) => {
-        const pin = morse[key].pin; 
+    Object.keys(buttonsCollection).forEach((key) => {
+        const pin = buttonsCollection[key].pin; 
 
-        const button = new five.Button(pin);
+        const button = new five.Button({
+            pin: pin,
+            custom: {
+                type: buttonsCollection[key].type,
+                value: buttonsCollection[key].value,
+            }
+        });
 
         board.repl.inject({
             button: button
         });
 
         button.on("press", () => {
-            console.log(`${pin} pressed`);
+            if (button.custom.type === "morse") {
+                console.log(button.custom.value);
+            } else if (button.custom.type === "submit") {
+                button.custom.value++;
+                console.log(button.custom.value);
+            }
         });
     })
 
