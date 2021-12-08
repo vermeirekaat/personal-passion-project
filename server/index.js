@@ -183,9 +183,11 @@ const startLevel = () => {
 
 const generateMessage = (type) => {
     if (type === "direction") {
-        for (let i = 0; i < 5; i++) {
-            route.push(getRandomIndex(directions));
-        };
+        if (route.length <= 0) {
+            for (let i = 0; i < 5; i++) {
+                route.push(getRandomIndex(directions));
+            };
+        }
         return route;
     } else if (type === "obstacles") {
         warning = shuffleArray(obstacles);
@@ -223,7 +225,6 @@ const emitMessageCaptain = (type) => {
         for(const array in levelDone){
             levelDone[array] = true;
         }
-        console.log(`no more ${type}`);
     };
 
     emitMessageSailor(type);
@@ -305,8 +306,10 @@ const checkMorseInput = () => {
 };
 
 const checkLevel = () => {
-    if (levelDone.obstacles === true) {
-        io.emit("result", "next level");
+    if (levelDone.route && levelDone.obstacles) {
+        setTimeout(() => {
+            io.emit("result", "next level");
+        }, 3000)
         nextLevel = true;
     } else {
         nextLevel = false;
