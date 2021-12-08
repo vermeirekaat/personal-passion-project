@@ -1,9 +1,11 @@
 const fs = require('fs');
+const five = require("johnny-five");
 const express = require('express');
 const path = require("path");
 const app = express();
 const server = require('http').Server(app);
 const port = process.env.PORT || 5000;
+const board = new five.Board();
 
 const io = require('socket.io')(server, {
     cors: {
@@ -66,6 +68,11 @@ let levelDone = {
 let nextLevel;
 
 let validateAnswer;
+
+board.on("ready", () => {
+    const led = new five.Led(10);
+    led.blink(500);
+})
 
 const addNewUser = (socketId) => {
     let username = players[amount];
