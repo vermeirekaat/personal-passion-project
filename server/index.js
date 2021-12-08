@@ -10,7 +10,7 @@ const board = new five.Board();
 const io = require('socket.io')(server, {
     cors: {
         origin: "http://localhost:3005", 
-        // origin: "http://192.168.0.252:3000",
+        // origin: "http://192.168.0.252:3005",
         methods: ["GET", "POST"],
     }, 
     options: {
@@ -20,8 +20,6 @@ const io = require('socket.io')(server, {
 });
 
 let onlineUsers = [];
-const players = ["captain", "sailor"];
-let amount = 0;
 
 const directions = [
     {
@@ -104,7 +102,6 @@ board.on("ready", () => {
                 checkMorseInput();
             } else if (button.custom.type === "submit") {
                 button.custom.value++;
-                console.log(button.custom.value);
                 if (button.custom.value === 1) {
                     answerInput = "rechts";
                 } else if (button.custom.value === 2) {
@@ -134,20 +131,26 @@ board.on("ready", () => {
                 emitResult(answerInput);
                 button.custom.value = 0;
             }
-        })
-    })
-})
+        });
+    });
 
-const addNewUser = (socketId) => {
-    let username = players[amount];
-    amount++;
-    // Check on Arduino which player it is
-    if (username === undefined) {
-        amount = 0;
-        username = players[amount];
-    }
-    !onlineUsers.some((user) => user.username === username) &&
-      onlineUsers.push({ username, socketId, currentStep: 0, startGame: false });
+    io.on('connection', (socket) => {
+        // console.log(socket);
+
+        addNewUser("captain", socket.id);
+        io.to(socket.id).emit("onlineUsers", onlineUsers);
+
+        if (onlineUsers.length === 2) {
+            console.log(onlineUsers);
+            startLevel();
+        };
+    });
+}); 
+
+const addNewUser = (username, socketId) => {
+
+    !onlineUsers.some((user) => user.socketId === socketId) &&
+      onlineUsers.push({ username, socketId, currentStep: 0, startGame: true });
 };
 
 const startLevel = () => {
@@ -171,7 +174,7 @@ const generateMessage = (type) => {
     } else if (type === "options") {
         options.push(validateAnswer);
         for (let i = 0; i < 2; i++) {
-            options.push(getRandomIndex(warning));
+            options.push(getRandomIndex(obstacles));
         };
         optionsShuffle = shuffleArray(options);
         return optionsShuffle;
@@ -205,6 +208,7 @@ const emitMessageSailor = (type) => {
 
         const findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== index);
         if (findDuplicates(options).length > 0) {
+            console.log(options); 
             options = [];
             options = generateMessage("options");    
         }
@@ -216,6 +220,7 @@ const emitMessageSailor = (type) => {
 const emitResult = (answer) => {
     if (answer === validateAnswer.word) {
         io.emit("result", "success");
+        optionsShuffle = [];
         morseInput = [];
         io.emit("inputMorse", morseInput);
         setTimeout(() => {
@@ -292,13 +297,13 @@ const shuffleArray = (array) => {
 
 io.on("connection", (socket) => {
 
-    socket.on("newUser", (username) => {
-        addNewUser(username, socket.id);
+    socket.on("newUser", () => {
+        addNewUser("sailor", socket.id);
         io.to(socket.id).emit("onlineUsers", onlineUsers);
 
         if (onlineUsers.length === 2) {
             startLevel();
-        }
+        };
     });
 
     socket.on("inputAnswer", (answer) => {

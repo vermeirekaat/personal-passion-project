@@ -11,10 +11,9 @@ const App = () => {
   const [socket, setSocket] = useState(null);
   
   useEffect(() => {
-    setSocket(io("http://localhost:5000"));
-    // setSocket(io("http://192.168.0.252:5000"));
+    // setSocket(io("http://localhost:5000"));
+    setSocket(io("http://192.168.0.252:5000"));
   }, []);
-
 
   return (
     <Users>
