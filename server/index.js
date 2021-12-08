@@ -32,6 +32,28 @@ const directions = [
     }
 ];
 
+const defaultObstacles = [
+    {
+        "word": "vuurtoren", 
+        "morse": "...-..-..-.-.----.-..-.",
+    },
+    {
+        "word": "eiland", 
+        "morse": "....-...--.-..",
+    },
+    {
+        "word": "tegenligger", 
+        "morse": "-.--..-..-....--.--...-.",
+    },
+    {
+        "word": "anker", 
+        "morse": ".--.-.-..-.",
+    },
+    {
+        "word": "ijsberg", 
+        "morse": "...---...-.....-.--.",
+    },
+];
 const obstacles = [
     {
         "word": "vuurtoren", 
@@ -57,7 +79,6 @@ const obstacles = [
 
 let morseInput = [];
 let answerInput;
-let optionsShuffle;
 
 let route = [];
 let warning = [];
@@ -107,16 +128,16 @@ board.on("ready", () => {
                 } else if (button.custom.value === 2) {
                     answerInput = "links";
                 } else if (button.custom.value === 3) {
-                    if (optionsShuffle.length > 0) {
-                        answerInput = optionsShuffle[0].word;
+                    if (options.length > 0) {
+                        answerInput = options[0].word;
                     }
                 } else if (button.custom.value === 4) {
-                    if (optionsShuffle.length > 0) {
-                        answerInput = optionsShuffle[1].word;
+                    if (options.length > 0) {
+                        answerInput = options[1].word;
                     }
                 } else if (button.custom.value === 5) {
-                    if (optionsShuffle.length > 0) {
-                        answerInput = optionsShuffle[2].word;
+                    if (options.length > 0) {
+                        answerInput = options[2].word;
                     }
                 };
             }
@@ -127,7 +148,6 @@ board.on("ready", () => {
                 morseInput = [];
                 checkMorseInput();
             } else if (button.custom.type === "submit") {
-                // answerDirection = "left";
                 emitResult(answerInput);
                 button.custom.value = 0;
             }
@@ -155,10 +175,9 @@ const addNewUser = (username, socketId) => {
 
 const startLevel = () => {
     if (isRoute === true) {
-        // generateRoute();
         emitMessageCaptain("direction");
     } else {
-        emitMessageCaptain("obstacle");
+        emitMessageCaptain("obstacles");
     }
 };
 
@@ -168,18 +187,26 @@ const generateMessage = (type) => {
             route.push(getRandomIndex(directions));
         };
         return route;
-    } else if (type === "obstacle") {
+    } else if (type === "obstacles") {
         warning = shuffleArray(obstacles);
         return warning;
     } else if (type === "options") {
         options.push(validateAnswer);
+        const exNumber = defaultObstacles.findIndex((item) => item.word === validateAnswer.word);
+
         for (let i = 0; i < 2; i++) {
-            options.push(getRandomIndex(obstacles));
+            const newOption = getRandomIndexEx(defaultObstacles, exNumber);
+
+            if (newOption === false) {
+                options = [];
+                emitMessageSailor("obstacles");
+            } else {
+                options.push(newOption);
+            }
         };
-        optionsShuffle = shuffleArray(options);
-        return optionsShuffle;
+        return options;
     }
-}
+};
 
 const emitMessageCaptain = (type) => {
     const captain = getUserByUsername("captain");
@@ -203,24 +230,43 @@ const emitMessageSailor = (type) => {
 
     if (type === "direction") {
         io.to(sailor.socketId).emit("message", "wait for message");
-    } else if (type === "obstacle") {
+    } else if (type === "obstacles") {
         options = generateMessage("options");
+        findDuplicates(options);
 
-        const findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== index);
-        if (findDuplicates(options).length > 0) {
-            console.log(options); 
-            options = [];
-            options = generateMessage("options");    
-        }
         io.to(sailor.socketId).emit("options", shuffleArray(options));
     }
     checkLevel();
 }; 
 
+const findDuplicates = (array) => {
+    let result = false; 
+    result = array.some((element, index) => {
+        return array.indexOf(element) !== index
+    }); 
+
+    if (result) {
+        options = [];
+        emitMessageSailor("obstacles");
+    } else {
+        return;
+    }
+};
+
+const getRandomIndexEx = (array, ex) => {
+    const randomNumber = Math.floor(Math.random()*array.length); 
+    console.log(randomNumber, ex);
+    if (randomNumber !== ex) {
+        return array[randomNumber]; 
+    } else {
+        return false;
+    }
+}
+
 const emitResult = (answer) => {
     if (answer === validateAnswer.word) {
         io.emit("result", "success");
-        optionsShuffle = [];
+        options = [];
         morseInput = [];
         io.emit("inputMorse", morseInput);
         setTimeout(() => {

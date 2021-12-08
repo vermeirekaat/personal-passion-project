@@ -53,7 +53,7 @@ const Game = () => {
     }, [socket]);
 
     useEffect(() => {
-        socket?.on("obstacle", (obstacle) => {
+        socket?.on("obstacles", (obstacle) => {
             setObstacle(obstacle);
         });
     }, [socket]);
