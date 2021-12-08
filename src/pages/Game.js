@@ -30,10 +30,6 @@ const Game = () => {
     const [input, setInput] = useState("");
     const [result, setResult] = useState("");
 
-    const handleDirection = (direction) => {
-        socket?.emit("inputDirection", direction);
-    }; 
-
     const handleAnswer = (answer) => {
         socket?.emit("inputAnswer", answer);
     };
@@ -111,7 +107,7 @@ const Game = () => {
                     <Storm/>
                 </div>
                 <div className={styles.morse }>
-                    <Morse morseInput={input} getDirection={(direction) => handleDirection(direction)}/>
+                    <Morse morseInput={input}/>
                 </div>
                 <div className={styles.result}>
                     <Result result={result}/>

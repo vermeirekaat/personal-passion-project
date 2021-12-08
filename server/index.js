@@ -58,6 +58,8 @@ const obstacles = [
 ];
 
 let morseInput = [];
+let answerInput;
+let optionsShuffle;
 
 let route = [];
 let warning = [];
@@ -103,6 +105,23 @@ board.on("ready", () => {
             } else if (button.custom.type === "submit") {
                 button.custom.value++;
                 console.log(button.custom.value);
+                if (button.custom.value === 1) {
+                    answerInput = "rechts";
+                } else if (button.custom.value === 2) {
+                    answerInput = "links";
+                } else if (button.custom.value === 3) {
+                    if (optionsShuffle.length > 0) {
+                        answerInput = optionsShuffle[0].word;
+                    }
+                } else if (button.custom.value === 4) {
+                    if (optionsShuffle.length > 0) {
+                        answerInput = optionsShuffle[1].word;
+                    }
+                } else if (button.custom.value === 5) {
+                    if (optionsShuffle.length > 0) {
+                        answerInput = optionsShuffle[2].word;
+                    }
+                };
             }
         });
 
@@ -110,6 +129,10 @@ board.on("ready", () => {
             if (button.custom.type === "morse") {
                 morseInput = [];
                 checkMorseInput();
+            } else if (button.custom.type === "submit") {
+                // answerDirection = "left";
+                emitResult(answerInput);
+                button.custom.value = 0;
             }
         })
     })
@@ -150,7 +173,7 @@ const generateMessage = (type) => {
         for (let i = 0; i < 2; i++) {
             options.push(getRandomIndex(warning));
         };
-        let optionsShuffle = shuffleArray(options);
+        optionsShuffle = shuffleArray(options);
         return optionsShuffle;
     }
 }
@@ -193,6 +216,8 @@ const emitMessageSailor = (type) => {
 const emitResult = (answer) => {
     if (answer === validateAnswer.word) {
         io.emit("result", "success");
+        morseInput = [];
+        io.emit("inputMorse", morseInput);
         setTimeout(() => {
             isRoute = !isRoute;   
             if (nextLevel === false) {
@@ -266,7 +291,6 @@ const shuffleArray = (array) => {
 };
 
 io.on("connection", (socket) => {
-    // console.log(`new connection ${socket.id}`);
 
     socket.on("newUser", (username) => {
         addNewUser(username, socket.id);
@@ -277,20 +301,9 @@ io.on("connection", (socket) => {
         }
     });
 
-    // socket.on("morseInput", (input) => {
-    //     checkMorseInput(socket, input);
-    //     if (onlineUsers.length > 1) {
-    //         const otherSocket = getOtherUser(socket.id);
-    //         io.to(otherSocket.socketId).emit("inputMorse", input);
-    //     }
-    // });
-
-    socket.on("inputDirection", (direction) => {
-        emitResult(direction);
-    });
-
     socket.on("inputAnswer", (answer) => {
         emitResult(answer);
+        morseInput = [];
     });
 
     socket.on("disconnect", () => {

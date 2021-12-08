@@ -1,9 +1,9 @@
 import styles from "./Morse.module.css";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 
 import { Context } from "../context/Users";
 
-const Morse = ({ morseInput, getDirection }) => {
+const Morse = ({ morseInput }) => {
 
     // eslint-disable-next-line
     const [state, dispatch] = useContext(Context);
@@ -21,20 +21,12 @@ const Morse = ({ morseInput, getDirection }) => {
             </div>
         )
     } else if (indexCaptain === -1 ) {
-
-        const handleSubmitAnswer = (e) => {
-            if (e.key === "o") {
-                getDirection("links");
-            } else if (e.key === "p") {
-                getDirection("rechts");
-            }
-        }
         // console.log(morseInput);
         return (
             <div className={styles.container}>
                 <p>Morse Code - Sailor</p>
                 <p>{morseInput}</p>
-                <input readOnly onKeyPress={handleSubmitAnswer}></input>
+                {/* <input readOnly onKeyPress={handleSubmitAnswer}></input> */}
             </div>
         )
     };
