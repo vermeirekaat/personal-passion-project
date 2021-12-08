@@ -57,6 +57,8 @@ const obstacles = [
     },
 ];
 
+let morseInput = [];
+
 let route = [];
 let warning = [];
 let options = [];
@@ -96,50 +98,14 @@ board.on("ready", () => {
 
         button.on("press", () => {
             if (button.custom.type === "morse") {
-                console.log(button.custom.value);
+                morseInput.push(button.custom.value);
+                checkMorseInput();
             } else if (button.custom.type === "submit") {
                 button.custom.value++;
                 console.log(button.custom.value);
             }
         });
     })
-
-    /*var directions = {
-    up: { pin: 2, value: null },
-    right: { pin: 3, value: null },
-    left: { pin: 4, value: null },
-    down: { pin: 5, value: null },
-  };
-
-  Object.keys(directions).forEach(function(key) {
-    var pin = directions[key].pin;
-
-    this.pinMode(pin, five.Pin.INPUT);
-    this.digitalRead(pin, function(data) {
-      // Catpure the initial pin value
-      if (directions[key].value === null) {
-        directions[key].value = data;
-      }
-
-      // Something changed
-      if (directions[key].value !== data) {
-        console.log(pin, key);
-      }
-
-      directions[key].value = data;*/
-
-    // firstMorse = new five.Button(2); 
-    // // secondMorse = new five.Button(6);
-
-    // firstMorse.on("hold", () => {
-    //     console.log("on hold")
-    // });
-    // firstMorse.on("press", () => {
-    //     console.log("up");
-    // });
-    // firstMorse.on("release", () => {
-    //     // console.log("pressed");
-    // }); 
 })
 
 const addNewUser = (socketId) => {
@@ -236,13 +202,16 @@ const emitResult = (answer) => {
     }
 };
 
-const checkMorseInput = (socket, input) => {
+const checkMorseInput = () => {
+    console.log(morseInput);
     let correctInput;
+    const captain = getUserByUsername("captain");
     if (validateAnswer !== undefined) {
+        io.emit("inputMorse", morseInput);
         correctInput = validateAnswer.morse;
 
-        if (input.join("") === correctInput) {
-            io.to(socket.id).emit("result", "correct");
+        if (morseInput.join("") === correctInput) {
+            io.to(captain.socketId).emit("result", "correct");
         }
     }
 };
@@ -302,13 +271,13 @@ io.on("connection", (socket) => {
         }
     });
 
-    socket.on("morseInput", (input) => {
-        checkMorseInput(socket, input);
-        if (onlineUsers.length > 1) {
-            const otherSocket = getOtherUser(socket.id);
-            io.to(otherSocket.socketId).emit("inputMorse", input);
-        }
-    });
+    // socket.on("morseInput", (input) => {
+    //     checkMorseInput(socket, input);
+    //     if (onlineUsers.length > 1) {
+    //         const otherSocket = getOtherUser(socket.id);
+    //         io.to(otherSocket.socketId).emit("inputMorse", input);
+    //     }
+    // });
 
     socket.on("inputDirection", (direction) => {
         emitResult(direction);
@@ -320,6 +289,7 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
+        morseInput = [];
     });
 });
 

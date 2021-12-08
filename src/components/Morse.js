@@ -3,35 +3,22 @@ import { useState, useContext } from "react";
 
 import { Context } from "../context/Users";
 
-const Morse = ({ morseCode, morseInput, getDirection }) => {
+const Morse = ({ morseInput, getDirection }) => {
 
     // eslint-disable-next-line
     const [state, dispatch] = useContext(Context);
     const indexCaptain = state.users.findIndex((user) => user.user === "captain");
 
-    const [input, setInput] = useState([]);
+    // const [input, setInput] = useState(morseInput);
+    console.log(morseInput);
 
     if (indexCaptain > -1) {
-        
-        const handleMorseCode = (e) => {
-            const copy = [...input];
-                if (e.key === "a") {
-                    copy.push(".");
-                    setInput(copy);
-                };
-                if (e.key === "z") {
-                    copy.push("-");
-                    setInput(copy);
-                }; 
-        };
-        morseCode(input);
 
         return (
             <div className={styles.container}>
                 <p>Morse Code</p>
-                <p>{input}</p>
-                <input readOnly onKeyPress={handleMorseCode}></input>
-                <button onClick={() => setInput([])}>Try Again</button>
+                <p>{morseInput}</p>
+                {/* <button onClick={() => setInput([])}>Try Again</button> */}
             </div>
         )
     } else if (indexCaptain === -1 ) {
