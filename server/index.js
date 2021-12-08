@@ -174,9 +174,12 @@ const addNewUser = (username, socketId) => {
 };
 
 const startLevel = () => {
+    const captain = getUserByUsername("captain");
     if (isRoute === true) {
+        io.to(captain.socketId).emit("obstacles", "");
         emitMessageCaptain("direction");
     } else {
+        io.to(captain.socketId).emit("direction", "");
         emitMessageCaptain("obstacles");
     }
 };
@@ -219,8 +222,6 @@ const emitMessageCaptain = (type) => {
     validateAnswer = array[0];
     array.shift();
 
-    console.log(`${type}: ${array.length}`)
-
     if (!array.length > 0) {
         for(const array in levelDone){
             levelDone[array] = true;
@@ -234,8 +235,7 @@ const emitMessageSailor = (type) => {
     const sailor = getUserByUsername("sailor");
 
     if (type === "direction") {
-        io.to(sailor.socketId).emit("options", "");
-        io.to(sailor.socketId).emit("message", "wait for message");
+        io.to(sailor.socketId).emit("options", ["wait for message"]);
     } else if (type === "obstacles") {
         options = generateMessage("options");
         findDuplicates(options);

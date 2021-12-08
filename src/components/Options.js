@@ -1,25 +1,14 @@
 import styles from "./Options.module.css";
 
-const Options = ({ currentOptions, getAnswer}) => {
+const Options = ({ currentOptions }) => {
 
-    const handleSubmitAnswer = (e) => {
-        if (e.key === "1") {
-            getAnswer(currentOptions[0].word);
-        } else if (e.key === "2") {
-            getAnswer(currentOptions[1].word);
-        } else if (e.key === "3") {
-            getAnswer(currentOptions[2].word);
-        }
-    }
-
-    if (currentOptions.length > 0) {
+    if (currentOptions.length > 1) {
         return (
             <div className={styles.container}>
             <p>Options</p>
             {currentOptions.map((option) => (
                 <p key={option.word}>{option.word}</p>
             ))}
-            <input readOnly onKeyPress={handleSubmitAnswer}></input>
         </div>
         )
     }
@@ -27,6 +16,7 @@ const Options = ({ currentOptions, getAnswer}) => {
     return (
         <div className={styles.container}>
             <p>Options</p>
+            <p>{currentOptions[0]}</p>
         </div>
     )
 }; 

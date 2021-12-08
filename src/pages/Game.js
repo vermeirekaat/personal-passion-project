@@ -26,13 +26,9 @@ const Game = () => {
 
     const [route, setRoute] = useState("");
     const [obstacle, setObstacle] = useState("");
-    const [options, setOptions] = useState([]);
+    const [options, setOptions] = useState(["wait for message"]);
     const [input, setInput] = useState("");
     const [result, setResult] = useState("");
-
-    const handleAnswer = (answer) => {
-        socket?.emit("inputAnswer", answer);
-    };
 
     useEffect(() => {
         socket?.on("message", (message) => {
@@ -113,7 +109,7 @@ const Game = () => {
                     <Result result={result}/>
                 </div>
                 <div className={styles.options}>
-                    <Options currentOptions={options} getAnswer={(answer) => handleAnswer(answer)}/>
+                    <Options currentOptions={options}/>
                 </div>
                 <div className={styles.cheatsheet}>
                     <CheatSheet/>
