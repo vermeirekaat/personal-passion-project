@@ -105,6 +105,13 @@ board.on("ready", () => {
                 console.log(button.custom.value);
             }
         });
+
+        button.on("hold", () => {
+            if (button.custom.type === "morse") {
+                morseInput = [];
+                checkMorseInput();
+            }
+        })
     })
 })
 
@@ -203,7 +210,6 @@ const emitResult = (answer) => {
 };
 
 const checkMorseInput = () => {
-    console.log(morseInput);
     let correctInput;
     const captain = getUserByUsername("captain");
     if (validateAnswer !== undefined) {

@@ -10,7 +10,6 @@ const Morse = ({ morseInput, getDirection }) => {
     const indexCaptain = state.users.findIndex((user) => user.user === "captain");
 
     // const [input, setInput] = useState(morseInput);
-    console.log(morseInput);
 
     if (indexCaptain > -1) {
 
