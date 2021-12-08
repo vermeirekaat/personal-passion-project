@@ -21,7 +21,7 @@ const Welcome = ({ socket }) => {
         }
         if (player !== "") {
             dispatch({type: 'ADD_USER', payload: { socket: socket, user: player }});
-            navigate("/onboarding");
+            navigate("/game");
         } if (player === undefined) {
             return false;
         }

@@ -79,16 +79,6 @@ const addNewUser = (socketId) => {
       onlineUsers.push({ username, socketId, currentStep: 0, startGame: false });
 };
 
-const checkStepsOther = (socketId) => {
-    const otherSocket = getOtherUser(socketId);
-
-    if (otherSocket.currentStep < 4) {
-        io.to(socketId).emit("message", "wait for other user");
-    } else if (otherSocket.currentStep === 4) {
-        io.to(otherSocket.socketId).emit("message", "ready to play");
-    }
-}; 
-
 const startLevel = () => {
     if (isRoute === true) {
         // generateRoute();
@@ -143,7 +133,6 @@ const emitMessageSailor = (type) => {
         options = generateMessage("options");
 
         const findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== index);
-        console.log(findDuplicates(options));
         if (findDuplicates(options).length > 0) {
             options = [];
             options = generateMessage("options");    
@@ -232,32 +221,9 @@ io.on("connection", (socket) => {
     socket.on("newUser", (username) => {
         addNewUser(username, socket.id);
         io.to(socket.id).emit("onlineUsers", onlineUsers);
-    });
 
-    socket.on("currentStep", (step) => {
-        const currentUser = getOneUser(socket.id);
-        currentUser.currentStep = step;
-
-        if (currentUser.username === "captain" && step === 4) {
-            const choosenDirection = getRandomIndex(directions);
-            validateAnswer = choosenDirection;
-            io.to(socket.id).emit("direction", choosenDirection.word);
-            checkStepsOther(socket.id);
-        } else if (currentUser.username === "sailor" && step === 4) {
-            checkStepsOther(socket.id);
-        }
-    });
-
-    socket.on("startGame", (boolean) => {
-        const currentUser = getOneUser(socket.id);
-        currentUser.startGame = boolean;
-
-        const otherUser = getOtherUser(socket.id); 
-        if (currentUser.startGame && otherUser.startGame) {
-            io.emit("message", "ready to play");
+        if (onlineUsers.length === 2) {
             startLevel();
-        } else {
-            io.to(socket.id).emit("message", "wait for other player");
         }
     });
 
