@@ -217,8 +217,12 @@ const emitMessageCaptain = (type) => {
     validateAnswer = array[0];
     array.shift();
 
-    if (array.length <= 0) {
-        levelDone[array] = true
+    console.log(`${type}: ${array.length}`)
+
+    if (!array.length > 0) {
+        for(const array in levelDone){
+            levelDone[array] = true;
+        }
         console.log(`no more ${type}`);
     };
 
@@ -229,14 +233,16 @@ const emitMessageSailor = (type) => {
     const sailor = getUserByUsername("sailor");
 
     if (type === "direction") {
+        io.to(sailor.socketId).emit("options", "");
         io.to(sailor.socketId).emit("message", "wait for message");
     } else if (type === "obstacles") {
         options = generateMessage("options");
         findDuplicates(options);
 
-        io.to(sailor.socketId).emit("options", shuffleArray(options));
-    }
-    checkLevel();
+        if  (options.length === 3) {
+            io.to(sailor.socketId).emit("options", shuffleArray(options));
+        }
+    };
 }; 
 
 const findDuplicates = (array) => {
@@ -255,7 +261,6 @@ const findDuplicates = (array) => {
 
 const getRandomIndexEx = (array, ex) => {
     const randomNumber = Math.floor(Math.random()*array.length); 
-    console.log(randomNumber, ex);
     if (randomNumber !== ex) {
         return array[randomNumber]; 
     } else {
@@ -282,7 +287,8 @@ const emitResult = (answer) => {
         }, 3000)
     } else {
         io.emit("result", "fail")
-    }
+    };
+    checkLevel();
 };
 
 const checkMorseInput = () => {
@@ -303,7 +309,7 @@ const checkLevel = () => {
         io.emit("result", "next level");
         nextLevel = true;
     } else {
-        nextLevel = false
+        nextLevel = false;
     }
 };
 

@@ -12,7 +12,7 @@ const Options = ({ currentOptions, getAnswer}) => {
         }
     }
 
-    if (currentOptions !== undefined) {
+    if (currentOptions.length > 0) {
         return (
             <div className={styles.container}>
             <p>Options</p>
