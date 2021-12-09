@@ -78,6 +78,7 @@ const obstacles = [
 ];
 
 let morseInput = [];
+let morseSeconds = [];
 let answerInput;
 
 let route = [];
@@ -89,7 +90,7 @@ let levelDone = {
     "obstacles": false,
 };
 const levels = ["text", "light", "sound"];
-let levelAmount = 0;
+let levelAmount = 1;
 let currentLevel;
 
 let validateAnswer;
@@ -100,8 +101,8 @@ board.on("ready", () => {
     led = new five.Led(10);
 
     const buttonsCollection = {
-        first: { pin: 2, type: "morse", value: "." },
-        second: { pin: 6, type: "morse", value: "-" },
+        first: { pin: 2, type: "morse", value: ".", sec: 1500 },
+        second: { pin: 6, type: "morse", value: "-", sec: 3000 },
         third: { pin: 9, type:"submit", value: 0 },
     }; 
 
@@ -113,6 +114,7 @@ board.on("ready", () => {
             custom: {
                 type: buttonsCollection[key].type,
                 value: buttonsCollection[key].value,
+                sec: buttonsCollection[key].sec,
             }
         });
 
@@ -123,7 +125,10 @@ board.on("ready", () => {
         button.on("press", () => {
             if (button.custom.type === "morse") {
                 morseInput.push(button.custom.value);
+                morseSeconds.push(button.custom.sec);
+
                 checkMorseInput();
+
             } else if (button.custom.type === "submit") {
                 button.custom.value++;
                 if (button.custom.value === 1) {
@@ -180,10 +185,6 @@ const startLevel = () => {
     io.emit("result", "");
     currentLevel = levels[levelAmount];
 
-    if (currentLevel === "light") {
-        showMorseLight();
-    }
-
     const captain = getUserByUsername("captain");
 
     if (isRoute === true && levelDone.route === false) {
@@ -195,9 +196,19 @@ const startLevel = () => {
     }
 };
 
-const showMorseLight = () => {
-    led.blink(500);
+const showLight = (sec) => {
+    led.on(); 
+    board.wait(sec, () => {
+        led.off();
+    })
 }
+
+const showMorseLight = () => {
+
+    morseSeconds.forEach((sec) => {
+        showLight(sec);
+    });
+};
 
 const generateMessage = (type) => {
     if (type === "direction") {
@@ -230,10 +241,8 @@ const generateMessage = (type) => {
 
 const emitMessageCaptain = (type) => {
     const captain = getUserByUsername("captain");
-    console.log(type);
 
     const array = generateMessage(type);
-    console.log(array);
 
     io.to(captain.socketId).emit(type, array[0].word);
     validateAnswer = array[0];
@@ -311,6 +320,10 @@ const checkMorseInput = () => {
 
         if (morseInput.join("") === correctInput) {
             io.to(captain.socketId).emit("result", "correct");
+
+            if (currentLevel === "light") {
+                showMorseLight();
+            }
         }
     }
 };
