@@ -316,9 +316,11 @@ const checkLevel = () => {
             io.emit("result", "get ready!");
         }, 10000)
     } else {
-        isRoute = !isRoute
-        io.emit("result", "");
-        startLevel();
+        setTimeout(() => {
+            isRoute = !isRoute
+            io.emit("result", "");
+            startLevel();
+        }, 3000);
     }
 };
 
