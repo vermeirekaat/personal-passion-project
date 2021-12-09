@@ -88,13 +88,15 @@ let levelDone = {
     "route": false,
     "obstacles": false,
 };
-let nextLevel;
+const levels = ["text", "light", "sound"];
+let levelAmount = 0;
+let currentLevel;
 
 let validateAnswer;
 
 board.on("ready", () => {
     const led = new five.Led(10);
-    led.blink(500);
+    led.pulse(500);
 
     const buttonsCollection = {
         first: { pin: 2, type: "morse", value: "." },
@@ -174,8 +176,9 @@ const addNewUser = (username, socketId) => {
 };
 
 const startLevel = () => {
+    currentLevel = levels[levelAmount];
     const captain = getUserByUsername("captain");
-    if (isRoute === true) {
+    if (isRoute === true && levelDone.route === false) {
         io.to(captain.socketId).emit("obstacles", "");
         emitMessageCaptain("direction");
     } else {
@@ -222,9 +225,13 @@ const emitMessageCaptain = (type) => {
     validateAnswer = array[0];
     array.shift();
 
-    if (!array.length > 0) {
-        for(const array in levelDone){
-            levelDone[array] = true;
+    if (type === "direction") {
+        if (route.length <= 0) {
+            levelDone.route = true;
+        }
+    } else if (type === "obstacles") {
+        if (warning.length <= 0) {
+            levelDone.obstacles = true;
         }
     };
 
@@ -275,17 +282,6 @@ const emitResult = (answer) => {
         options = [];
         morseInput = [];
         io.emit("inputMorse", morseInput);
-        setTimeout(() => {
-            isRoute = !isRoute;   
-            if (nextLevel === false) {
-                startLevel();
-                io.emit("result", "");
-            } else {
-                route = [];
-                warning = [];
-                options = [];
-            }
-        }, 3000)
     } else {
         io.emit("result", "fail")
     };
@@ -306,13 +302,23 @@ const checkMorseInput = () => {
 };
 
 const checkLevel = () => {
+    // console.log(levelDone);
     if (levelDone.route && levelDone.obstacles) {
         setTimeout(() => {
             io.emit("result", "next level");
+            io.emit("options", "");
+            io.emit("obstacles", "");
         }, 3000)
-        nextLevel = true;
+        levelAmount++;
+
+        setTimeout(() => {
+            startLevel();
+            io.emit("result", "get ready!");
+        }, 10000)
     } else {
-        nextLevel = false;
+        isRoute = !isRoute
+        io.emit("result", "");
+        startLevel();
     }
 };
 
