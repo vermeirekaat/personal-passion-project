@@ -94,9 +94,10 @@ let currentLevel;
 
 let validateAnswer;
 
+let led;
+
 board.on("ready", () => {
-    const led = new five.Led(10);
-    led.pulse(500);
+    led = new five.Led(10);
 
     const buttonsCollection = {
         first: { pin: 2, type: "morse", value: "." },
@@ -176,8 +177,15 @@ const addNewUser = (username, socketId) => {
 };
 
 const startLevel = () => {
+    io.emit("result", "");
     currentLevel = levels[levelAmount];
+
+    if (currentLevel === "light") {
+        showMorseLight();
+    }
+
     const captain = getUserByUsername("captain");
+
     if (isRoute === true && levelDone.route === false) {
         io.to(captain.socketId).emit("obstacles", "");
         emitMessageCaptain("direction");
@@ -186,6 +194,10 @@ const startLevel = () => {
         emitMessageCaptain("obstacles");
     }
 };
+
+const showMorseLight = () => {
+    led.blink(500);
+}
 
 const generateMessage = (type) => {
     if (type === "direction") {
@@ -218,8 +230,10 @@ const generateMessage = (type) => {
 
 const emitMessageCaptain = (type) => {
     const captain = getUserByUsername("captain");
+    console.log(type);
 
     const array = generateMessage(type);
+    console.log(array);
 
     io.to(captain.socketId).emit(type, array[0].word);
     validateAnswer = array[0];
@@ -308,12 +322,35 @@ const checkLevel = () => {
             io.emit("result", "next level");
             io.emit("options", "");
             io.emit("obstacles", "");
+
+            levelDone.route = false;
+            levelDone.obstacles = false;
         }, 3000)
         levelAmount++;
 
         setTimeout(() => {
+            isRoute = !isRoute;
+            obstacles.push({
+                "word": "vuurtoren", 
+                "morse": "...-..-..-.-.----.-..-.",
+            },
+            {
+                "word": "eiland", 
+                "morse": "....-...--.-..",
+            },
+            {
+                "word": "tegenligger", 
+                "morse": "-.--..-..-....--.--...-.",
+            },
+            {
+                "word": "anker", 
+                "morse": ".--.-.-..-.",
+            },
+            {
+                "word": "ijsberg", 
+                "morse": "...---...-.....-.--.",
+            },);
             startLevel();
-            io.emit("result", "get ready!");
         }, 10000)
     } else {
         setTimeout(() => {
