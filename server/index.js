@@ -101,8 +101,8 @@ board.on("ready", () => {
     led = new five.Led(10);
 
     const buttonsCollection = {
-        first: { pin: 2, type: "morse", value: ".", sec: 1500 },
-        second: { pin: 6, type: "morse", value: "-", sec: 3000 },
+        first: { pin: 2, type: "morse", value: ".", sec: 1000 },
+        second: { pin: 6, type: "morse", value: "-", sec: 1500 },
         third: { pin: 9, type:"submit", value: 0 },
     }; 
 
@@ -154,6 +154,7 @@ board.on("ready", () => {
         button.on("hold", () => {
             if (button.custom.type === "morse") {
                 morseInput = [];
+                morseSeconds = [];
                 checkMorseInput();
             } else if (button.custom.type === "submit") {
                 emitResult(answerInput);
@@ -196,19 +197,28 @@ const startLevel = () => {
     }
 };
 
-const showLight = (sec) => {
-    led.on(); 
-    board.wait(sec, () => {
+const showMorseLight = (step) => {
+    const duration = morseSeconds[step]; 
+
+    if (duration === 1000) {
+        five.Led.prototype["blink"].apply(led);
+    } else if (duration === 1500) {
+        five.Led.prototype["pulse"].apply(led);
+    };
+
+    if (step < morseSeconds.length) {
+        step++;
+    } else if (step >= morseSeconds.length) {
+        morseSeconds = [];
         led.off();
-    })
-}
+    } else if (morseSeconds.length === 0) {
+        led.off();
+    }
 
-const showMorseLight = () => {
-
-    morseSeconds.forEach((sec) => {
-        showLight(sec);
+    board.wait(duration, () => {
+        showMorseLight(step);
     });
-};
+}
 
 const generateMessage = (type) => {
     if (type === "direction") {
@@ -321,8 +331,8 @@ const checkMorseInput = () => {
         if (morseInput.join("") === correctInput) {
             io.to(captain.socketId).emit("result", "correct");
 
-            if (currentLevel === "light") {
-                showMorseLight();
+            if (currentLevel === "light" && morseSeconds.length > 0) {
+                showMorseLight(0);
             }
         }
     }
