@@ -93,12 +93,14 @@ const levels = ["text", "light", "sound"];
 let levelAmount = 1;
 let currentLevel;
 
+let readyToAnswer = false;
 let validateAnswer;
 
 let led;
 
 board.on("ready", () => {
     led = new five.Led(10);
+    led.off();
 
     const buttonsCollection = {
         first: { pin: 2, type: "morse", value: ".", sec: 1000 },
@@ -130,24 +132,29 @@ board.on("ready", () => {
                 checkMorseInput();
 
             } else if (button.custom.type === "submit") {
-                button.custom.value++;
-                if (button.custom.value === 1) {
-                    answerInput = "rechts";
-                } else if (button.custom.value === 2) {
-                    answerInput = "links";
-                } else if (button.custom.value === 3) {
-                    if (options.length > 0) {
-                        answerInput = options[0].word;
-                    }
-                } else if (button.custom.value === 4) {
-                    if (options.length > 0) {
-                        answerInput = options[1].word;
-                    }
-                } else if (button.custom.value === 5) {
-                    if (options.length > 0) {
-                        answerInput = options[2].word;
-                    }
-                };
+
+                if (readyToAnswer) {
+                    button.custom.value++;
+                    if (button.custom.value === 1) {
+                        answerInput = "rechts";
+                    } else if (button.custom.value === 2) {
+                        answerInput = "links";
+                    } else if (button.custom.value === 3) {
+                        if (options.length > 0) {
+                            answerInput = options[0].word;
+                        }
+                    } else if (button.custom.value === 4) {
+                        if (options.length > 0) {
+                            answerInput = options[1].word;
+                        }
+                    } else if (button.custom.value === 5) {
+                        if (options.length > 0) {
+                            answerInput = options[2].word;
+                        }
+                    };    
+                } else {
+                    io.emit("result", "wait for input");
+                }
             }
         });
 
@@ -314,6 +321,7 @@ const emitResult = (answer) => {
         io.emit("result", "success");
         options = [];
         morseInput = [];
+        readyToAnswer = false;
         io.emit("inputMorse", morseInput);
     } else {
         io.emit("result", "fail")
@@ -330,12 +338,13 @@ const checkMorseInput = () => {
 
         if (morseInput.join("") === correctInput) {
             io.to(captain.socketId).emit("result", "correct");
+            readyToAnswer = true;
 
             if (currentLevel === "light" && morseSeconds.length > 0) {
                 showMorseLight(0);
             }
         }
-    }
+    }; 
 };
 
 const checkLevel = () => {
