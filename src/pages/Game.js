@@ -11,6 +11,7 @@ import Result from "../components/Result";
 import Obstacle from "../components/Obstacle";
 import Options from "../components/Options";
 import CheatSheet from "../components/CheatSheet";
+import Popup from "../components/Popup";
 
 const Game = () => {
 
@@ -29,10 +30,11 @@ const Game = () => {
     const [options, setOptions] = useState(["wait for message"]);
     const [input, setInput] = useState("");
     const [result, setResult] = useState("");
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         socket?.on("message", (message) => {
-            console.log(message);
+            setMessage(message);
         });
     }, [socket]);
 
@@ -66,10 +68,26 @@ const Game = () => {
         });
     }, [socket]);
 
+    const checkMessage = () => {
+        if (message !== "") {
+            setTimeout(() => {
+                setMessage("");
+            }, 10000)
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     if (currentUser === "captain") {
         return (
             <div className={styles.grid}>
                 <h2 className={styles.username}>{currentUser}</h2>
+                { checkMessage() ?
+                    <div className={styles.popup}>
+                        <Popup currentMessage={message}/>
+                    </div> : <div></div>
+                }
                 <div className={styles.lives}>
                     <Lives/>
                 </div>

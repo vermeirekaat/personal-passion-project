@@ -1,0 +1,15 @@
+.container {
+    width: 40vw; 
+    height: auto; 
+    display: flex; 
+    justify-self: center;
+    background-color: lightgray;
+    padding: 1rem;
+    margin: 2rem 0;
+    border: black; 
+    border-radius: .5rem;
+}; 
+
+.message {
+    color: red;
+}

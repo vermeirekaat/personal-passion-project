@@ -9,6 +9,11 @@
     max-height: 100vh;
 };
 
+.popup {
+    grid-area: morse;
+    z-index: 2;
+}
+
 .user {
     grid-area: user;
 }

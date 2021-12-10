@@ -120,10 +120,6 @@ board.on("ready", () => {
             }
         });
 
-        board.repl.inject({
-            button: button
-        });
-
         button.on("press", () => {
             if (button.custom.type === "morse") {
                 morseInput.push(button.custom.value);
