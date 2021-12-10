@@ -149,7 +149,7 @@ board.on("ready", () => {
                         }
                     };    
                 } else {
-                    io.emit("message", "wait for input");
+                    io.emit("message", {message: "wait for input", user: "sailor"});
                 }
             }
         });
@@ -347,7 +347,7 @@ const checkLevel = () => {
     // console.log(levelDone);
     if (levelDone.route && levelDone.obstacles) {
         setTimeout(() => {
-            io.emit("message", "next level");
+            io.emit("message", {message: "next level", user: "both"});
             io.emit("options", "");
             io.emit("obstacles", "");
 
@@ -395,7 +395,7 @@ const getOneUser = (socketId) => {
 
 const getUserByUsername = (username) => {
     return onlineUsers.find((user) => user.username === username);
-}
+};
 
 const getOtherUser = (socketId) => {
     return onlineUsers.find((user) => user.socketId !== socketId);

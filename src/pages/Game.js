@@ -83,9 +83,14 @@ const Game = () => {
         return (
             <div className={styles.grid}>
                 <h2 className={styles.username}>{currentUser}</h2>
-                { checkMessage() ?
+                { checkMessage() && message.user === "captain" ?
                     <div className={styles.popup}>
-                        <Popup currentMessage={message}/>
+                        <Popup currentMessage={message.message}/>
+                    </div> : <div></div>
+                }
+                { checkMessage() && message.user === "both" ?
+                    <div className={styles.popup}>
+                        <Popup currentMessage={message.message}/>
                     </div> : <div></div>
                 }
                 <div className={styles.lives}>
@@ -114,9 +119,14 @@ const Game = () => {
         return (
             <div className={styles.grid}>
                 <h2 className={styles.username}>{currentUser}</h2>
-                { checkMessage() ?
+                { checkMessage() && message.user === "sailor" ?
                     <div className={styles.popup}>
-                        <Popup currentMessage={message}/>
+                        <Popup currentMessage={message.message}/>
+                    </div> : <div></div>
+                }
+                { checkMessage() && message.user === "both" ?
+                    <div className={styles.popup}>
+                        <Popup currentMessage={message.message}/>
                     </div> : <div></div>
                 }
                 <div className={styles.lives}>
