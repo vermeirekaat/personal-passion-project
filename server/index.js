@@ -324,12 +324,15 @@ const emitResult = (answer) => {
 const checkMorseInput = () => {
     let correctInput;
     const captain = getUserByUsername("captain");
+    const sailor = getUserByUsername("sailor");
+
     if (validateAnswer !== undefined) {
         io.emit("inputMorse", morseInput);
         correctInput = validateAnswer.morse;
 
         if (morseInput.join("") === correctInput) {
             io.to(captain.socketId).emit("result", "correct");
+            io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
             readyToAnswer = true;
 
             if (currentLevel === "light" && morseSeconds.length > 0) {
@@ -359,16 +362,8 @@ const checkLevel = () => {
     }
 };
 
-const getOneUser = (socketId) => {
-    return onlineUsers.find((user) => user.socketId === socketId);
-};
-
 const getUserByUsername = (username) => {
     return onlineUsers.find((user) => user.username === username);
-};
-
-const getOtherUser = (socketId) => {
-    return onlineUsers.find((user) => user.socketId !== socketId);
 };
 
 const getRandomIndex = (array) => {
