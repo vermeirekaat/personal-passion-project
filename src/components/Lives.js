@@ -18,8 +18,8 @@ const Lives = () => {
 
     return (
         <div className={styles.container}>
-            {users.lives.map((live) => (
-                <p key={live}>&#9829;</p>
+            {users.lives.map((life) => (
+                <p key={life}>&#9829;</p>
             ))}
         </div>
     )

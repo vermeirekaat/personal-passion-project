@@ -19,7 +19,7 @@ const Game = () => {
 
     const currentUser = users.user;
     const socket = users.socket;
-    const currentLives = users.lives;
+    let currentLives = users.lives;
 
     const [route, setRoute] = useState("");
     const [obstacle, setObstacle] = useState("");

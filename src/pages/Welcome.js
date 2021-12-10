@@ -22,7 +22,7 @@ const Welcome = ({ socket }) => {
             setUsers({
                 socket: socket, 
                 user: player,
-                lives: ["&#9829;", "&#9829;", "&#9829;"],
+                lives: [1, 2, 3],
             })
             navigate("/game");
         } if (player === undefined) {

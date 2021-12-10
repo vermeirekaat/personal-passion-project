@@ -338,14 +338,11 @@ const checkLevel = () => {
             io.emit("message", {message: "next level", user: "both"});
             io.emit("options", "");
             io.emit("obstacles", "");
-
-            levelDone.route = false;
-            levelDone.obstacles = false;
         }, 3000)
         levelAmount++;
 
         setTimeout(() => {
-            startLevel(false);
+            startLevel(true);
         }, 10000)
     } else {
         setTimeout(() => {
