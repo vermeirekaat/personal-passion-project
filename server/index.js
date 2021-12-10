@@ -25,11 +25,13 @@ const directions = [
     {
         "word": "links", 
         "morse": ".-....-.-.-...",
+        "space": ".-.. .. -. -.- ...",
         "type": "direction",
     },
     {
         "word": "rechts", 
         "morse": ".-..-.-.....-...",
+        "space": ".-. . -.-. .... - ...",
         "type": "direction",
     }
 ];
@@ -38,26 +40,31 @@ const obstacles = [
     {
         "word": "vuurtoren", 
         "morse": "...-..-..-.-.----.-..-.",
+        "space": "...- ..- ..- .-. - --- .-. . -.",
         "type": "obstacles",
     },
     {
         "word": "eiland", 
         "morse": "....-...--.-..",
+        "space": ". .. .-.. .- -. -..",
         "type": "obstacles",
     },
     {
         "word": "tegenligger", 
         "morse": "-.--..-..-....--.--...-.",
+        "space": "- . --. . -. .-.. .. --. --. . .-.",
         "type": "obstacles",
     },
     {
         "word": "anker", 
         "morse": ".--.-.-..-.",
+        "space": ".- -. -.- . .-.",
         "type": "obstacles",
     },
     {
         "word": "ijsberg", 
         "morse": "...---...-.....-.--.",
+        "space": ".. .--- ... -... . .-. --.",
         "type": "obstacles",
     },
 ];
