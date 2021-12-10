@@ -27,7 +27,7 @@ const Game = () => {
 
     const [route, setRoute] = useState("");
     const [obstacle, setObstacle] = useState("");
-    const [options, setOptions] = useState(["wait for message"]);
+    const [options, setOptions] = useState([""]);
     const [input, setInput] = useState("");
     const [result, setResult] = useState("");
     const [message, setMessage] = useState("");

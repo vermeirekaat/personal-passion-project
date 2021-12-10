@@ -260,7 +260,7 @@ const emitMessageSailor = (task) => {
     const sailor = getUserByUsername("sailor");
 
     if (task.type === "direction") {
-        io.to(sailor.socketId).emit("options", ["wait for message"]);
+        io.to(sailor.socketId).emit("options", ["changing direction"]);
     } else if (task.type === "obstacles") {
         options = generateOptions(task);
 
@@ -302,10 +302,14 @@ const emitResult = (answer) => {
         io.emit("result", "success");
         options = [];
         morseInput = [];
+        morseSeconds = [];
         readyToAnswer = false;
         io.emit("inputMorse", morseInput);
     } else {
+        morseInput = [];
+        morseSeconds = [];
         io.emit("result", "fail")
+        io.emit("inputMorse", morseInput);
     };
     checkLevel();
 };
