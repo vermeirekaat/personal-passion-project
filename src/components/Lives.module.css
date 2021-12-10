@@ -1,8 +1,10 @@
 .container {
     width: 20vw;
-    text-align: center;
     padding: .2rem .5rem;
     border: .2rem solid black;
     border-radius: .5rem;
     margin: 2rem;
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-evenly;
 }

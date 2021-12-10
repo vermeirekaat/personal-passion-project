@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Context } from "../context/Users";
+import { usersContext } from "../context/Users";
 
 const Welcome = ({ socket }) => {
 
     const navigate = useNavigate();
     const [player, setPlayer] = useState("");
-    const [state, dispatch] = useContext(Context);
+    
+    // eslint-disable-next-line no-unused-vars
+    const [users, setUsers] = useContext(usersContext);
 
     useEffect(() => {
         socket?.on("onlineUsers", (data) => {
@@ -16,16 +18,17 @@ const Welcome = ({ socket }) => {
     }, [socket]);
 
     useEffect(() => {
-        if (state.error) {
-            return <p>Something went wrong: <span>{state.error}</span></p>;
-        }
         if (player !== "") {
-            dispatch({type: 'ADD_USER', payload: { socket: socket, user: player, lives: 3 }});
+            setUsers({
+                socket: socket, 
+                user: player,
+                lives: ["&#9829;", "&#9829;", "&#9829;"],
+            })
             navigate("/game");
         } if (player === undefined) {
             return false;
         }
-    }, [dispatch, navigate, player, socket, state.error]);
+    }, [navigate, player, setUsers, socket]);
 
     const handleClickButton = () => {
         socket?.emit("newUser", socket.id);

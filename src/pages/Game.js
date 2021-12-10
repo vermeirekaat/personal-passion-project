@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Context } from "../context/Users";
+import { usersContext } from "../context/Users";
 import styles from "./Game.module.css";
 
 import Lives from "../components/Lives";
@@ -15,14 +15,11 @@ import Popup from "../components/Popup";
 
 const Game = () => {
 
-    const [state, dispatch] = useContext(Context);
+    const [users, setUsers] = useContext(usersContext);
 
-    let currentUser;
-    let socket;
-    if (state.users.length > 0) {
-        currentUser = state.users[0].user;
-        socket = state.users[0].socket;
-    }
+    const currentUser = users.user;
+    const socket = users.socket;
+    const currentLives = users.lives;
 
     const [route, setRoute] = useState("");
     const [obstacle, setObstacle] = useState("");
@@ -31,13 +28,13 @@ const Game = () => {
     const [result, setResult] = useState("");
     const [message, setMessage] = useState("");
 
-    let lives = 3;
-
     useEffect(() => {
         if (result === "fail") {
-            dispatch({type: "LOSE_LIFE", payload: {socket: socket, user: currentUser, life: lives--}});
-        }
-    })
+            currentLives.shift();
+
+            setUsers({user: currentUser, socket: socket, lives: currentLives});
+        };
+    }, [result, setUsers, currentUser, socket, currentLives]);
 
     useEffect(() => {
         socket?.on("message", (message) => {
