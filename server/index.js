@@ -34,33 +34,6 @@ const directions = [
     }
 ];
 
-const defaultObstacles = [
-    {
-        "word": "vuurtoren", 
-        "morse": "...-..-..-.-.----.-..-.",
-        "type": "obstacles",
-    },
-    {
-        "word": "eiland", 
-        "morse": "....-...--.-..",
-        "type": "obstacles",
-    },
-    {
-        "word": "tegenligger", 
-        "morse": "-.--..-..-....--.--...-.",
-        "type": "obstacles",
-    },
-    {
-        "word": "anker", 
-        "morse": ".--.-.-..-.",
-        "type": "obstacles",
-    },
-    {
-        "word": "ijsberg", 
-        "morse": "...---...-.....-.--.",
-        "type": "obstacles",
-    },
-];
 const obstacles = [
     {
         "word": "vuurtoren", 
@@ -96,10 +69,7 @@ let answerInput;
 let route = [];
 let warning = [];
 let options = [];
-let levelDone = {
-    "route": false,
-    "obstacles": false,
-};
+let levelDone = false;
 let arrayLevel = [];
 const levels = ["text", "light", "sound"];
 let levelAmount = 0;
@@ -179,13 +149,11 @@ board.on("ready", () => {
     });
 
     io.on('connection', (socket) => {
-        // console.log(socket);
 
         addNewUser("captain", socket.id);
         io.to(socket.id).emit("onlineUsers", onlineUsers);
 
         if (onlineUsers.length === 2) {
-            console.log(onlineUsers);
             startLevel(true);
         };
     });
@@ -204,7 +172,6 @@ const startLevel = (start) => {
     if (start === true) {
         arrayLevel = generateArray();
     };
-    console.log(arrayLevel);
 
     const captain = getUserByUsername("captain");
 
@@ -213,7 +180,7 @@ const startLevel = (start) => {
     if (currentTask.type === "direction") {
         io.to(captain.socketId).emit("obstacles", "");
         emitMessageCaptain(currentTask);
-    } else {
+    } else if (currentTask.type === "obstacles") {
         io.to(captain.socketId).emit("direction", "");
         emitMessageCaptain(currentTask);
     }; 
@@ -248,19 +215,21 @@ const generateArray = () => {
     for (let i = 0; i < 5; i++) {
         route.push(getRandomIndex(directions));
     }; 
-    const newArray = route.concat(obstacles);
+    const copy = [...obstacles]
+    const newArray = route.concat(copy);
 
     return shuffleArray(newArray);
 }
 
-const generateOptions = () => {
+const generateOptions = (task) => {
     options.push(validateAnswer);
-    const exNumber = defaultObstacles.findIndex((item) => item.word === validateAnswer.word);
+    const exNumber = obstacles.findIndex((item) => item.word === validateAnswer.word);
+
     for (let i = 0; i < 2; i++) {
-        const newOption = getRandomIndexEx(defaultObstacles, exNumber);
+        const newOption = getRandomIndexEx(obstacles, exNumber);
         if (newOption === false) {
             options = [];
-            emitMessageSailor("obstacles");
+            emitMessageSailor(task);
         } else {
             options.push(newOption);
         }
@@ -293,16 +262,19 @@ const emitMessageSailor = (task) => {
     if (task.type === "direction") {
         io.to(sailor.socketId).emit("options", ["wait for message"]);
     } else if (task.type === "obstacles") {
-        options = generateOptions();
-        findDuplicates(options);
+        options = generateOptions(task);
 
-        if  (options.length === 3) {
+        findDuplicates(options, task);
+
+        if (options.length === 3) {
             io.to(sailor.socketId).emit("options", shuffleArray(options));
+        } else {
+            options = generateOptions();
         }
     };
 }; 
 
-const findDuplicates = (array) => {
+const findDuplicates = (array, task) => {
     let result = false; 
     result = array.some((element, index) => {
         return array.indexOf(element) !== index
@@ -310,7 +282,7 @@ const findDuplicates = (array) => {
 
     if (result) {
         options = [];
-        emitMessageSailor("obstacles");
+        emitMessageSailor(task);
     } else {
         return;
     }
@@ -357,8 +329,7 @@ const checkMorseInput = () => {
 };
 
 const checkLevel = () => {
-    // console.log(levelDone);
-    if (levelDone.route && levelDone.obstacles) {
+    if (arrayLevel.length <= 0) {
         setTimeout(() => {
             io.emit("message", {message: "next level", user: "both"});
             io.emit("options", "");
@@ -370,31 +341,6 @@ const checkLevel = () => {
         levelAmount++;
 
         setTimeout(() => {
-            obstacles.push({
-                "word": "vuurtoren", 
-                "morse": "...-..-..-.-.----.-..-.",
-                "type": "obstacles",
-            },
-            {
-                "word": "eiland", 
-                "morse": "....-...--.-..",
-                "type": "obstacles",
-            },
-            {
-                "word": "tegenligger", 
-                "morse": "-.--..-..-....--.--...-.",
-                "type": "obstacles",
-            },
-            {
-                "word": "anker", 
-                "morse": ".--.-.-..-.",
-                "type": "obstacles",
-            },
-            {
-                "word": "ijsberg", 
-                "morse": "...---...-.....-.--.",
-                "type": "obstacles",
-            },);
             startLevel(false);
         }, 10000)
     } else {
