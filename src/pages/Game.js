@@ -114,6 +114,11 @@ const Game = () => {
         return (
             <div className={styles.grid}>
                 <h2 className={styles.username}>{currentUser}</h2>
+                { checkMessage() ?
+                    <div className={styles.popup}>
+                        <Popup currentMessage={message}/>
+                    </div> : <div></div>
+                }
                 <div className={styles.lives}>
                     <Lives/>
                 </div>

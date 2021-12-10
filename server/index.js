@@ -90,7 +90,7 @@ let levelDone = {
     "obstacles": false,
 };
 const levels = ["text", "light", "sound"];
-let levelAmount = 1;
+let levelAmount = 0;
 let currentLevel;
 
 let readyToAnswer = false;
@@ -149,7 +149,7 @@ board.on("ready", () => {
                         }
                     };    
                 } else {
-                    io.emit("result", "wait for input");
+                    io.emit("message", "wait for input");
                 }
             }
         });
@@ -337,7 +337,7 @@ const checkMorseInput = () => {
             readyToAnswer = true;
 
             if (currentLevel === "light" && morseSeconds.length > 0) {
-                showMorseLight(0);
+                // showMorseLight(0);
             }
         }
     }; 
@@ -347,7 +347,7 @@ const checkLevel = () => {
     // console.log(levelDone);
     if (levelDone.route && levelDone.obstacles) {
         setTimeout(() => {
-            io.emit("result", "next level");
+            io.emit("message", "next level");
             io.emit("options", "");
             io.emit("obstacles", "");
 
