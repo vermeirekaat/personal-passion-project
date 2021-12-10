@@ -25,10 +25,12 @@ const directions = [
     {
         "word": "links", 
         "morse": ".-....-.-.-...",
+        "type": "direction",
     },
     {
         "word": "rechts", 
         "morse": ".-..-.-.....-...",
+        "type": "direction",
     }
 ];
 
@@ -36,44 +38,54 @@ const defaultObstacles = [
     {
         "word": "vuurtoren", 
         "morse": "...-..-..-.-.----.-..-.",
+        "type": "obstacles",
     },
     {
         "word": "eiland", 
         "morse": "....-...--.-..",
+        "type": "obstacles",
     },
     {
         "word": "tegenligger", 
         "morse": "-.--..-..-....--.--...-.",
+        "type": "obstacles",
     },
     {
         "word": "anker", 
         "morse": ".--.-.-..-.",
+        "type": "obstacles",
     },
     {
         "word": "ijsberg", 
         "morse": "...---...-.....-.--.",
+        "type": "obstacles",
     },
 ];
 const obstacles = [
     {
         "word": "vuurtoren", 
         "morse": "...-..-..-.-.----.-..-.",
+        "type": "obstacles",
     },
     {
         "word": "eiland", 
         "morse": "....-...--.-..",
+        "type": "obstacles",
     },
     {
         "word": "tegenligger", 
         "morse": "-.--..-..-....--.--...-.",
+        "type": "obstacles",
     },
     {
         "word": "anker", 
         "morse": ".--.-.-..-.",
+        "type": "obstacles",
     },
     {
         "word": "ijsberg", 
         "morse": "...---...-.....-.--.",
+        "type": "obstacles",
     },
 ];
 
@@ -84,11 +96,11 @@ let answerInput;
 let route = [];
 let warning = [];
 let options = [];
-let isRoute = true;
 let levelDone = {
     "route": false,
     "obstacles": false,
 };
+let arrayLevel = [];
 const levels = ["text", "light", "sound"];
 let levelAmount = 0;
 let currentLevel;
@@ -174,7 +186,7 @@ board.on("ready", () => {
 
         if (onlineUsers.length === 2) {
             console.log(onlineUsers);
-            startLevel();
+            startLevel(true);
         };
     });
 }); 
@@ -185,19 +197,28 @@ const addNewUser = (username, socketId) => {
       onlineUsers.push({ username, socketId, currentStep: 0, startGame: true });
 };
 
-const startLevel = () => {
+const startLevel = (start) => {
     io.emit("result", "");
     currentLevel = levels[levelAmount];
 
+    if (start === true) {
+        arrayLevel = generateArray();
+    };
+    console.log(arrayLevel);
+
     const captain = getUserByUsername("captain");
 
-    if (isRoute === true && levelDone.route === false) {
+    const currentTask = arrayLevel[0]; 
+
+    if (currentTask.type === "direction") {
         io.to(captain.socketId).emit("obstacles", "");
-        emitMessageCaptain("direction");
+        emitMessageCaptain(currentTask);
     } else {
         io.to(captain.socketId).emit("direction", "");
-        emitMessageCaptain("obstacles");
-    }
+        emitMessageCaptain(currentTask);
+    }; 
+
+    arrayLevel.shift();
 };
 
 const showMorseLight = (step) => {
@@ -221,66 +242,58 @@ const showMorseLight = (step) => {
     board.wait(duration, () => {
         showMorseLight(step);
     });
-}
-
-const generateMessage = (type) => {
-    if (type === "direction") {
-        if (route.length <= 0) {
-            for (let i = 0; i < 5; i++) {
-                route.push(getRandomIndex(directions));
-            };
-        }
-        return route;
-    } else if (type === "obstacles") {
-        warning = shuffleArray(obstacles);
-        return warning;
-    } else if (type === "options") {
-        options.push(validateAnswer);
-        const exNumber = defaultObstacles.findIndex((item) => item.word === validateAnswer.word);
-
-        for (let i = 0; i < 2; i++) {
-            const newOption = getRandomIndexEx(defaultObstacles, exNumber);
-
-            if (newOption === false) {
-                options = [];
-                emitMessageSailor("obstacles");
-            } else {
-                options.push(newOption);
-            }
-        };
-        return options;
-    }
 };
 
-const emitMessageCaptain = (type) => {
+const generateArray = () => {
+    for (let i = 0; i < 5; i++) {
+        route.push(getRandomIndex(directions));
+    }; 
+    const newArray = route.concat(obstacles);
+
+    return shuffleArray(newArray);
+}
+
+const generateOptions = () => {
+    options.push(validateAnswer);
+    const exNumber = defaultObstacles.findIndex((item) => item.word === validateAnswer.word);
+    for (let i = 0; i < 2; i++) {
+        const newOption = getRandomIndexEx(defaultObstacles, exNumber);
+        if (newOption === false) {
+            options = [];
+            emitMessageSailor("obstacles");
+        } else {
+            options.push(newOption);
+        }
+    };
+    return options;
+};
+
+const emitMessageCaptain = (task) => {
     const captain = getUserByUsername("captain");
 
-    const array = generateMessage(type);
+    io.to(captain.socketId).emit(task.type, task.word);
+    validateAnswer = task;
 
-    io.to(captain.socketId).emit(type, array[0].word);
-    validateAnswer = array[0];
-    array.shift();
-
-    if (type === "direction") {
+    if (task.type === "direction") {
         if (route.length <= 0) {
             levelDone.route = true;
         }
-    } else if (type === "obstacles") {
+    } else if (task.type === "obstacles") {
         if (warning.length <= 0) {
             levelDone.obstacles = true;
         }
     };
 
-    emitMessageSailor(type);
+    emitMessageSailor(task);
 };
 
-const emitMessageSailor = (type) => {
+const emitMessageSailor = (task) => {
     const sailor = getUserByUsername("sailor");
 
-    if (type === "direction") {
+    if (task.type === "direction") {
         io.to(sailor.socketId).emit("options", ["wait for message"]);
-    } else if (type === "obstacles") {
-        options = generateMessage("options");
+    } else if (task.type === "obstacles") {
+        options = generateOptions();
         findDuplicates(options);
 
         if  (options.length === 3) {
@@ -310,7 +323,7 @@ const getRandomIndexEx = (array, ex) => {
     } else {
         return false;
     }
-}
+};
 
 const emitResult = (answer) => {
     if (answer === validateAnswer.word) {
@@ -357,34 +370,37 @@ const checkLevel = () => {
         levelAmount++;
 
         setTimeout(() => {
-            isRoute = !isRoute;
             obstacles.push({
                 "word": "vuurtoren", 
                 "morse": "...-..-..-.-.----.-..-.",
+                "type": "obstacles",
             },
             {
                 "word": "eiland", 
                 "morse": "....-...--.-..",
+                "type": "obstacles",
             },
             {
                 "word": "tegenligger", 
                 "morse": "-.--..-..-....--.--...-.",
+                "type": "obstacles",
             },
             {
                 "word": "anker", 
                 "morse": ".--.-.-..-.",
+                "type": "obstacles",
             },
             {
                 "word": "ijsberg", 
                 "morse": "...---...-.....-.--.",
+                "type": "obstacles",
             },);
-            startLevel();
+            startLevel(false);
         }, 10000)
     } else {
         setTimeout(() => {
-            isRoute = !isRoute
             io.emit("result", "");
-            startLevel();
+            startLevel(false);
         }, 3000);
     }
 };
@@ -430,7 +446,7 @@ io.on("connection", (socket) => {
         io.to(socket.id).emit("onlineUsers", onlineUsers);
 
         if (onlineUsers.length === 2) {
-            startLevel();
+            startLevel(true);
         };
     });
 
