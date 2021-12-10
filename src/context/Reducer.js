@@ -10,10 +10,10 @@ const Reducer = (state, action) => {
                 ...state,
                 users: state.users.concat(action.payload)
             };
-        case 'REMOVE_USER':
+        case 'LOSE_LIFE':
             return {
                 ...state,
-                users: state.users.filter(user => user.id !== action.payload)
+                users: state.users[0] = action.payload
             };
         case 'SET_ERROR':
             return {

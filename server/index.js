@@ -308,7 +308,7 @@ const emitResult = (answer) => {
     } else {
         morseInput = [];
         morseSeconds = [];
-        io.emit("result", "fail")
+        io.emit("result", "fail");
         io.emit("inputMorse", morseInput);
     };
     checkLevel();

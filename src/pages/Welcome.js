@@ -20,7 +20,7 @@ const Welcome = ({ socket }) => {
             return <p>Something went wrong: <span>{state.error}</span></p>;
         }
         if (player !== "") {
-            dispatch({type: 'ADD_USER', payload: { socket: socket, user: player }});
+            dispatch({type: 'ADD_USER', payload: { socket: socket, user: player, lives: 3 }});
             navigate("/game");
         } if (player === undefined) {
             return false;

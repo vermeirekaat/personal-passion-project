@@ -15,7 +15,6 @@ import Popup from "../components/Popup";
 
 const Game = () => {
 
-    // eslint-disable-next-line
     const [state, dispatch] = useContext(Context);
 
     let currentUser;
@@ -31,6 +30,14 @@ const Game = () => {
     const [input, setInput] = useState("");
     const [result, setResult] = useState("");
     const [message, setMessage] = useState("");
+
+    let lives = 3;
+
+    useEffect(() => {
+        if (result === "fail") {
+            dispatch({type: "LOSE_LIFE", payload: {socket: socket, user: currentUser, life: lives--}});
+        }
+    })
 
     useEffect(() => {
         socket?.on("message", (message) => {
