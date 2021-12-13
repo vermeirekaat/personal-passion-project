@@ -5,7 +5,7 @@ import styles from "./Game.module.css";
 
 import Lives from "../components/Lives";
 import Route from "../components/Route";
-import Storm from "../components/Storm";
+import Wheel from "../components/Wheel";
 import Morse from "../components/Morse";
 import Result from "../components/Result";
 import Obstacle from "../components/Obstacle";
@@ -138,7 +138,7 @@ const Game = () => {
                     <Lives/>
                 </div>
                 <div className={styles.storm}>
-                    <Storm/>
+                    <Wheel/>
                 </div>
                 <div className={styles.options}>
                     <Options currentOptions={options}/>

@@ -1,0 +1,16 @@
+.container {
+    height: 65vh;
+    width: 15rem;
+    text-align: center;
+    margin: 2rem;
+
+    composes: borderLarge from "../style/borders.module.css";
+}
+
+.inside {
+    height: 62vh;
+    display: flex; 
+    flex-direction: column;
+    justify-content: space-evenly;
+    composes: borderLarge from "../style/borders.module.css";
+}
