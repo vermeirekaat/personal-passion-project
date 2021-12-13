@@ -11,4 +11,10 @@
     padding: regVal;
     border: solid miniVal;
     border-radius: bigVal;
+} 
+
+.borderFull {
+    padding: regVal;
+    border: solid miniVal;
+    border-radius: 50%;
 }

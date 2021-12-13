@@ -1,9 +1,26 @@
+@value values: "../style/values.module.css";
+@value regularFont, regularSize, regVal from values;
+
 .container {
-    width: 20vw;
-    height: 30vh;
+    width: 15rem;
+    height: 15rem;
     text-align: center;
-    padding: .2rem .5rem;
-    border: .2rem solid black;
-    border-radius: .5rem;
     margin: 2rem;
+
+    composes: borderFull from "../style/borders.module.css";
+};
+
+.inside {
+    margin: regVal;
+    
+    composes: borderFull from "../style/borders.module.css";
+}
+
+.text {
+    width: 13rem;
+    height: 10rem;
+
+    font-family: regularFont; 
+    font-size: regularSize;
+    text-align: center;
 }
