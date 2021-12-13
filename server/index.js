@@ -79,7 +79,7 @@ let options = [];
 let levelDone = false;
 let arrayLevel = [];
 const levels = ["text", "light", "sound"];
-let levelAmount = 1;
+let levelAmount = 0;
 let currentLevel;
 
 let readyToAnswer = false;
@@ -307,23 +307,30 @@ const emitResult = (answer) => {
         io.emit("result", "success");
         options = []; 
         readyToAnswer = false;
-        io.emit("inputMorse", morseInput);
     } else {
         io.emit("result", "fail");
-        io.emit("inputMorse", morseInput);
     };
     morseInput = [];
+    inputSim = [];
+    io.emit("inputMorse", "");
     checkLevel();
 };
 
 const checkMorseInput = () => {
     let correctInput;
+    const captain = getUserByUsername("captain");
+    const sailor = getUserByUsername("sailor");
 
     if (validateAnswer !== undefined) {
         io.emit("inputMorse", morseInput);
+        if (currentLevel !== "text") {
+            io.to(captain.socketId).emit("inputMorse", morseInput);
+            io.to(sailor.socketId).emit("inputMorse", currentLevel);
+        }
         correctInput = validateAnswer.morse;
 
         if (morseInput.join("") === correctInput) {
+            io.to(sailor.socketId).emit("inputMorse", "");
             showMorseLevel();
             readyToAnswer = true;
         }
@@ -340,8 +347,7 @@ const showMorseLevel = () => {
     }
 
     if (currentLevel === "light") {
-        // console.log("light");
-        showMorseLight(validateAnswer.morse.split(""));
+        showMorseLight(validateAnswer.morse.split(""));    
     }
 
 }
