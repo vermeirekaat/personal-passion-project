@@ -87,7 +87,7 @@ const Game = () => {
     if (currentUser === "captain") {
         return (
             <div className={styles.grid}>
-                <h2 className={styles.username} style={{ color: colors.reg}}>{currentUser}</h2>
+                <h2 className={styles.username} style={{ color: "white"}}>{currentUser}</h2>
                 { checkMessage() && message.user === "captain" ?
                     <div className={styles.popup}>
                         <Popup currentMessage={message.message}/>
@@ -123,7 +123,7 @@ const Game = () => {
     if (currentUser === "sailor") {
         return (
             <div className={styles.grid}>
-                <h2 className={styles.username} style={{ color: colors.reg}}>{currentUser}</h2>
+                <h2 className={styles.username} style={{ color: "white"}}>{currentUser}</h2>
                 { checkMessage() && message.user === "sailor" ?
                     <div className={styles.popup}>
                         <Popup currentMessage={message.message}/>

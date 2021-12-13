@@ -1,22 +1,48 @@
 import styles from "./Options.module.css";
+import { usersContext } from "../context/Users";
+import { useContext } from "react";
+
+import vuurtorenSVG from "./../assets/toren-r.svg";
+import eilandSVG from "./../assets/eiland-r.svg";
+import tegenliggerSVG from "./../assets/boot-r.svg";
+import ankerSVG from "./../assets/anker-r.svg";
+import ijsbergSVG from "./../assets/berg-r.svg";
 
 const Options = ({ currentOptions }) => {
 
+    const obstacles = {
+        vuurtoren: vuurtorenSVG,
+        eiland: eilandSVG, 
+        tegenligger: tegenliggerSVG,
+        anker: ankerSVG, 
+        ijsberg: ijsbergSVG,
+    };
+
+    // eslint-disable-next-line no-unused-vars
+    const [users, setUsers] = useContext(usersContext);
+    const colors = users.colors;
+
     if (currentOptions.length > 1) {
         return (
-            <div className={styles.container}>
-            <p>Options</p>
-            {currentOptions.map((option) => (
-                <p key={option.word}>{option.word}</p>
-            ))}
+            <div className={styles.container} style={{ borderColor: colors.dark}}>
+                <div className={styles.inside} style={{ borderColor: colors.reg}}>
+                    {currentOptions.map((option) => (
+                        <div className={styles.option} key={option.word}>
+                            <img className={styles.svg} alt="obstacle" src={obstacles[option.word]}/>
+                            <p className={styles.text} style={{ color: colors.reg }}>{option.word}</p>
+                        </div>
+                    ))}
+                </div>
         </div>
         )
     }
 
     return (
-        <div className={styles.container}>
-            <p>Options</p>
-            <p>{currentOptions[0]}</p>
+        <div className={styles.container} style={{ borderColor: colors.dark}}>
+            <div className={styles.inside} style={{ borderColor: colors.reg}}>
+                <p className={styles.text} style={{ color: colors.reg }}>Options</p>
+                <p className={styles.text} style={{ color: colors.dark }}>{currentOptions[0]}</p>
+            </div>
         </div>
     )
 }; 
