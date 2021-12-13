@@ -70,6 +70,7 @@ const obstacles = [
 ];
 
 let morseInput = [];
+let inputSim = [];
 let answerInput;
 
 let route = [];
@@ -192,22 +193,27 @@ const startLevel = (start) => {
 };
 
 const showMorseLight = (currentInput) => {
+    const sailor = getUserByUsername("sailor");
     const singleInput = currentInput[0];
 
     if (singleInput === ".") {
         five.Led.prototype["blink"].apply(led);
+        inputSim.push(singleInput);
     } else if (singleInput === "-") {
         five.Led.prototype["pulse"].apply(led);
+        inputSim.push(singleInput);
     }
     currentInput.shift();
 
     if (currentInput.length <= 0) {
         led.stop().off();
+        io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
     } else {
         board.wait(1000, () => {
             showMorseLight(currentInput);
+            io.to(sailor.socketId).emit("inputMorse", inputSim);
         });
-    }
+    }; 
 };
 
 const generateArray = () => {
@@ -327,9 +333,11 @@ const checkMorseInput = () => {
 const showMorseLevel = () => {
     const captain = getUserByUsername("captain");
     const sailor = getUserByUsername("sailor");
-
     io.to(captain.socketId).emit("result", "correct");
-    io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
+
+    if (currentLevel === "text") {
+        io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
+    }
 
     if (currentLevel === "light") {
         // console.log("light");
