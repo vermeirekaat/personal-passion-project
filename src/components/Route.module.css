@@ -22,5 +22,5 @@
     font-family: bigFont;
     font-size: titleSize;
     text-align: center;
-    text-transform: capitalize;
+    text-transform: uppercase;
 }

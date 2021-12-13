@@ -4,7 +4,6 @@
 .container {
     width: 15rem;
     height: 85vh;
-    background-color: black;
 
     composes: borderLarge from "../style/borders.module.css";
 }

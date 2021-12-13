@@ -103,14 +103,14 @@ const Game = () => {
                 <div className={styles.route}>
                     <Route currentDirection={route}/>
                 </div>
+                <div className={styles.obstacle}>
+                    <Obstacle currentObstacle={obstacle}/>
+                </div>
                 <div className={styles.morse}>
                     <Morse morseInput={input}/>
                 </div>
                 <div className={styles.result}>
                     <Result result={result}/>
-                </div>
-                <div className={styles.obstacle}>
-                    <Obstacle currentObstacle={obstacle}/>
                 </div>
                 <div className={styles.cheatsheet}>
                     <CheatSheet/>
@@ -139,14 +139,14 @@ const Game = () => {
                 <div className={styles.storm}>
                     <Storm/>
                 </div>
+                <div className={styles.options}>
+                    <Options currentOptions={options}/>
+                </div>
                 <div className={styles.morse }>
                     <Morse morseInput={input}/>
                 </div>
                 <div className={styles.result}>
                     <Result result={result}/>
-                </div>
-                <div className={styles.options}>
-                    <Options currentOptions={options}/>
                 </div>
                 <div className={styles.cheatsheet}>
                     <CheatSheet/>
