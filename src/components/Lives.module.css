@@ -1,10 +1,32 @@
+@value values: "../style/values.module.css";
+@value myRed, myDarkRed, bigFont, titleSize from values;
+
 .container {
-    width: 20vw;
-    padding: .2rem .5rem;
-    border: .2rem solid black;
-    border-radius: .5rem;
+    width: 15rem;
+    padding: .5rem;
     margin: 2rem;
+    border: .2rem solid myDarkRed;
+    border-radius: .5rem;
+}
+
+.inside {
+    border: .2rem solid myRed;
+    border-radius: .5rem;
+    padding: .5rem;
     display: flex; 
     flex-direction: row;
     justify-content: space-evenly;
+}
+
+.svg {
+    width: 2rem; 
+    height: 3rem;
+}
+
+.text {
+    color: myRed; 
+    font-family: bigFont; 
+    font-size: titleSize;
+    margin: 0;
+    height: 3rem;
 }

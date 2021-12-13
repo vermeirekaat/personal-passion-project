@@ -18,11 +18,23 @@ const Welcome = ({ socket }) => {
     }, [socket]);
 
     useEffect(() => {
+        const colorScheme = [{
+            captain: {
+                reg: "#09edf6",
+                dark: "#043c7a",
+            }, 
+            sailor: {
+                reg: "#ff0c0c", 
+                dark: "#a00000",
+            },
+        }];
+
         if (player !== "") {
             setUsers({
                 socket: socket, 
                 user: player,
                 lives: [1, 2, 3],
+                colors: colorScheme[0][player],
             })
             navigate("/game");
         } if (player === undefined) {
