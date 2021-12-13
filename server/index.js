@@ -79,7 +79,7 @@ let options = [];
 let levelDone = false;
 let arrayLevel = [];
 const levels = ["text", "light", "sound"];
-let levelAmount = 0;
+let levelAmount = 1;
 let currentLevel;
 
 let readyToAnswer = false;
@@ -208,9 +208,9 @@ const showMorseLight = (step) => {
         step++;
     } else if (step >= morseSeconds.length) {
         morseSeconds = [];
-        led.off();
+        led.stop();
     } else if (morseSeconds.length === 0) {
-        led.off();
+        led.stop();
     }
 
     board.wait(duration, () => {
@@ -336,7 +336,7 @@ const checkMorseInput = () => {
             readyToAnswer = true;
 
             if (currentLevel === "light" && morseSeconds.length > 0) {
-                // showMorseLight(0);
+                showMorseLight(0);
             }
         }
     }; 
