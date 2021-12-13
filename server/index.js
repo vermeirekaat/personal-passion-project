@@ -70,7 +70,6 @@ const obstacles = [
 ];
 
 let morseInput = [];
-let morseSeconds = [];
 let answerInput;
 
 let route = [];
@@ -92,8 +91,8 @@ board.on("ready", () => {
     led.off();
 
     const buttonsCollection = {
-        first: { pin: 2, type: "morse", value: ".", sec: 1000 },
-        second: { pin: 6, type: "morse", value: "-", sec: 1500 },
+        first: { pin: 2, type: "morse", value: "." },
+        second: { pin: 6, type: "morse", value: "-" },
         third: { pin: 9, type:"submit", value: 0 },
     }; 
 
@@ -112,8 +111,6 @@ board.on("ready", () => {
         button.on("press", () => {
             if (button.custom.type === "morse") {
                 morseInput.push(button.custom.value);
-                morseSeconds.push(button.custom.sec);
-
                 checkMorseInput();
 
             } else if (button.custom.type === "submit") {
@@ -146,8 +143,7 @@ board.on("ready", () => {
         button.on("hold", () => {
             if (button.custom.type === "morse") {
                 morseInput = [];
-                morseSeconds = [];
-                checkMorseInput();
+                io.emit("inputMorse", "");
             } else if (button.custom.type === "submit") {
                 emitResult(answerInput);
                 button.custom.value = 0;
@@ -195,27 +191,23 @@ const startLevel = (start) => {
     arrayLevel.shift();
 };
 
-const showMorseLight = (step) => {
-    const duration = morseSeconds[step]; 
+const showMorseLight = (currentInput) => {
+    const singleInput = currentInput[0];
 
-    if (duration === 1000) {
+    if (singleInput === ".") {
         five.Led.prototype["blink"].apply(led);
-    } else if (duration === 1500) {
+    } else if (singleInput === "-") {
         five.Led.prototype["pulse"].apply(led);
-    };
-
-    if (step < morseSeconds.length) {
-        step++;
-    } else if (step >= morseSeconds.length) {
-        morseSeconds = [];
-        led.stop();
-    } else if (morseSeconds.length === 0) {
-        led.stop();
     }
+    currentInput.shift();
 
-    board.wait(duration, () => {
-        showMorseLight(step);
-    });
+    if (currentInput.length <= 0) {
+        led.stop().off();
+    } else {
+        board.wait(1000, () => {
+            showMorseLight(currentInput);
+        });
+    }
 };
 
 const generateArray = () => {
@@ -307,40 +299,44 @@ const getRandomIndexEx = (array, ex) => {
 const emitResult = (answer) => {
     if (answer === validateAnswer.word) {
         io.emit("result", "success");
-        options = [];
-        morseInput = [];
-        morseSeconds = [];
+        options = []; 
         readyToAnswer = false;
         io.emit("inputMorse", morseInput);
     } else {
-        morseInput = [];
-        morseSeconds = [];
         io.emit("result", "fail");
         io.emit("inputMorse", morseInput);
     };
+    morseInput = [];
     checkLevel();
 };
 
 const checkMorseInput = () => {
     let correctInput;
-    const captain = getUserByUsername("captain");
-    const sailor = getUserByUsername("sailor");
 
     if (validateAnswer !== undefined) {
         io.emit("inputMorse", morseInput);
         correctInput = validateAnswer.morse;
 
         if (morseInput.join("") === correctInput) {
-            io.to(captain.socketId).emit("result", "correct");
-            io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
+            showMorseLevel();
             readyToAnswer = true;
-
-            if (currentLevel === "light" && morseSeconds.length > 0) {
-                showMorseLight(0);
-            }
         }
     }; 
 };
+
+const showMorseLevel = () => {
+    const captain = getUserByUsername("captain");
+    const sailor = getUserByUsername("sailor");
+
+    io.to(captain.socketId).emit("result", "correct");
+    io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
+
+    if (currentLevel === "light") {
+        // console.log("light");
+        showMorseLight(validateAnswer.morse.split(""));
+    }
+
+}
 
 const checkLevel = () => {
     if (arrayLevel.length <= 0) {
