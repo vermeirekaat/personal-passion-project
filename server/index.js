@@ -7,6 +7,7 @@ const server = require('http').Server(app);
 const port = process.env.PORT || 5000;
 const board = new five.Board();
 
+const myFunctions = require('./controller');
 const io = require('socket.io')(server, {
     cors: {
         origin: "http://localhost:3005", 
@@ -218,12 +219,12 @@ const showMorseLight = (currentInput) => {
 
 const generateArray = () => {
     for (let i = 0; i < 5; i++) {
-        route.push(getRandomIndex(directions));
+        route.push(myFunctions.getRandomIndex(directions));
     }; 
     const copy = [...obstacles]
     const newArray = route.concat(copy);
 
-    return shuffleArray(newArray);
+    return myFunctions.shuffleArray(newArray);
 }
 
 const generateOptions = (task) => {
@@ -231,7 +232,7 @@ const generateOptions = (task) => {
     const exNumber = obstacles.findIndex((item) => item.word === validateAnswer.word);
 
     for (let i = 0; i < 2; i++) {
-        const newOption = getRandomIndexEx(obstacles, exNumber);
+        const newOption = myFunctions.getRandomIndexEx(obstacles, exNumber);
         if (newOption === false) {
             options = [];
             emitMessageSailor(task);
@@ -269,38 +270,19 @@ const emitMessageSailor = (task) => {
     } else if (task.type === "obstacles") {
         options = generateOptions(task);
 
-        findDuplicates(options, task);
+        const duplicates = myFunctions.findDuplicates(options, task);
+        if (duplicates) {
+            options = [];
+            emitMessageSailor(task);
+        }
 
         if (options.length === 3) {
-            io.to(sailor.socketId).emit("options", shuffleArray(options));
+            io.to(sailor.socketId).emit("options", myFunctions.shuffleArray(options));
         } else {
             options = generateOptions();
         }
     };
 }; 
-
-const findDuplicates = (array, task) => {
-    let result = false; 
-    result = array.some((element, index) => {
-        return array.indexOf(element) !== index
-    }); 
-
-    if (result) {
-        options = [];
-        emitMessageSailor(task);
-    } else {
-        return;
-    }
-};
-
-const getRandomIndexEx = (array, ex) => {
-    const randomNumber = Math.floor(Math.random()*array.length); 
-    if (randomNumber !== ex) {
-        return array[randomNumber]; 
-    } else {
-        return false;
-    }
-};
 
 const emitResult = (answer) => {
     if (answer === validateAnswer.word) {
@@ -374,28 +356,6 @@ const checkLevel = () => {
 
 const getUserByUsername = (username) => {
     return onlineUsers.find((user) => user.username === username);
-};
-
-const getRandomIndex = (array) => {
-    let copy = array.slice(0);
-    if (copy.length < 1) {
-        copy = array.slice(0);
-    }
-    const index = Math.floor(Math.random() * copy.length);
-    const item = copy[index];
-    copy.splice(index, 1);
-
-    return item;
-};
-
-const shuffleArray = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        let temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    return array;
 };
 
 io.on("connection", (socket) => {
