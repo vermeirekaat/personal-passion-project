@@ -1,9 +1,26 @@
+@value values: "../style/values.module.css";
+@value bigFont, titleSize from values;
+
 .container {
-    height: 52vh;
-    width: 20vw; 
+    height: 65vh;
+    width: 15rem;
     text-align: center;
-    padding: .2rem .5rem;
-    border: .2rem solid black;
-    border-radius: .5rem;
     margin: 2rem;
+
+    composes: borderLarge from "../style/borders.module.css";
+}
+
+.inside {
+    height: 62vh;
+    display: flex; 
+    flex-direction: column;
+    justify-content: space-evenly;
+    composes: borderLarge from "../style/borders.module.css";
+}
+
+.text {
+    font-family: bigFont;
+    font-size: titleSize;
+    text-align: center;
+    text-transform: capitalize;
 }

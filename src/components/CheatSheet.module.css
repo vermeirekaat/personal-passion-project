@@ -1,5 +1,5 @@
 @value values: "../style/values.module.css";
-@value bigFont, regularSize from values;
+@value bigFont, regularSize, bigVal from values;
 
 .container {
     width: 15rem;
@@ -20,5 +20,6 @@
 .letter {
     font-family: bigFont;
     font-size: regularSize;
-    text-align: center;
+    text-align: left;
+    padding: 0rem regVal;
 }
