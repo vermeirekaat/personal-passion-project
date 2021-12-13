@@ -1,15 +1,14 @@
+@value values: "../style/values.module.css";
+@value regularFont, regularSize, regVal from values;
+
 .container {
-    width: 40vw; 
-    height: auto; 
-    display: flex; 
-    justify-self: center;
-    background-color: lightgray;
-    padding: 1rem;
-    margin: 2rem 0;
-    border: black; 
-    border-radius: .5rem;
+    width: 15rem;
+    margin: 2rem;
+    composes: borderSmall from "../style/borders.module.css";
 }; 
 
-.message {
-    color: red;
+.text {
+    color: white;
+    font-family: regularFont; 
+    font-size: regularSize;
 }

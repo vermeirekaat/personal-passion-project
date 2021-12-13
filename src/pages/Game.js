@@ -19,6 +19,7 @@ const Game = () => {
 
     const currentUser = users.user;
     const socket = users.socket;
+    const colors = users.colors;
     let currentLives = users.lives;
 
     const [route, setRoute] = useState("");
@@ -86,7 +87,7 @@ const Game = () => {
     if (currentUser === "captain") {
         return (
             <div className={styles.grid}>
-                <h2 className={styles.username}>{currentUser}</h2>
+                <h2 className={styles.username} style={{ color: colors.reg}}>{currentUser}</h2>
                 { checkMessage() && message.user === "captain" ?
                     <div className={styles.popup}>
                         <Popup currentMessage={message.message}/>
@@ -122,7 +123,7 @@ const Game = () => {
     if (currentUser === "sailor") {
         return (
             <div className={styles.grid}>
-                <h2 className={styles.username}>{currentUser}</h2>
+                <h2 className={styles.username} style={{ color: colors.reg}}>{currentUser}</h2>
                 { checkMessage() && message.user === "sailor" ?
                     <div className={styles.popup}>
                         <Popup currentMessage={message.message}/>

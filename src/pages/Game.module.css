@@ -1,5 +1,5 @@
 @value values: "../style/values.module.css";
-@value myBlack from values;
+@value regularFont, regularSize, myBlack from values;
 
 .grid {
     display: grid; 
@@ -19,8 +19,12 @@
     z-index: 2;
 }
 
-.user {
+.username {
     grid-area: user;
+    font-family: regularFont; 
+    font-size: regularSize;
+    text-transform: capitalize;
+    margin: 1rem 5rem;
 }
 
 .lives {

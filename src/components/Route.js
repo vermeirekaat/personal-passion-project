@@ -12,9 +12,9 @@ const Route = ({ currentDirection }) => {
         rechts: dirRight, 
         links: dirLeft,
     };
-     // eslint-disable-next-line no-unused-vars
-     const [users, setUsers] = useContext(usersContext);
-     const colors = users.colors;
+    // eslint-disable-next-line no-unused-vars
+    const [users, setUsers] = useContext(usersContext);
+    const colors = users.colors;
 
     return (
         <div className={styles.container} style={{ borderColor: colors.dark}}>
