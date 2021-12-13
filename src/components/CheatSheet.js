@@ -111,9 +111,11 @@ const CheatSheet = () => {
     
     return (
         <div className={styles.container}>
-            {morse.map((item) => (
-                <p className={styles.letter }key={item.letter}>{item.letter} <span>{item.morse}</span></p>
-            ))}
+            <div className={styles.inside}>
+                {morse.map((item) => (
+                    <p className={styles.letter }key={item.letter}>{item.letter} <span>{item.morse}</span></p>
+                ))}
+            </div>
         </div>
     )
 }; 

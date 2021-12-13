@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Kalam&display=swap'); 
+@import url('https://fonts.googleapis.com/css2?family=Itim&family=Kalam&display=swap');
+
+@value regularFont: 'Kalam', cursive;
+@value bigFont: 'Itim', cursive;
+
+@value titleSize: 2rem;
+@value regularSize: 1.7rem;
+@value smallSize: 1.5rem;
+
+@value myBlack: #000000;
+@value myWhite: #ffffff;
+@value myRed: #ff0c0c;
+@value myDarkRed: #a00000;
+@value myBlue: #09edf6;
+@value myDarkBlue: #043c7a;
