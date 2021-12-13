@@ -1,33 +1,24 @@
 @value values: "../style/values.module.css";
-@value bigFont, regularSize, myRed, myDarkRed from values;
+@value bigFont, regularSize from values;
 
 .container {
     width: 15rem;
     height: 85vh;
-
     background-color: black;
-    padding: .5rem; 
-    border: myDarkRed solid .4rem;
-    border-radius: 2rem;
+
+    composes: borderLarge from "../style/borders.module.css";
 }
 
 .inside {
     display: grid; 
     grid-template-columns: repeat(2, 7.5rem);
     grid-template-rows: repeat(12, 3.5rem);
-    padding: .5rem;
-
-    border: myRed solid .4rem;
-    border-radius: 2rem;
+    
+    composes: borderLarge from "../style/borders.module.css";
 }
 
 .letter {
     font-family: bigFont;
     font-size: regularSize;
     text-align: center;
-    color: myDarkRed;
-}
-
-.letter span {
-    color: myRed;
 }

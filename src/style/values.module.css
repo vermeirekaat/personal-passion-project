@@ -8,6 +8,10 @@
 @value regularSize: 1.7rem;
 @value smallSize: 1.5rem;
 
+@value miniVal: .2rem;
+@value regVal: .5rem;
+@value bigVal: 2rem;
+
 @value myBlack: #000000;
 @value myWhite: #ffffff;
 @value myRed: #ff0c0c;

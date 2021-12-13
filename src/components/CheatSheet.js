@@ -1,6 +1,12 @@
 import styles from "./CheatSheet.module.css"; 
+import { usersContext } from "../context/Users";
+import { useContext } from "react";
 
 const CheatSheet = () => {
+
+     // eslint-disable-next-line no-unused-vars
+     const [users, setUsers] = useContext(usersContext);
+     const colors = users.colors;
 
     const morse = [
         {
@@ -110,10 +116,10 @@ const CheatSheet = () => {
     ]
     
     return (
-        <div className={styles.container}>
-            <div className={styles.inside}>
+        <div className={styles.container} style={{ borderColor: colors.dark}}>
+            <div className={styles.inside} style={{ borderColor: colors.reg}}>
                 {morse.map((item) => (
-                    <p className={styles.letter }key={item.letter}>{item.letter} <span>{item.morse}</span></p>
+                    <p className={styles.letter} key={item.letter} style={{ color: colors.dark}}>{item.letter} <span style={{ color: colors.reg}}>{item.morse}</span></p>
                 ))}
             </div>
         </div>

@@ -1,0 +1,14 @@
+@value values: "../style/values.module.css";
+@value miniVal, regVal, bigVal from values;
+
+.borderSmall {
+    padding: miniVal;
+    border: solid miniVal;
+    border-radius: regVal;
+}
+
+.borderLarge {
+    padding: regVal;
+    border: solid miniVal;
+    border-radius: bigVal;
+}
