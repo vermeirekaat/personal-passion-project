@@ -324,7 +324,6 @@ const checkMorseInput = () => {
 };
 
 const showMorseLevel = () => {
-    const captain = getUserByUsername("captain");
     const sailor = getUserByUsername("sailor");
     io.emit("result", "correct");
 

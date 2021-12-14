@@ -11,7 +11,6 @@ import Result from "../components/Result";
 import Obstacle from "../components/Obstacle";
 import Options from "../components/Options";
 import CheatSheet from "../components/CheatSheet";
-import Popup from "../components/Popup";
 import Controls from "../components/Controls";
 
 const Game = () => {
@@ -28,14 +27,7 @@ const Game = () => {
     const [options, setOptions] = useState([""]);
     const [input, setInput] = useState("");
     const [result, setResult] = useState("");
-    const [message, setMessage] = useState("");
     const [rotation, setRotation] = useState("");
-
-    useEffect(() => {
-        socket?.on("message", (message) => {
-            setMessage(message);
-        });
-    }, [socket]);
 
     useEffect(() => {
         socket?.on("inputMorse", (data) => {
@@ -82,31 +74,10 @@ const Game = () => {
         });
     }, [socket, currentLives, users, setUsers]);
 
-    const checkMessage = () => {
-        if (message !== "") {
-            setTimeout(() => {
-                setMessage("");
-            }, 10000)
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     if (currentUser === "captain") {
         return (
             <div className={styles.grid}>
                 <h2 className={styles.username} style={{ color: colors.reg}}>{currentUser}</h2>
-                { checkMessage() && message.user === "captain" ?
-                    <div className={styles.popup}>
-                        <Popup currentMessage={message.message}/>
-                    </div> : <div></div>
-                }
-                { checkMessage() && message.user === "both" ?
-                    <div className={styles.popup}>
-                        <Popup currentMessage={message.message}/>
-                    </div> : <div></div>
-                }
                 <div className={styles.lives}>
                     <Lives/>
                 </div>
@@ -136,16 +107,6 @@ const Game = () => {
         return (
             <div className={styles.grid}>
                 <h2 className={styles.username} style={{ color: colors.reg}}>{currentUser}</h2>
-                { checkMessage() && message.user === "sailor" ?
-                    <div className={styles.popup}>
-                        <Popup currentMessage={message.message}/>
-                    </div> : <div></div>
-                }
-                { checkMessage() && message.user === "both" ?
-                    <div className={styles.popup}>
-                        <Popup currentMessage={message.message}/>
-                    </div> : <div></div>
-                }
                 <div className={styles.lives}>
                     <Lives/>
                 </div>
