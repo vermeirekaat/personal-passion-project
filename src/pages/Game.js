@@ -18,10 +18,10 @@ const Game = () => {
 
     const [users, setUsers] = useContext(usersContext);
 
-    const currentUser = users.user;
-    const socket = users.socket;
-    const colors = users.colors;
-    let currentLives = users.lives;
+    const currentUser = users[0].user;
+    const socket = users[0].socket;
+    const colors = users[0].colors;
+    let currentLives = users[0].lives;
 
     const [route, setRoute] = useState("");
     const [obstacle, setObstacle] = useState("");
@@ -30,13 +30,8 @@ const Game = () => {
     const [result, setResult] = useState("");
     const [message, setMessage] = useState("");
 
-    useEffect(() => {
-        if (result === "fail") {
-            currentLives.shift();
-
-            setUsers({user: currentUser, socket: socket, lives: currentLives});
-        };
-    }, [result, setUsers, currentUser, socket, currentLives]);
+    const [rotation, setRotation] = useState("");
+    console.log(route);
 
     useEffect(() => {
         socket?.on("message", (message) => {
@@ -71,8 +66,17 @@ const Game = () => {
     useEffect(() => {
         socket?.on("result", (message) => {
             setResult(message);
+            if (message === "fail") {
+                currentLives.shift();
+    
+                const copy = [...users]; 
+                copy[0].lives = currentLives;
+    
+                setUsers(copy);
+            };
+
         });
-    }, [socket]);
+    }, [socket, currentLives, users, setUsers]);
 
     const checkMessage = () => {
         if (message !== "") {
@@ -145,7 +149,7 @@ const Game = () => {
                     <Controls/>
                 </div>
                 <div className={styles.wheel}>
-                    <Wheel/>
+                    <Wheel direction={rotation}/>
                 </div>
                 <div className={styles.options}>
                     <Options currentOptions={options}/>

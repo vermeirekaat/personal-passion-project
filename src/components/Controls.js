@@ -17,7 +17,7 @@ const Controls = () => {
 
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
-    const currentUser = users.user;
+    const currentUser = users[0].user;
 
     return (
         <div className={styles.container}>

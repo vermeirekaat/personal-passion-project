@@ -7,7 +7,7 @@ const Morse = ({ morseInput }) => {
 
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
-    const colors = users.colors;
+    const colors = users[0].colors;
 
     return (
         <div className={styles.container} style={{ borderColor: colors.dark}}>

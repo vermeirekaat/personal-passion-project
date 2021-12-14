@@ -15,10 +15,11 @@ const Lives = () => {
 
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
-    const currentUser = users.user;
-    const colors = users.colors;
+    const currentUser = users[0].user;
+    const colors = users[0].colors;
+    const lives = users[0].lives;
 
-    if (users.lives.length <= 0) {
+    if (lives.length <= 0) {
         return (
             <div className={styles.container} style={{ borderColor: colors.dark}}>
                 <div className={styles.inside} style={{ borderColor: colors.reg}}>
@@ -31,7 +32,7 @@ const Lives = () => {
     return (
         <div className={styles.container} style={{ borderColor: colors.dark}}>
             <div className={styles.inside} style={{ borderColor: colors.reg}}>
-                {users.lives.map((life) => (
+                {lives.map((life) => (
                     <img className={styles.svg} alt="heart" key={life} src={assets[currentUser]}/>
                 ))}
             </div>

@@ -30,12 +30,12 @@ const Welcome = ({ socket }) => {
         }];
 
         if (player !== "") {
-            setUsers({
-                socket: socket, 
+            setUsers([{
                 user: player,
+                socket: socket, 
                 lives: [1, 2, 3],
                 colors: colorScheme[0][player],
-            })
+            }]);
             navigate("/game");
         } if (player === undefined) {
             return false;
