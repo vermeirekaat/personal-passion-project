@@ -25,7 +25,7 @@ const Options = ({ currentOptions, opacity }) => {
     if (currentOptions.length > 1) {
         return (
             <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
-                <div className={styles.inside} style={{ borderColor: colors.reg, minHeight: "49rem"}}>
+                <div className={styles.inside} style={{ borderColor: colors.reg}}>
                     {currentOptions.map((option) => (
                         <div className={styles.option} key={option.word}>
                             <img className={styles.svg} alt="obstacle" src={obstacles[option.word]}/>

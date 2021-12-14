@@ -25,9 +25,9 @@ const Obstacle = ({ currentObstacle, opacity }) => {
     return (
         <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
                 { currentObstacle !== "" ? 
-                 <div className={styles.inside} style={{ borderColor: colors.reg, minHeight: "49rem"}}>
+                 <div className={styles.inside} style={{ borderColor: colors.reg}}>
                 <p className={styles.text} style={{ color: colors.reg }}>{currentObstacle}</p> <img className={styles.svg} alt="obstacle" src={obstacles[currentObstacle]}/></div>
-                :  <div className={styles.inside} style={{ borderColor: colors.reg, minHeight: "49rem"}}> <p className={styles.text} style={{ color: colors.reg}}>Obstakel</p> </div> }
+                :  <div className={styles.inside} style={{ borderColor: colors.reg}}> <p className={styles.text} style={{ color: colors.reg}}>Obstakel</p> </div> }
 
         </div>
     )

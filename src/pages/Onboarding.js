@@ -26,6 +26,8 @@ const Onboarding = () => {
     const [currentItem, setCurrentItem] = useState("");
     const [amount, setAmount] = useState(0);
     const [route, setRoute] = useState("rechts");
+    const obstacle = "vuurtoren";
+    const options = [{"word": "eiland"}, {"word": "vuurtoren"}, {"word": "tegenligger"}];
     const [input, setInput] = useState("");
     const [result, setResult] = useState("");
 
@@ -50,12 +52,6 @@ const Onboarding = () => {
     useEffect(() => {
         socket?.on("direction", (direction) => {
             setRoute(direction);
-        });
-    }, [socket]);
-
-    useEffect(() => {
-        socket?.on("message", (message) => {
-            console.log(message);
         });
     }, [socket]);
 
@@ -107,7 +103,7 @@ const Onboarding = () => {
                     <Result result={result} opacity={checkOpacity("Result")}/>
                 </div>
                 <div className={styles.obstacle}>
-                    <Obstacle currentObstacle={""} opacity={checkOpacity("Obstacle")}/>
+                    <Obstacle currentObstacle={obstacle} opacity={checkOpacity("Obstacle")}/>
                 </div>
                 <div className={styles.cheatsheet}>
                     <CheatSheet opacity={checkOpacity("Cheatsheet")}/>
@@ -132,7 +128,7 @@ const Onboarding = () => {
                     <Controls opacity={checkOpacity("Options")}/>
                 </div>
                 <div className={styles.wheel}>
-                    <Wheel opacity={checkOpacity("Wheel")}/>
+                    <Wheel currentRotation={""} opacity={checkOpacity("Wheel")}/>
                 </div>
                 <div className={styles.morse}>
                     <Morse morseInput={input} opacity={checkOpacity("Morse")}/>
@@ -141,7 +137,7 @@ const Onboarding = () => {
                     <Result result={result} opacity={checkOpacity("Result")}/>
                 </div>
                 <div className={styles.options}>
-                    <Options currentOptions={""} opacity={checkOpacity("Options")}/>
+                    <Options currentOptions={options} opacity={checkOpacity("Options")}/>
                 </div>
                 <div className={styles.cheatsheet}>
                     <CheatSheet opacity={checkOpacity("Cheatsheet")}/>

@@ -8,8 +8,6 @@ const Wheel = ({ currentRotation, opacity }) => {
      // eslint-disable-next-line no-unused-vars
      const [users, setUsers] = useContext(usersContext);
      const colors = users[0].colors;
-
-    // const [direction, setDirection] = useState(currentRotation);
  
      return (
         <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
