@@ -30,9 +30,6 @@ const Game = () => {
     const [result, setResult] = useState("");
     const [message, setMessage] = useState("");
 
-    const [rotation, setRotation] = useState("");
-    console.log(route);
-
     useEffect(() => {
         socket?.on("message", (message) => {
             setMessage(message);
@@ -149,7 +146,7 @@ const Game = () => {
                     <Controls/>
                 </div>
                 <div className={styles.wheel}>
-                    <Wheel direction={rotation}/>
+                    <Wheel/>
                 </div>
                 <div className={styles.options}>
                     <Options currentOptions={options}/>

@@ -16,34 +16,24 @@
     composes: borderLarge from "../style/borders.module.css";
 }
 
-.rechts{
-    animation-name: rotateR;
-    animation-duration: 10s;
-    animation-iteration-count: infinite;
-    transform-origin: 50% 50%;
-    display: inline-block;
-}
-@keyframes rotateR {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(90deg);
-    }
+.rechts {
+    animation: rechts 4s linear infinite;
 }
 
-.rechts{
-    animation-name: rotateL;
-    animation-duration: 10s;
-    animation-iteration-count: infinite;
-    transform-origin: 50% 50%;
-    display: inline-block;
+@keyframes rechts { 
+    100% { 
+        -webkit-transform: rotate(360deg); 
+        transform:rotate(360deg); 
+    } 
 }
-@keyframes rotateL {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(-90deg);
-    }
+
+.links {
+    animation: links 4s linear infinite;
+}
+
+@keyframes links { 
+    100% { 
+        -webkit-transform: rotate(360deg); 
+        transform:rotate(-360deg); 
+    } 
 }
