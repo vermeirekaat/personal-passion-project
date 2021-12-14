@@ -141,9 +141,9 @@ const Avatar = ({ showItem }) => {
     }
 
     return (
-        <div className={styles.container}>
-            <div className={styles.captionContainer}>
-                <p className={styles.caption}>{newArray[amount].text}</p><p>{newArray[amount].topic}</p>
+        <div className={styles.container} style={{ borderColor: colors.dark}}>
+            <div className={styles.inside} style={{ borderColor: colors.reg}}>
+                <p className={styles.caption} style={{ color: colors.reg}}>{newArray[amount].text}</p><p>{newArray[amount].topic}</p>
                 {newArray[amount].button === true ? <button className={styles.next} onClick={() => setAmount(amount + 1)}>&#10145;</button> : <input readOnly value="&#9747;" onKeyPress={handleKeyDown}></input>} 
             </div>
         </div>

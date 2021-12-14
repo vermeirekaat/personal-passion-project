@@ -1,13 +1,28 @@
+@value values: "../style/values.module.css";
+@value bigFont, regSize, miniVal from values;
+
 .container {
+    width: 50rem;
+    margin: 1rem 2rem;
+    composes: borderSmall from "../style/borders.module.css";
+}
+
+.inside {
     display: flex; 
     flex-direction: row;
-    justify-content: space-around;
-    height: 20vh;
-    margin: 1rem 0;
+    justify-content: space-evenly;
+    margin: miniVal;
+    composes: borderSmall from "../style/borders.module.css";
 }
 
 .avatar {
     width: 20vw;
+}
+
+.caption {
+    font-family: bigFont; 
+    font-size: regSize;
+    padding: miniVal;
 }
 
 .captionContainer {

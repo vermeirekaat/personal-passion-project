@@ -71,30 +71,30 @@ const Onboarding = () => {
         return (
             <div className={styles.grid}>
                 <div className={styles.skipContainer}>
-                    <button className={styles.skip} onClick={() => setCurrentItem("Game")} style={{ backgroundColor: colors.dark, color: colors.reg}}>Skip Onboarding</button>
+                    <button className={styles.skip} onClick={() => setCurrentItem("Game")} style={{ backgroundColor: colors.dark, color: colors.reg}}>Overslaan</button>
                 </div>
                 <div className={styles.avatar}>
                     <Avatar showItem={(item) => setCurrentItem(item)}/>
                 </div>
-                <div className={`${currentItem === "Lives" ? styles.opacity : styles.lives}`}>
+                <div className={styles.lives}>
                     <Lives/>
                 </div>
                 <div className={styles.controls}>
                     <Controls/>
                 </div>
-                <div className={`${currentItem === "Route" ? styles.opacity : styles.route}`}>
+                <div className={styles.route}>
                     <Route currentDirection={route}/>
                 </div>
-                <div className={`${currentItem === "Morse" ? styles.opacity : styles.morse }`}>
+                <div className={styles.morse}>
                     <Morse morseCode={(input) => handleInput(input)} />
                 </div>
-                <div className={`${currentItem === "Result" ? styles.opacity : styles.result }`}>
+                <div className={styles.result}>
                     <Result result={result}/>
                 </div>
-                <div className={`${currentItem === "Obstacle" ? styles.opacity : styles.obstacle}`}>
-                    <Obstacle/>
+                <div className={styles.obstacle}>
+                    <Obstacle currentObstacle={""}/>
                 </div>
-                <div className={`${currentItem === "CheatSheet" ? styles.opacity : styles.cheatsheet}`}>
+                <div className={styles.cheatsheet}>
                     <CheatSheet/>
                 </div>
             </div>
@@ -104,29 +104,31 @@ const Onboarding = () => {
     if (currentUser === "sailor") {
         return (
             <div className={styles.grid}>
-                <button className={styles.skip} onClick={() => setCurrentItem("Game")}>Skip Onboarding</button>
+                <div className={styles.skipContainer}>
+                    <button className={styles.skip} onClick={() => setCurrentItem("Game")} style={{ backgroundColor: colors.dark, color: colors.reg}}>Overslaan</button>
+                </div>
                 <div className={styles.avatar}>
                     <Avatar showItem={(item) => setCurrentItem(item)}/>
                 </div>
-                <div className={`${currentItem === "Lives" ? styles.opacity : styles.lives}`}>
+                <div className={styles.lives}>
                     <Lives/>
                 </div>
                 <div className={styles.controls}>
                     <Controls/>
                 </div>
-                <div className={`${currentItem === "Storm" ? styles.opacity : styles.storm}`}>
+                <div className={styles.wheel}>
                     <Wheel/>
                 </div>
-                <div className={`${currentItem === "Morse" ? styles.opacity : styles.morse }`}>
+                <div className={styles.morse}>
                     <Morse morseInput={input} getDirection={(direction) => handleDirection(direction)}/>
                 </div>
-                <div className={`${currentItem === "Result" ? styles.opacity : styles.result}`}>
+                <div className={styles.result}>
                     <Result result={result}/>
                 </div>
-                <div className={`${currentItem === "Options" ? styles.opacity : styles.options}`}>
-                    <Options/>
+                <div className={styles.options}>
+                    <Options currentOptions={""}/>
                 </div>
-                <div className={`${currentItem === "CheatSheet" ? styles.opacity : styles.cheatsheet}`}>
+                <div className={styles.cheatsheet}>
                     <CheatSheet/>
                 </div>
             </div>
