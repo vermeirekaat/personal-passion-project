@@ -137,7 +137,7 @@ board.on("ready", () => {
                         }
                     };    
                 } else {
-                    io.emit("message", {message: "wait for input", user: "sailor"});
+                    io.emit("result", "wait for input");
                 }
             }
         });
@@ -285,10 +285,14 @@ const emitMessageSailor = (task) => {
 }; 
 
 const emitResult = (answer) => {
+    const sailor = getUserByUsername("sailor");
     if (answer === validateAnswer.word) {
         io.emit("result", "success");
         options = []; 
         readyToAnswer = false;
+        if (answer === "links" || answer === "rechts") {
+            io.to(sailor.socketId).emit("getRotation", answer);
+        }
     } else {
         io.emit("result", "fail");
     };
@@ -322,7 +326,7 @@ const checkMorseInput = () => {
 const showMorseLevel = () => {
     const captain = getUserByUsername("captain");
     const sailor = getUserByUsername("sailor");
-    io.to(captain.socketId).emit("result", "correct");
+    io.emit("result", "correct");
 
     if (currentLevel === "text") {
         io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
@@ -337,7 +341,7 @@ const showMorseLevel = () => {
 const checkLevel = () => {
     if (arrayLevel.length <= 0) {
         setTimeout(() => {
-            io.emit("message", {message: "next level", user: "both"});
+            io.emit("result", "next level");
             io.emit("options", "");
             io.emit("obstacles", "");
         }, 3000)
