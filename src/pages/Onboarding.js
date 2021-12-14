@@ -105,7 +105,7 @@ const Onboarding = () => {
         return (
             <div className={styles.grid}>
                 <div className={styles.skipContainer}>
-                    <button className={styles.skip} onClick={() => setCurrentItem("Game")} style={{ backgroundColor: colors.dark, color: colors.reg}}>Overslaan</button>
+                    <button className={styles.skip} onClick={() => setCurrentItem("Game")} style={{ backgroundColor: colors.reg, borderColor: colors.dark}}>Overslaan</button>
                 </div>
                 <div className={styles.avatar}>
                     <Avatar showItem={(item) => setCurrentItem(item)}/>

@@ -18,3 +18,9 @@
     border: solid miniVal;
     border-radius: 50%;
 }
+
+.borderButton {
+    padding: miniVal;
+    border: solid regVal; 
+    border-radius: bigVal;
+}

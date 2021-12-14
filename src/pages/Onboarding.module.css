@@ -29,9 +29,9 @@
     font-size: regularSize;
     width: 15rem;
     height: 5rem;
-    border-color: white;
+    color: white;
 
-    composes: borderSmall from "../style/borders.module.css";
+    composes: borderButton from "../style/borders.module.css";
 }
 
 .controls {

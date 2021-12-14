@@ -12,6 +12,7 @@
     flex-direction: row;
     justify-content: space-evenly;
     margin: miniVal;
+    height: 5rem;
     composes: borderSmall from "../style/borders.module.css";
 }
 
