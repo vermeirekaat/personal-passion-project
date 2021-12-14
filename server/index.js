@@ -80,7 +80,7 @@ let warning = [];
 let options = [];
 let levelDone = false;
 let arrayLevel = [];
-const levels = ["text", "light", "sound"];
+const levels = ["", "text", "light", "sound"];
 let levelAmount = 0;
 let currentLevel;
 
@@ -96,7 +96,7 @@ board.on("ready", () => {
     const buttonsCollection = {
         first: { pin: 2, type: "morse", value: ".", user: "captain" },
         second: { pin: 6, type: "morse", value: "-", user: "captain" },
-        third: { pin: 9, type:"submit", value: 0, user:"sailor" },
+        third: { pin: 9, type:"submit", value: 0, user: "sailor" },
     }; 
 
     Object.keys(buttonsCollection).forEach((key) => {
@@ -150,13 +150,17 @@ board.on("ready", () => {
         });
 
         button.on("hold", () => {
+            if (currentPage === "onboarding") {
+                handleSkipMessage(button.custom.user); 
+
+            } else if (currentPage === "game") {
             if (button.custom.type === "morse") {
                 morseInput = [];
                 io.emit("inputMorse", "");
             } else if (button.custom.type === "submit") {
                 emitResult(answerInput);
                 button.custom.value = 0;
-            }
+            }};
         });
     });
 
@@ -174,7 +178,7 @@ board.on("ready", () => {
 const addNewUser = (username, socketId) => {
 
     !onlineUsers.some((user) => user.socketId === socketId) &&
-      onlineUsers.push({ username, socketId, currentStep: 1, startGame: true });
+      onlineUsers.push({ username, socketId, currentStep: 1, startGame: false });
 };
 
 const checkStepsOther = (socketId) => {
@@ -207,8 +211,16 @@ const handleSteps = (user) => {
 }; 
 
 const handleStepsMessage = (user) => {
+    console.log(onlineUsers);
     const currentUser = getUserByUsername(user);
+    console.log(currentUser);
     io.to(currentUser.socketId).emit("nextStep", true);
+}
+const handleSkipMessage = (user) => {
+    const currentUser = getUserByUsername(user);
+    console.log(currentUser);
+    currentUser.startGame = true;
+    io.to(currentUser.socketId).emit("skip", true);
 }
 
 const startLevel = (start) => {
@@ -402,24 +414,42 @@ const getUserByUsername = (username) => {
     return onlineUsers.find((user) => user.username === username);
 };
 
+const getOneUser = (socketId) => {
+    return onlineUsers.find((user) => user.socketId === socketId);
+};
+
 const getOtherUser = (socketId) => {
     return onlineUsers.find((user) => user.socketId !== socketId);
 };
+
+const checkUsersReady = () => {
+    onlineUsers.map((user) => {
+        if (user.startGame === true) {
+            return true;
+        }
+    })
+}
 
 io.on("connection", (socket) => {
 
     socket.on("newUser", () => {
         addNewUser("sailor", socket.id);
         io.to(socket.id).emit("onlineUsers", onlineUsers);
-
-        if (onlineUsers.length === 2) {
-            startLevel(true);
-        };
     });
 
     socket.on("page", (page) => {
         currentPage = page;
-    })
+    });
+
+    socket.on("startGame", (boolean) => {
+        const user = getOneUser(socket);
+        user.startGame = boolean;
+
+        const ready = checkUsersReady();
+        if (ready) {
+            checkLevel(true);
+        }
+    });
 
     socket.on("inputAnswer", (answer) => {
         emitResult(answer);

@@ -30,6 +30,10 @@ const Game = () => {
     const [rotation, setRotation] = useState("");
 
     useEffect(() => {
+        socket?.emit("page", "game");
+    });
+
+    useEffect(() => {
         socket?.on("inputMorse", (data) => {
             setInput(data);
         });

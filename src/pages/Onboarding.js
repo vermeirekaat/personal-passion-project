@@ -19,6 +19,7 @@ const Onboarding = () => {
 
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
+    console.log(users);
     const currentUser = users[0].user;
     const socket = users[0].socket;
     const colors = users[0].colors;
@@ -42,6 +43,13 @@ const Onboarding = () => {
                 setAmount(amount + 1);
             }
         });
+
+        socket?.on("skip", (boolean) => {
+            console.log("skip");
+            if (boolean) {
+                setAmount(7);
+            }
+        })
     }, [socket, amount]);
 
     useEffect(() => {
