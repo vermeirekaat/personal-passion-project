@@ -17,6 +17,7 @@ import CheatSheet from "../components/CheatSheet";
 
 const Onboarding = () => {
 
+    // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
     const currentUser = users[0].user;
     const socket = users[0].socket;
@@ -25,21 +26,15 @@ const Onboarding = () => {
 
     const [currentItem, setCurrentItem] = useState("");
     const [amount, setAmount] = useState(0);
-    const [route, setRoute] = useState("rechts");
+    const route = "rechts";
     const obstacle = "vuurtoren";
     const options = [{"word": "eiland"}, {"word": "vuurtoren"}, {"word": "tegenligger"}];
-    const [input, setInput] = useState("");
-    const [result, setResult] = useState("");
+    const input = "";
+    const result = "";
 
     useEffect(() => {
         socket?.emit("page", "onboarding");
     });
-
-    useEffect(() => {
-        socket?.on("inputMorse", (data) => {
-            setInput(data);
-        });
-    }, [socket]);
 
     useEffect(() => {
         socket?.on("nextStep", (boolean) => {
@@ -48,18 +43,6 @@ const Onboarding = () => {
             }
         });
     }, [socket, amount]);
-
-    useEffect(() => {
-        socket?.on("direction", (direction) => {
-            setRoute(direction);
-        });
-    }, [socket]);
-
-    useEffect(() => {
-        socket?.on("result", (message) => {
-            setResult(message);
-        });
-    }, [socket]);
 
     useEffect(() => {
         if (amount === 7) {
