@@ -7,7 +7,7 @@
     margin: 0 2rem;
 
     composes: borderLarge from "../style/borders.module.css";
-};
+}
 
 .opacity {
     opacity: .2

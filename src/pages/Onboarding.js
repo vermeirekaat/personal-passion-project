@@ -81,9 +81,9 @@ const Onboarding = () => {
     }, [currentItem, socket, navigate]);
 
     const checkOpacity = (item) => {
-
-        if (currentItem === item) {
-            console.log(true);
+        if (currentItem === "Captain" || currentItem === "Sailor") {
+            return true;
+        } else if (currentItem === item) {
             return true;
         }
     }

@@ -16,7 +16,7 @@ const Avatar = ({ currentNumber, showItem }) => {
             }, 
             {
                 text: "De boodschap die je zal versturen is in morse code. Dit is een verzameling van bolletjes en streepjes die de letters voorstellen. In het onderste venster kan je een overzicht vinden dat je hiermee kan helpen.", 
-                topic: "CheatSheet",
+                topic: "Cheatsheet",
             }, 
             {
                 text: "In dit scherm zal je zien welke route het schip moet afleggen. Het is aan jou om te communiceren naar de matroos in welke richting het schip moet varen. Deze boodschap zal je doorgeven in morse code.",
@@ -31,12 +31,12 @@ const Avatar = ({ currentNumber, showItem }) => {
                 topic: "Result", 
             }, 
             {
-                text: "Tijdens het varen zal je ook enkele obstakels tegenkomen. De obstakels zal je zien in onderstaand venster. Het is jouw taak om de naam van het obstakel door te geven aan de matroos die het zal ontcijferen om het obstakel te vermijden", 
+                text: "Tijdens het varen zal je ook enkele obstakels tegenkomen. De obstakels zal je zien in onderstaand venster. Het is jouw taak om de naam van het obstakel door te geven aan de matroos die het zal ontcijferen om het obstakel te vermijden.", 
                 topic: "Obstacle", 
             }, 
             {
                 text: "Nu ben je helemaal klaar om aan het spel te beginnen. Ahoy, veel succes!", 
-                topic: "End", 
+                topic: "Captain", 
             },
         ], 
         sailor: [
@@ -50,7 +50,7 @@ const Avatar = ({ currentNumber, showItem }) => {
             }, 
             {
                 text: "Je zal van de kapitein een boodschap krijgen in morse code. Dit is een combinatie van bollen en strepen die de letters voorstellen. In het onderste venster kan je een overzicht vinden dat je hiermee kan helpen.", 
-                topic: "CheatSheet",
+                topic: "Cheatsheet",
             }, 
             {
                 text: "In dit venster zal je de boodschap van de kapitein ontvangen. Het is aan jouw om die boodschap te ontcijferen zodat je het schip juist kan besturen.", 
@@ -70,7 +70,7 @@ const Avatar = ({ currentNumber, showItem }) => {
             }, 
             {
                 text: "Goed zo, nu ben je helemaal klaar om aan het spel te beginnen. Ahoy, veel succes!", 
-                topic: "End",
+                topic: "Sailor",
             }
         ]
     };
@@ -96,7 +96,7 @@ const Avatar = ({ currentNumber, showItem }) => {
     return (
         <div className={styles.container} style={{ borderColor: colors.dark}}>
             <div className={styles.inside} style={{ borderColor: colors.reg}}>
-                <p className={styles.caption} style={{ color: colors.reg}}>{newArray[currentNumber].text}</p><p>{newArray[currentNumber].topic}</p>
+                <p className={styles.caption} style={{ color: colors.reg}}>{newArray[currentNumber].text}</p>
             </div>
         </div>
     )
