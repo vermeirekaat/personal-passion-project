@@ -25,21 +25,13 @@ const Onboarding = () => {
 
     const [currentItem, setCurrentItem] = useState("");
     const [amount, setAmount] = useState(0);
-    const [route, setRoute] = useState("");
+    const [route, setRoute] = useState("rechts");
     const [input, setInput] = useState("");
     const [result, setResult] = useState("");
 
     useEffect(() => {
         socket?.emit("page", "onboarding");
-    })
-
-    const handleInput = (input) => {
-        socket?.emit("morseInput", input);
-    };
-
-    const handleDirection = (direction) => {
-        socket?.emit("inputDirection", direction);
-    }
+    });
 
     useEffect(() => {
         socket?.on("inputMorse", (data) => {
@@ -109,7 +101,7 @@ const Onboarding = () => {
                     <Route currentDirection={route} opacity={checkOpacity("Route")}/>
                 </div>
                 <div className={styles.morse}>
-                    <Morse morseCode={(input) => handleInput(input)} opacity={checkOpacity("Morse")}/>
+                    <Morse morseInput={input} opacity={checkOpacity("Morse")}/>
                 </div>
                 <div className={styles.result}>
                     <Result result={result} opacity={checkOpacity("Result")}/>
@@ -143,7 +135,7 @@ const Onboarding = () => {
                     <Wheel opacity={checkOpacity("Wheel")}/>
                 </div>
                 <div className={styles.morse}>
-                    <Morse morseInput={input} getDirection={(direction) => handleDirection(direction)} opacity={checkOpacity("Morse")}/>
+                    <Morse morseInput={input} opacity={checkOpacity("Morse")}/>
                 </div>
                 <div className={styles.result}>
                     <Result result={result} opacity={checkOpacity("Result")}/>

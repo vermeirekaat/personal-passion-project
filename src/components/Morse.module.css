@@ -14,22 +14,18 @@
     opacity: .2;
 }
 
-.inside {
-    margin: regVal;
-    
+.inside { 
+    min-height: 13.5rem;
     composes: borderFull from "../style/borders.module.css";
+
+    composes: columnCenter from "../style/position.module.css";
 }
 
 .text {
     width: 13rem;
-    height: 10rem;
     padding: miniVal;
 
     font-family: regularFont; 
     font-size: regularSize;
     text-align: center;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
