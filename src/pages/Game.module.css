@@ -29,68 +29,45 @@
 
 .controls {
     grid-area: controls;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    composes: columnCenter from "../style/position.module.css";
 }
 
 .lives {
     grid-area: lives;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    composes: columnCenter from "../style/position.module.css";
 }
 
 .wheel {
     grid-area: route;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    margin-bottom: 2rem;
+    composes: columnEnd from "../style/position.module.css";
 }
 
 .route {
     grid-area: route;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    margin-bottom: 2rem;
+    composes: columnEnd from "../style/position.module.css";
 }
 
 .morse {
     grid-area: morse;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    composes: columnCenter from "../style/position.module.css";
 }
 
 .result {
     grid-area: result;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    composes: columnCenter from "../style/position.module.css";
 }
 
 .obstacle {
     grid-area: obstacles;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    margin-bottom: 2rem;
+    composes: columnEnd from "../style/position.module.css";
 }
 
 .options {
     grid-area: obstacles;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    margin-bottom: 2rem;
+    composes: columnEnd from "../style/position.module.css";
 }
 
 .cheatsheet {
     grid-area: cheat;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    margin-bottom: 2rem;
+    composes: columnEnd from "../style/position.module.css";
 }

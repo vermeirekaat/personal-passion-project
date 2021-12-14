@@ -13,9 +13,8 @@
 .inside {
     min-height: 37rem;
     padding: miniVal;
-    display: flex; 
-    flex-direction: column;
-    justify-content: space-between;
+
+    composes: columnSpace from "../style/position.module.css";
     composes: borderLarge from "../style/borders.module.css";
 }
 

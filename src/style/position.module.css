@@ -1,0 +1,23 @@
+@value values: "../style/values.module.css";
+@value bigVal from values;
+
+.columnSpace {
+    display: flex; 
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center; 
+}
+
+.columnCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.columnEnd {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: bigVal;
+}
+
