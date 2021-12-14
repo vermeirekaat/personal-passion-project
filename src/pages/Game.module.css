@@ -27,6 +27,13 @@
     margin: 1rem 5rem;
 }
 
+.controls {
+    grid-area: controls;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .lives {
     grid-area: lives;
     display: flex;
@@ -34,7 +41,7 @@
     align-items: center;
 }
 
-.storm {
+.wheel {
     grid-area: route;
     display: flex;
     justify-content: center;

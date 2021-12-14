@@ -12,6 +12,7 @@ import Obstacle from "../components/Obstacle";
 import Options from "../components/Options";
 import CheatSheet from "../components/CheatSheet";
 import Popup from "../components/Popup";
+import Controls from "../components/Controls";
 
 const Game = () => {
 
@@ -101,6 +102,9 @@ const Game = () => {
                 <div className={styles.lives}>
                     <Lives/>
                 </div>
+                <div className={styles.controls}>
+                    <Controls/>
+                </div>
                 <div className={styles.route}>
                     <Route currentDirection={route}/>
                 </div>
@@ -137,7 +141,10 @@ const Game = () => {
                 <div className={styles.lives}>
                     <Lives/>
                 </div>
-                <div className={styles.storm}>
+                <div className={styles.controls}>
+                    <Controls/>
+                </div>
+                <div className={styles.wheel}>
                     <Wheel/>
                 </div>
                 <div className={styles.options}>

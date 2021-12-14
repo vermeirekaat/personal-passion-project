@@ -1,0 +1,15 @@
+@value values: "../style/values.module.css";
+@value miniVal from values;
+
+.container {
+    width: 20rem;
+
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-evenly;
+}
+
+.svg {
+    width: 5rem; 
+    height: 5rem;
+}
