@@ -1,9 +1,9 @@
 @value values: "../style/values.module.css";
-@value bigFont, titleSize from values;
+@value bigFont, titleSize, miniVal from values;
 
 .container {
     width: 15rem;
-    margin: 2rem;
+    margin: 0 2rem;
     composes: borderSmall from "../style/borders.module.css";
 }
 
@@ -11,6 +11,7 @@
     display: flex; 
     flex-direction: row;
     justify-content: space-evenly;
+    margin: miniVal;
     composes: borderSmall from "../style/borders.module.css";
 }
 

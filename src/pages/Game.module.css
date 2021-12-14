@@ -29,32 +29,61 @@
 
 .lives {
     grid-area: lives;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .storm {
     grid-area: route;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 2rem;
 }
 
 .route {
     grid-area: route;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 2rem;
 }
 
 .morse {
     grid-area: morse;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .result {
     grid-area: result;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .obstacle {
     grid-area: obstacles;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 2rem;
 }
 
 .options {
     grid-area: obstacles;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 2rem;
 }
 
 .cheatsheet {
     grid-area: cheat;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 2rem;
 }

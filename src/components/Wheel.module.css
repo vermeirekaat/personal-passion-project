@@ -1,14 +1,15 @@
 .container {
-    height: 65vh;
+    min-height: 37rem;
     width: 15rem;
     text-align: center;
-    margin: 2rem;
+    margin: 0 2rem;
 
     composes: borderLarge from "../style/borders.module.css";
 }
 
 .inside {
-    height: 62vh;
+    min-height: 37rem;
+    padding: miniVal;
     display: flex; 
     flex-direction: column;
     justify-content: space-evenly;

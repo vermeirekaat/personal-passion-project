@@ -1,9 +1,10 @@
 @value values: "../style/values.module.css";
-@value bigFont, regularSize, bigVal from values;
+@value bigFont, regularSize, regVal, bigVal from values;
 
 .container {
-    width: 15rem;
-    height: 85vh;
+    width: 17rem;
+    min-height: 49rem;
+    margin: 0 2rem;
 
     composes: borderLarge from "../style/borders.module.css";
 }
@@ -12,6 +13,7 @@
     display: grid; 
     grid-template-columns: repeat(2, 7.5rem);
     grid-template-rows: repeat(12, 3.5rem);
+    padding-left: 2rem;
     
     composes: borderLarge from "../style/borders.module.css";
 }

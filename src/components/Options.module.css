@@ -1,15 +1,17 @@
 @value values: "../style/values.module.css";
-@value bigFont, titleSize from values;
+@value bigFont, titleSize, miniVal from values;
 
 .container {
-    width: 15rem;
-    height: 85vh;
+    width: 17rem;
+    min-height: 49rem;
+    margin: 0 2rem;
 
     composes: borderLarge from "../style/borders.module.css";
 };
 
 .inside {
-    height: 82vh;
+    min-height: 49rem;
+    padding: miniVal;
     display: flex; 
     flex-direction: column;
     justify-content: space-evenly;
@@ -20,6 +22,7 @@
     display: flex; 
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
 }
 
 .svg {

@@ -1,5 +1,5 @@
 @value values: "../style/values.module.css";
-@value regularFont, regularSize, regVal from values;
+@value regularFont, regularSize, regVal, miniVal from values;
 
 .container {
     width: 15rem;
@@ -19,9 +19,14 @@
 .text {
     width: 13rem;
     height: 10rem;
+    padding: miniVal;
 
     font-family: regularFont; 
     font-size: regularSize;
     text-transform: capitalize;
     text-align: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

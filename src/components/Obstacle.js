@@ -24,13 +24,10 @@ const Obstacle = ({ currentObstacle }) => {
     
     return (
         <div className={styles.container} style={{ borderColor: colors.dark}}>
-
-            <div className={styles.inside} style={{ borderColor: colors.reg}}>
                 { currentObstacle !== "" ? 
-                <>
-                <p className={styles.text} style={{ color: colors.reg }}>{currentObstacle}</p> <img className={styles.svg} alt="obstacle" src={obstacles[currentObstacle]}/> </>
-                : <p className={styles.text} style={{ color: colors.reg}}>Obstakel</p> }
-            </div>
+                 <div className={styles.inside} style={{ borderColor: colors.reg, minHeight: "49rem"}}>
+                <p className={styles.text} style={{ color: colors.reg }}>{currentObstacle}</p> <img className={styles.svg} alt="obstacle" src={obstacles[currentObstacle]}/></div>
+                :  <div className={styles.inside} style={{ borderColor: colors.reg, minHeight: "49rem"}}> <p className={styles.text} style={{ color: colors.reg}}>Obstakel</p> </div> }
 
         </div>
     )

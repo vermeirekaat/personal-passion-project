@@ -1,11 +1,11 @@
 @value values: "../style/values.module.css";
-@value regularFont, regularSize, regVal from values;
+@value regularFont, regularSize, regVal, miniVal from values;
 
 .container {
     width: 15rem;
     height: 15rem;
     text-align: center;
-    margin: 2rem;
+    margin: 0 2rem;
 
     composes: borderFull from "../style/borders.module.css";
 };
@@ -19,8 +19,13 @@
 .text {
     width: 13rem;
     height: 10rem;
+    padding: miniVal;
 
     font-family: regularFont; 
     font-size: regularSize;
     text-align: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

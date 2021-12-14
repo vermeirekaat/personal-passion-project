@@ -25,7 +25,7 @@ const Options = ({ currentOptions }) => {
     if (currentOptions.length > 1) {
         return (
             <div className={styles.container} style={{ borderColor: colors.dark}}>
-                <div className={styles.inside} style={{ borderColor: colors.reg}}>
+                <div className={styles.inside} style={{ borderColor: colors.reg, minHeight: "49rem"}}>
                     {currentOptions.map((option) => (
                         <div className={styles.option} key={option.word}>
                             <img className={styles.svg} alt="obstacle" src={obstacles[option.word]}/>
@@ -39,7 +39,7 @@ const Options = ({ currentOptions }) => {
 
     return (
         <div className={styles.container} style={{ borderColor: colors.dark}}>
-            <div className={styles.inside} style={{ borderColor: colors.reg}}>
+            <div className={styles.inside} style={{ borderColor: colors.reg, minHeight: "49rem"}}>
                 <p className={styles.text} style={{ color: colors.reg }}>Options</p>
                 <p className={styles.text} style={{ color: colors.dark }}>{currentOptions[0]}</p>
             </div>
