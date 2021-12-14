@@ -4,7 +4,7 @@ import { useContext } from "react";
 
 import steeringWheel from "./../assets/stuur.svg";
 
-const Wheel = ({ currentRotation }) => {
+const Wheel = ({ currentRotation, opacity }) => {
      // eslint-disable-next-line no-unused-vars
      const [users, setUsers] = useContext(usersContext);
      const colors = users[0].colors;
@@ -12,7 +12,7 @@ const Wheel = ({ currentRotation }) => {
     // const [direction, setDirection] = useState(currentRotation);
  
      return (
-         <div className={styles.container} style={{ borderColor: colors.dark}}>
+        <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
              <div className={styles.inside} style={{ borderColor: colors.reg}}>
 
                 { currentRotation === "" ? <img alt="steering-wheel" src={steeringWheel}/> : ""}

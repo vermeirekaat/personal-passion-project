@@ -8,7 +8,7 @@ import tegenliggerSVG from "./../assets/boot-r.svg";
 import ankerSVG from "./../assets/anker-r.svg";
 import ijsbergSVG from "./../assets/berg-r.svg";
 
-const Options = ({ currentOptions }) => {
+const Options = ({ currentOptions, opacity }) => {
 
     const obstacles = {
         vuurtoren: vuurtorenSVG,
@@ -24,7 +24,7 @@ const Options = ({ currentOptions }) => {
 
     if (currentOptions.length > 1) {
         return (
-            <div className={styles.container} style={{ borderColor: colors.dark}}>
+            <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
                 <div className={styles.inside} style={{ borderColor: colors.reg, minHeight: "49rem"}}>
                     {currentOptions.map((option) => (
                         <div className={styles.option} key={option.word}>
@@ -38,7 +38,7 @@ const Options = ({ currentOptions }) => {
     }
 
     return (
-        <div className={styles.container} style={{ borderColor: colors.dark}}>
+        <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
             <div className={styles.inside} style={{ borderColor: colors.reg, minHeight: "49rem"}}>
                 <p className={styles.text} style={{ color: colors.reg }}>Options</p>
                 <p className={styles.text} style={{ color: colors.dark }}>{currentOptions[0]}</p>

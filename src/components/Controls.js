@@ -8,7 +8,7 @@ import oneSVG from "./../assets/button-one.svg";
 import twoSVG from "./../assets/button-two.svg";
 import threeSVG from "./../assets/button-three.svg";
 
-const Controls = () => {
+const Controls = ({ opacity }) => {
 
     const controls = {
         captain: [bolSVG, streepSVG], 
@@ -20,7 +20,7 @@ const Controls = () => {
     const currentUser = users[0].user;
 
     return (
-        <div className={styles.container}>
+        <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`}>
             {controls[currentUser].map((control) => (
                 <img className={styles.svg} key={controls[currentUser].indexOf(control)}alt="control-button" src={control}/>
             ))}

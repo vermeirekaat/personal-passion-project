@@ -2,7 +2,7 @@ import styles from "./CheatSheet.module.css";
 import { usersContext } from "../context/Users";
 import { useContext } from "react";
 
-const CheatSheet = () => {
+const CheatSheet = ({ opacity }) => {
 
      // eslint-disable-next-line no-unused-vars
      const [users, setUsers] = useContext(usersContext);
@@ -116,7 +116,7 @@ const CheatSheet = () => {
     ]
     
     return (
-        <div className={styles.container} style={{ borderColor: colors.dark}}>
+        <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
             <div className={styles.inside} style={{ borderColor: colors.reg}}>
                 {morse.map((item) => (
                     <p className={styles.letter} key={item.letter} style={{ color: colors.dark}}>{item.letter} <span style={{ color: colors.reg}}>{item.morse}</span></p>

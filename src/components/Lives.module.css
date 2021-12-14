@@ -7,6 +7,10 @@
     composes: borderSmall from "../style/borders.module.css";
 }
 
+.opacity {
+    opacity: .2;
+}
+
 .inside {
     display: flex; 
     flex-direction: row;

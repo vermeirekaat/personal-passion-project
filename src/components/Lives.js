@@ -6,12 +6,12 @@ import heartBlue from "./../assets/hart-b.svg";
 import heartRed from "./../assets/hart-r.svg";
 
 
-const Lives = () => {
+const Lives = ({ opacity }) => {
 
     const assets = {
         captain: heartBlue, 
         sailor: heartRed,
-    }
+    };
 
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
@@ -21,7 +21,7 @@ const Lives = () => {
 
     if (lives.length <= 0) {
         return (
-            <div className={styles.container} style={{ borderColor: colors.dark}}>
+            <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
                 <div className={styles.inside} style={{ borderColor: colors.reg}}>
                     <p className={styles.text} style={{ color: colors.reg}}>Game Over</p>
                 </div>
@@ -30,7 +30,7 @@ const Lives = () => {
     }
 
     return (
-        <div className={styles.container} style={{ borderColor: colors.dark}}>
+        <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
             <div className={styles.inside} style={{ borderColor: colors.reg}}>
                 {lives.map((life) => (
                     <img className={styles.svg} alt="heart" key={life} src={assets[currentUser]}/>

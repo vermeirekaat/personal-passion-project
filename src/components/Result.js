@@ -3,13 +3,13 @@ import styles from "./Result.module.css";
 import { usersContext } from "../context/Users";
 import { useContext } from "react";
 
-const Result = ({ result }) => {
+const Result = ({ result, opacity }) => {
      // eslint-disable-next-line no-unused-vars
      const [users, setUsers] = useContext(usersContext);
      const colors = users[0].colors;
  
      return (
-         <div className={styles.container} style={{ borderColor: colors.dark}}>
+        <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
              <div className={styles.inside} style={{ borderColor: colors.reg}}>
  
                  {result !== "" ? 

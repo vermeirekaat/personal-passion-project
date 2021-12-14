@@ -6,7 +6,7 @@ import dirRight from "./../assets/pijl-r.svg";
 import dirLeft from "./../assets/pijl-l.svg";
 
 
-const Route = ({ currentDirection }) => {
+const Route = ({ currentDirection, opacity }) => {
 
     const direction = {
         rechts: dirRight, 
@@ -17,7 +17,7 @@ const Route = ({ currentDirection }) => {
     const colors = users[0].colors;
 
     return (
-        <div className={styles.container} style={{ borderColor: colors.dark}}>
+        <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
             <div className={styles.inside} style={{ borderColor: colors.reg}}>
                 { currentDirection !== "" ? 
                 <>

@@ -7,6 +7,10 @@
     composes: borderLarge from "../style/borders.module.css";
 }
 
+.opacity {
+    opacity: .2;
+}
+
 .inside {
     min-height: 37rem;
     padding: miniVal;

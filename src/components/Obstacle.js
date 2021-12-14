@@ -8,7 +8,7 @@ import tegenliggerSVG from "./../assets/boot-b.svg";
 import ankerSVG from "./../assets/anker-b.svg";
 import ijsbergSVG from "./../assets/berg-b.svg";
 
-const Obstacle = ({ currentObstacle }) => {
+const Obstacle = ({ currentObstacle, opacity }) => {
 
     const obstacles = {
         vuurtoren: vuurtorenSVG,
@@ -23,7 +23,7 @@ const Obstacle = ({ currentObstacle }) => {
     const colors = users[0].colors;
     
     return (
-        <div className={styles.container} style={{ borderColor: colors.dark}}>
+        <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
                 { currentObstacle !== "" ? 
                  <div className={styles.inside} style={{ borderColor: colors.reg, minHeight: "49rem"}}>
                 <p className={styles.text} style={{ color: colors.reg }}>{currentObstacle}</p> <img className={styles.svg} alt="obstacle" src={obstacles[currentObstacle]}/></div>

@@ -80,6 +80,14 @@ const Onboarding = () => {
         }
     }, [currentItem, socket, navigate]);
 
+    const checkOpacity = (item) => {
+
+        if (currentItem === item) {
+            console.log(true);
+            return true;
+        }
+    }
+
     if (currentUser === "captain") {
         return (
             <div className={styles.grid}>
@@ -90,25 +98,25 @@ const Onboarding = () => {
                     <Avatar currentNumber={(amount)} showItem={(item) => setCurrentItem(item)}/>
                 </div>
                 <div className={styles.lives}>
-                    <Lives/>
+                    <Lives opacity={checkOpacity("Lives")}/>
                 </div>
                 <div className={styles.controls}>
-                    <Controls/>
+                    <Controls opacity={checkOpacity("Morse")}/>
                 </div>
                 <div className={styles.route}>
-                    <Route currentDirection={route}/>
+                    <Route currentDirection={route} opacity={checkOpacity("Route")}/>
                 </div>
                 <div className={styles.morse}>
-                    <Morse morseCode={(input) => handleInput(input)} />
+                    <Morse morseCode={(input) => handleInput(input)} opacity={checkOpacity("Morse")}/>
                 </div>
                 <div className={styles.result}>
-                    <Result result={result}/>
+                    <Result result={result} opacity={checkOpacity("Result")}/>
                 </div>
                 <div className={styles.obstacle}>
-                    <Obstacle currentObstacle={""}/>
+                    <Obstacle currentObstacle={""} opacity={checkOpacity("Obstacle")}/>
                 </div>
                 <div className={styles.cheatsheet}>
-                    <CheatSheet/>
+                    <CheatSheet opacity={checkOpacity("Cheatsheet")}/>
                 </div>
             </div>
         )
@@ -124,25 +132,25 @@ const Onboarding = () => {
                     <Avatar  currentNumber={(amount)} showItem={(item) => setCurrentItem(item)}/>
                 </div>
                 <div className={styles.lives}>
-                    <Lives/>
+                    <Lives opacity={checkOpacity("Lives")}/>
                 </div>
                 <div className={styles.controls}>
-                    <Controls/>
+                    <Controls opacity={checkOpacity("Options")}/>
                 </div>
                 <div className={styles.wheel}>
-                    <Wheel/>
+                    <Wheel opacity={checkOpacity("Wheel")}/>
                 </div>
                 <div className={styles.morse}>
-                    <Morse morseInput={input} getDirection={(direction) => handleDirection(direction)}/>
+                    <Morse morseInput={input} getDirection={(direction) => handleDirection(direction)} opacity={checkOpacity("Morse")}/>
                 </div>
                 <div className={styles.result}>
-                    <Result result={result}/>
+                    <Result result={result} opacity={checkOpacity("Result")}/>
                 </div>
                 <div className={styles.options}>
-                    <Options currentOptions={""}/>
+                    <Options currentOptions={""} opacity={checkOpacity("Options")}/>
                 </div>
                 <div className={styles.cheatsheet}>
-                    <CheatSheet/>
+                    <CheatSheet opacity={checkOpacity("Cheatsheet")}/>
                 </div>
             </div>
         )

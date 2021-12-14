@@ -9,6 +9,10 @@
     justify-content: space-evenly;
 }
 
+.opacity {
+    opacity: .2;
+}
+
 .svg {
     width: 5rem; 
     height: 5rem;

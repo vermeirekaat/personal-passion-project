@@ -3,14 +3,14 @@ import styles from "./Morse.module.css";
 import { usersContext } from "../context/Users";
 import { useContext } from "react";
 
-const Morse = ({ morseInput }) => {
+const Morse = ({ morseInput, opacity }) => {
 
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
     const colors = users[0].colors;
 
     return (
-        <div className={styles.container} style={{ borderColor: colors.dark}}>
+        <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
             <div className={styles.inside} style={{ borderColor: colors.reg}}>
 
                 {morseInput !== "" ? 

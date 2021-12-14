@@ -9,6 +9,10 @@
     composes: borderLarge from "../style/borders.module.css";
 }
 
+.opacity {
+    opacity: .2
+}
+
 .inside {
     display: grid; 
     grid-template-columns: repeat(2, 7.5rem);
