@@ -74,11 +74,13 @@ const Onboarding = () => {
     }, [socket]);
 
     useEffect(() => {
-        if (currentItem === "Game") {
-            socket?.emit("startGame", true);
-            navigate("/game");
+        if (amount === 7) {
+            setTimeout(() => {
+                socket?.emit("startGame", true);
+                navigate("/game");
+            }, 1000)
         }
-    }, [currentItem, socket, navigate]);
+    }, [currentItem, socket, navigate, amount]);
 
     const checkOpacity = (item) => {
         if (currentItem === "Captain" || currentItem === "Sailor") {

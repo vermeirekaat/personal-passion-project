@@ -79,25 +79,25 @@ const Game = () => {
             <div className={styles.grid}>
                 <h2 className={styles.username} style={{ color: colors.reg}}>{currentUser}</h2>
                 <div className={styles.lives}>
-                    <Lives/>
+                    <Lives opacity={true}/>
                 </div>
                 <div className={styles.controls}>
-                    <Controls/>
+                    <Controls opacity={true}/>
                 </div>
                 <div className={styles.route}>
-                    <Route currentDirection={route}/>
+                    <Route currentDirection={route} opacity={true}/>
                 </div>
                 <div className={styles.obstacle}>
-                    <Obstacle currentObstacle={obstacle}/>
+                    <Obstacle currentObstacle={obstacle} opacity={true}/>
                 </div>
                 <div className={styles.morse}>
-                    <Morse morseInput={input}/>
+                    <Morse morseInput={input} opacity={true}/>
                 </div>
                 <div className={styles.result}>
-                    <Result result={result}/>
+                    <Result result={result} opacity={true}/>
                 </div>
                 <div className={styles.cheatsheet}>
-                    <CheatSheet/>
+                    <CheatSheet opacity={true}/>
                 </div>
             </div>
         )
@@ -108,25 +108,25 @@ const Game = () => {
             <div className={styles.grid}>
                 <h2 className={styles.username} style={{ color: colors.reg}}>{currentUser}</h2>
                 <div className={styles.lives}>
-                    <Lives/>
+                    <Lives opacity={true}/>
                 </div>
                 <div className={styles.controls}>
-                    <Controls/>
+                    <Controls opacity={true}/>
                 </div>
                 <div className={styles.wheel}>
-                    <Wheel currentRotation={rotation}/>
+                    <Wheel currentRotation={rotation} opacity={true}/>
                 </div>
                 <div className={styles.options}>
-                    <Options currentOptions={options}/>
+                    <Options currentOptions={options} opacity={true}/>
                 </div>
-                <div className={styles.morse }>
-                    <Morse morseInput={input}/>
+                <div className={styles.morse}>
+                    <Morse morseInput={input} opacity={true}/>
                 </div>
                 <div className={styles.result}>
-                    <Result result={result}/>
+                    <Result result={result} opacity={true}/>
                 </div>
                 <div className={styles.cheatsheet}>
-                    <CheatSheet/>
+                    <CheatSheet opacity={true}/>
                 </div>
             </div>
         )

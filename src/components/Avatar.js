@@ -1,5 +1,5 @@
 import styles from "./Avatar.module.css";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { usersContext } from "../context/Users";
 
 const Avatar = ({ currentNumber, showItem }) => {
@@ -86,12 +86,15 @@ const Avatar = ({ currentNumber, showItem }) => {
     const array = Object.values(filteredByKey);
     const newArray = array[0];
 
-    if (currentNumber < newArray.length) {
-        showItem(newArray[currentNumber].topic);
-    } else if (currentNumber >= newArray.length) {
-        showItem("Game");
-        return false;
-    }
+    useEffect(() => {
+        if (currentNumber < newArray.length) {
+            showItem(newArray[currentNumber].topic);
+        } else if (currentNumber >= newArray.length) {
+            showItem("Game");
+        }
+    }, [currentNumber, newArray, showItem])
+
+
 
     return (
         <div className={styles.container} style={{ borderColor: colors.dark}}>
