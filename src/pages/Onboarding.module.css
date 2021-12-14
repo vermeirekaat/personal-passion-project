@@ -20,9 +20,11 @@
 .avatar {
     grid-area: user;
 }
+
 .skipContainer {
     composes: columnCenter from "../style/position.module.css";
 }
+
 .skip {
     grid-area: skip;
     font-family: regularFont; 

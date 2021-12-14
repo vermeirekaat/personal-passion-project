@@ -1,8 +1,8 @@
 import styles from "./Avatar.module.css";
-import { useEffect, useState, useContext } from "react";
+import { useContext } from "react";
 import { usersContext } from "../context/Users";
 
-const Avatar = ({ showItem }) => {
+const Avatar = ({ currentNumber, showItem }) => {
 
     const dialogue = {
         captain: [
@@ -111,7 +111,6 @@ const Avatar = ({ showItem }) => {
     const [users, setUsers] = useContext(usersContext);
 
     const currentUser = users[0].user;
-    const socket = users[0].socket;
     const colors = users[0].colors;
 
 
@@ -119,32 +118,16 @@ const Avatar = ({ showItem }) => {
     const array = Object.values(filteredByKey);
     const newArray = array[0];
 
-    const [amount, setAmount] = useState(0);
+    if (currentNumber >= newArray.length) {
+        showItem("Game"); 
 
-    useEffect(() => {
-        if (amount < newArray.length) {
-            showItem(newArray[amount].topic);
-        } else if (amount >= newArray.length) {
-            showItem("Game");
-        }
-        socket?.emit("currentStep", amount);
-    }, [showItem, newArray, amount, socket]);
-
-    const handleKeyDown = (e) => {
-        if (e.key === "x") {
-            setAmount(amount + 1);
-        }
-    };
-
-    if (amount >= newArray.length) {
         return false;
-    }
+    };
 
     return (
         <div className={styles.container} style={{ borderColor: colors.dark}}>
             <div className={styles.inside} style={{ borderColor: colors.reg}}>
-                <p className={styles.caption} style={{ color: colors.reg}}>{newArray[amount].text}</p><p>{newArray[amount].topic}</p>
-                {newArray[amount].button === true ? <button className={styles.next} onClick={() => setAmount(amount + 1)}>&#10145;</button> : <input readOnly value="&#9747;" onKeyPress={handleKeyDown}></input>} 
+                <p className={styles.caption} style={{ color: colors.reg}}>{newArray[currentNumber].text}</p><p>{newArray[currentNumber].topic}</p>
             </div>
         </div>
     )

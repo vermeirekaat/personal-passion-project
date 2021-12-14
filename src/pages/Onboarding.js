@@ -24,9 +24,14 @@ const Onboarding = () => {
     const navigate = useNavigate();
 
     const [currentItem, setCurrentItem] = useState("");
+    const [amount, setAmount] = useState(0);
     const [route, setRoute] = useState("");
     const [input, setInput] = useState("");
     const [result, setResult] = useState("");
+
+    useEffect(() => {
+        socket?.emit("page", "onboarding");
+    })
 
     const handleInput = (input) => {
         socket?.emit("morseInput", input);
@@ -41,6 +46,14 @@ const Onboarding = () => {
             setInput(data);
         });
     }, [socket]);
+
+    useEffect(() => {
+        socket?.on("nextStep", (boolean) => {
+            if (boolean) {
+                setAmount(amount + 1);
+            }
+        });
+    }, [socket, amount]);
 
     useEffect(() => {
         socket?.on("direction", (direction) => {
@@ -74,7 +87,7 @@ const Onboarding = () => {
                     <button className={styles.skip} onClick={() => setCurrentItem("Game")} style={{ backgroundColor: colors.dark, color: colors.reg}}>Overslaan</button>
                 </div>
                 <div className={styles.avatar}>
-                    <Avatar showItem={(item) => setCurrentItem(item)}/>
+                    <Avatar currentNumber={(amount)} showItem={(item) => setCurrentItem(item)}/>
                 </div>
                 <div className={styles.lives}>
                     <Lives/>
@@ -108,7 +121,7 @@ const Onboarding = () => {
                     <button className={styles.skip} onClick={() => setCurrentItem("Game")} style={{ backgroundColor: colors.reg, borderColor: colors.dark}}>Overslaan</button>
                 </div>
                 <div className={styles.avatar}>
-                    <Avatar showItem={(item) => setCurrentItem(item)}/>
+                    <Avatar  currentNumber={(amount)} showItem={(item) => setCurrentItem(item)}/>
                 </div>
                 <div className={styles.lives}>
                     <Lives/>

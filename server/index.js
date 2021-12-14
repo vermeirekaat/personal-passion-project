@@ -21,6 +21,7 @@ const io = require('socket.io')(server, {
 });
 
 let onlineUsers = [];
+let currentPage;
 
 const directions = [
     {
@@ -93,9 +94,9 @@ board.on("ready", () => {
     led.off();
 
     const buttonsCollection = {
-        first: { pin: 2, type: "morse", value: "." },
-        second: { pin: 6, type: "morse", value: "-" },
-        third: { pin: 9, type:"submit", value: 0 },
+        first: { pin: 2, type: "morse", value: ".", user: "captain" },
+        second: { pin: 6, type: "morse", value: "-", user: "captain" },
+        third: { pin: 9, type:"submit", value: 0, user:"sailor" },
     }; 
 
     Object.keys(buttonsCollection).forEach((key) => {
@@ -107,37 +108,43 @@ board.on("ready", () => {
                 type: buttonsCollection[key].type,
                 value: buttonsCollection[key].value,
                 sec: buttonsCollection[key].sec,
+                user: buttonsCollection[key].user,
             }
         });
 
         button.on("press", () => {
-            if (button.custom.type === "morse") {
-                morseInput.push(button.custom.value);
-                checkMorseInput();
+            if (currentPage === "onboarding") {
+                handleStepsMessage(button.custom.user); 
 
-            } else if (button.custom.type === "submit") {
-
-                if (readyToAnswer) {
-                    button.custom.value++;
-                    if (button.custom.value === 1) {
-                        answerInput = "rechts";
-                    } else if (button.custom.value === 2) {
-                        answerInput = "links";
-                    } else if (button.custom.value === 3) {
-                        if (options.length > 0) {
-                            answerInput = options[0].word;
-                        }
-                    } else if (button.custom.value === 4) {
-                        if (options.length > 0) {
-                            answerInput = options[1].word;
-                        }
-                    } else if (button.custom.value === 5) {
-                        if (options.length > 0) {
-                            answerInput = options[2].word;
-                        }
-                    };    
-                } else {
-                    io.emit("result", "wait for input");
+            } else if (currentPage === "game") {
+                if (button.custom.type === "morse") {
+                    morseInput.push(button.custom.value);
+                    checkMorseInput();
+    
+                } else if (button.custom.type === "submit") {
+    
+                    if (readyToAnswer) {
+                        button.custom.value++;
+                        if (button.custom.value === 1) {
+                            answerInput = "rechts";
+                        } else if (button.custom.value === 2) {
+                            answerInput = "links";
+                        } else if (button.custom.value === 3) {
+                            if (options.length > 0) {
+                                answerInput = options[0].word;
+                            }
+                        } else if (button.custom.value === 4) {
+                            if (options.length > 0) {
+                                answerInput = options[1].word;
+                            }
+                        } else if (button.custom.value === 5) {
+                            if (options.length > 0) {
+                                answerInput = options[2].word;
+                            }
+                        };    
+                    } else {
+                        io.emit("result", "wait for input");
+                    }
                 }
             }
         });
@@ -167,8 +174,42 @@ board.on("ready", () => {
 const addNewUser = (username, socketId) => {
 
     !onlineUsers.some((user) => user.socketId === socketId) &&
-      onlineUsers.push({ username, socketId, currentStep: 0, startGame: true });
+      onlineUsers.push({ username, socketId, currentStep: 1, startGame: true });
 };
+
+const checkStepsOther = (socketId) => {
+    const otherSocket = getOtherUser(socketId);
+
+    if (otherSocket.currentStep < 4) {
+        io.to(socketId).emit("result", "wait for other user");
+    } else if (otherSocket.currentStep === 4) {
+        io.to(otherSocket.socketId).emit("result", "ready to play");
+    }
+}; 
+
+const handleSteps = (user) => {
+    const currentUser = getUserByUsername(user);
+    const nextStep = currentUser.currentStep++;
+    currentUser.currentStep = nextStep;
+
+    io.to(currentUser.socketId).emit("message", currentUser.currentStep);
+
+    // console.log(currentUser);
+
+    if (user === "captain" && nextStep === 4) {
+        const choosenDirection = myFunctions.getRandomIndex(directions);
+        validateAnswer = choosenDirection;
+        io.to(currentUser.socketId).emit("direction", choosenDirection.word);
+        checkStepsOther(currentUser.socketId);
+    } else if (user === "sailor" && nextStep === 4) {
+        checkStepsOther(currentUser.socketId);
+    }
+}; 
+
+const handleStepsMessage = (user) => {
+    const currentUser = getUserByUsername(user);
+    io.to(currentUser.socketId).emit("nextStep", true);
+}
 
 const startLevel = (start) => {
     io.emit("result", "");
@@ -361,6 +402,10 @@ const getUserByUsername = (username) => {
     return onlineUsers.find((user) => user.username === username);
 };
 
+const getOtherUser = (socketId) => {
+    return onlineUsers.find((user) => user.socketId !== socketId);
+};
+
 io.on("connection", (socket) => {
 
     socket.on("newUser", () => {
@@ -371,6 +416,10 @@ io.on("connection", (socket) => {
             startLevel(true);
         };
     });
+
+    socket.on("page", (page) => {
+        currentPage = page;
+    })
 
     socket.on("inputAnswer", (answer) => {
         emitResult(answer);
