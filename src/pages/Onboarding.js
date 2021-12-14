@@ -6,8 +6,9 @@ import styles from "./Onboarding.module.css";
 
 import Avatar from "../components/Avatar";
 import Lives from "../components/Lives";
+import Controls from "../components/Controls";
 import Route from "../components/Route";
-import Storm from "../components/Storm";
+import Wheel from "../components/Wheel";
 import Morse from "../components/Morse";
 import Result from "../components/Result";
 import Obstacle from "../components/Obstacle";
@@ -69,12 +70,17 @@ const Onboarding = () => {
     if (currentUser === "captain") {
         return (
             <div className={styles.grid}>
-                <button className={styles.skip} onClick={() => setCurrentItem("Game")}>Skip Onboarding</button>
+                <div className={styles.skipContainer}>
+                    <button className={styles.skip} onClick={() => setCurrentItem("Game")} style={{ backgroundColor: colors.dark, color: colors.reg}}>Skip Onboarding</button>
+                </div>
                 <div className={styles.avatar}>
                     <Avatar showItem={(item) => setCurrentItem(item)}/>
                 </div>
                 <div className={`${currentItem === "Lives" ? styles.opacity : styles.lives}`}>
                     <Lives/>
+                </div>
+                <div className={styles.controls}>
+                    <Controls/>
                 </div>
                 <div className={`${currentItem === "Route" ? styles.opacity : styles.route}`}>
                     <Route currentDirection={route}/>
@@ -105,8 +111,11 @@ const Onboarding = () => {
                 <div className={`${currentItem === "Lives" ? styles.opacity : styles.lives}`}>
                     <Lives/>
                 </div>
+                <div className={styles.controls}>
+                    <Controls/>
+                </div>
                 <div className={`${currentItem === "Storm" ? styles.opacity : styles.storm}`}>
-                    <Storm/>
+                    <Wheel/>
                 </div>
                 <div className={`${currentItem === "Morse" ? styles.opacity : styles.morse }`}>
                     <Morse morseInput={input} getDirection={(direction) => handleDirection(direction)}/>

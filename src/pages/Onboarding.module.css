@@ -1,0 +1,80 @@
+@value values: "../style/values.module.css";
+@value regularFont, regularSize, myBlack from values;
+
+.grid {
+    display: grid; 
+    grid-template-areas: 
+    "user user user skip"
+    "lives obstacles controls cheat"
+    "route obstacles morse cheat"
+    "route obstacles result cheat"
+    ;
+    height: 100vh;
+    max-width: 100vw;
+    background-color: myBlack;
+};
+.opacity {
+    opacity: 1;
+}
+
+.avatar {
+    grid-area: user;
+}
+.skipContainer {
+    composes: columnCenter from "../style/position.module.css";
+}
+.skip {
+    grid-area: skip;
+    font-family: regularFont; 
+    font-size: regularSize;
+    width: 15rem;
+    height: 5rem;
+    border-color: white;
+
+    composes: borderSmall from "../style/borders.module.css";
+}
+
+.controls {
+    grid-area: controls;
+    composes: columnCenter from "../style/position.module.css";
+}
+
+.lives {
+    grid-area: lives;
+    composes: columnCenter from "../style/position.module.css";
+}
+
+.wheel {
+    grid-area: route;
+    composes: columnEnd from "../style/position.module.css";
+}
+
+.route {
+    grid-area: route;
+    composes: columnEnd from "../style/position.module.css";
+}
+
+.morse {
+    grid-area: morse;
+    composes: columnCenter from "../style/position.module.css";
+}
+
+.result {
+    grid-area: result;
+    composes: columnCenter from "../style/position.module.css";
+}
+
+.obstacle {
+    grid-area: obstacles;
+    composes: columnEnd from "../style/position.module.css";
+}
+
+.options {
+    grid-area: obstacles;
+    composes: columnEnd from "../style/position.module.css";
+}
+
+.cheatsheet {
+    grid-area: cheat;
+    composes: columnEnd from "../style/position.module.css";
+}

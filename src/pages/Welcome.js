@@ -36,7 +36,7 @@ const Welcome = ({ socket }) => {
                 lives: [1, 2, 3],
                 colors: colorScheme[0][player],
             }]);
-            navigate("/game");
+            navigate("/onboarding");
         } if (player === undefined) {
             return false;
         }

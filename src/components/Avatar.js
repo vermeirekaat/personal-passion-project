@@ -1,7 +1,6 @@
 import styles from "./Avatar.module.css";
 import { useEffect, useState, useContext } from "react";
-import { Context } from "../context/Users";
-import pirate from "../img/pirate.jpeg";
+import { usersContext } from "../context/Users";
 
 const Avatar = ({ showItem }) => {
 
@@ -109,16 +108,14 @@ const Avatar = ({ showItem }) => {
     };
 
     // eslint-disable-next-line
-    const [state, dispatch] = useContext(Context);
-    let player;
-    let socket;
-    if (state.users.length > 0) {
-        player = state.users[0].user;
-        socket = state.users[0].socket;
-    }
+    const [users, setUsers] = useContext(usersContext);
+
+    const currentUser = users[0].user;
+    const socket = users[0].socket;
+    const colors = users[0].colors;
 
 
-    const filteredByKey = Object.fromEntries(Object.entries(dialogue).filter(([key, value]) => key === player) );
+    const filteredByKey = Object.fromEntries(Object.entries(dialogue).filter(([key, value]) => key === currentUser) );
     const array = Object.values(filteredByKey);
     const newArray = array[0];
 
@@ -145,8 +142,6 @@ const Avatar = ({ showItem }) => {
 
     return (
         <div className={styles.container}>
-            <img className={styles.avatar} src={pirate} alt="Avatar"/>
-
             <div className={styles.captionContainer}>
                 <p className={styles.caption}>{newArray[amount].text}</p><p>{newArray[amount].topic}</p>
                 {newArray[amount].button === true ? <button className={styles.next} onClick={() => setAmount(amount + 1)}>&#10145;</button> : <input readOnly value="&#9747;" onKeyPress={handleKeyDown}></input>} 

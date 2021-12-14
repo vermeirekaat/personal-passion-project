@@ -1,6 +1,7 @@
 import './App.css';
 import Users from './context/Users';
 import Welcome from './pages/Welcome';
+import Onboarding from './pages/Onboarding';
 import Game from './pages/Game';
 import { io } from 'socket.io-client';
 import { useEffect, useState } from 'react';
@@ -19,6 +20,7 @@ const App = () => {
     <Users>
       <Routes>
         <Route exact path="/" element={<Welcome socket={socket}/>}/>
+        <Route exact path="/onboarding" element={<Onboarding/>}/> 
         <Route exact path="/game" element={<Game/>}/>
       </Routes>
     </Users>
