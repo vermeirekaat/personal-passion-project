@@ -27,8 +27,6 @@ module.exports = {
     
         if (result) {
             return true;
-            // options = [];
-            // emitMessageSailor(task);
         } else {
             return;
         }

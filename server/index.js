@@ -91,12 +91,12 @@ let led;
 
 board.on("ready", () => {
     led = new five.Led(10);
-    led.off();
+    led.on();
 
     const buttonsCollection = {
         first: { pin: 2, type: "morse", value: ".", user: "captain" },
-        second: { pin: 6, type: "morse", value: "-", user: "captain" },
-        third: { pin: 9, type:"submit", value: 0, user: "sailor" },
+        second: { pin: 4, type: "morse", value: "-", user: "captain" },
+        third: { pin: 8, type:"submit", value: 0, user: "sailor" },
     }; 
 
     Object.keys(buttonsCollection).forEach((key) => {
@@ -423,11 +423,11 @@ const getOtherUser = (socketId) => {
 };
 
 const checkUsersReady = () => {
-    onlineUsers.map((user) => {
+    onlineUsers.forEach((user) => {
         if (user.startGame === true) {
             return true;
         }
-    })
+    });
 }
 
 io.on("connection", (socket) => {
