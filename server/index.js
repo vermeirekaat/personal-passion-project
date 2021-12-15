@@ -21,6 +21,7 @@ const io = require('socket.io')(server, {
 });
 
 let onlineUsers = [];
+let amountUsers = 0; 
 let currentPage;
 
 const directions = [
@@ -165,13 +166,15 @@ board.on("ready", () => {
     });
 
     io.on('connection', (socket) => {
+        const usernames = ["captain", "sailor"];
 
-        addNewUser("captain", socket.id);
-        io.to(socket.id).emit("onlineUsers", onlineUsers);
-
-        if (onlineUsers.length === 2) {
-            startLevel(true);
+        if (amountUsers >= 2) {
+            return;
         };
+
+        addNewUser(usernames[amountUsers], socket.id);
+        io.to(socket.id).emit("onlineUsers", onlineUsers);
+        amountUsers++;
     });
 }); 
 
@@ -181,44 +184,39 @@ const addNewUser = (username, socketId) => {
       onlineUsers.push({ username, socketId, currentStep: 1, startGame: false });
 };
 
-const checkStepsOther = (socketId) => {
-    const otherSocket = getOtherUser(socketId);
+// const checkStepsOther = (socketId) => {
+//     const otherSocket = getOtherUser(socketId);
 
-    if (otherSocket.currentStep < 4) {
-        io.to(socketId).emit("result", "wait for other user");
-    } else if (otherSocket.currentStep === 4) {
-        io.to(otherSocket.socketId).emit("result", "ready to play");
-    }
-}; 
+//     if (otherSocket.currentStep < 4) {
+//         io.to(socketId).emit("result", "wait for other user");
+//     } else if (otherSocket.currentStep === 4) {
+//         io.to(otherSocket.socketId).emit("result", "ready to play");
+//     }
+// }; 
 
-const handleSteps = (user) => {
-    const currentUser = getUserByUsername(user);
-    const nextStep = currentUser.currentStep++;
-    currentUser.currentStep = nextStep;
+// const handleSteps = (user) => {
+//     const currentUser = getUserByUsername(user);
+//     const nextStep = currentUser.currentStep++;
+//     currentUser.currentStep = nextStep;
 
-    io.to(currentUser.socketId).emit("message", currentUser.currentStep);
+//     io.to(currentUser.socketId).emit("message", currentUser.currentStep);
 
-    // console.log(currentUser);
-
-    if (user === "captain" && nextStep === 4) {
-        const choosenDirection = myFunctions.getRandomIndex(directions);
-        validateAnswer = choosenDirection;
-        io.to(currentUser.socketId).emit("direction", choosenDirection.word);
-        checkStepsOther(currentUser.socketId);
-    } else if (user === "sailor" && nextStep === 4) {
-        checkStepsOther(currentUser.socketId);
-    }
-}; 
+//     if (user === "captain" && nextStep === 4) {
+//         const choosenDirection = myFunctions.getRandomIndex(directions);
+//         validateAnswer = choosenDirection;
+//         io.to(currentUser.socketId).emit("direction", choosenDirection.word);
+//         checkStepsOther(currentUser.socketId);
+//     } else if (user === "sailor" && nextStep === 4) {
+//         checkStepsOther(currentUser.socketId);
+//     }
+// }; 
 
 const handleStepsMessage = (user) => {
-    console.log(onlineUsers);
     const currentUser = getUserByUsername(user);
-    console.log(currentUser);
     io.to(currentUser.socketId).emit("nextStep", true);
 }
 const handleSkipMessage = (user) => {
     const currentUser = getUserByUsername(user);
-    console.log(currentUser);
     currentUser.startGame = true;
     io.to(currentUser.socketId).emit("skip", true);
 }
@@ -432,18 +430,13 @@ const checkUsersReady = () => {
 
 io.on("connection", (socket) => {
 
-    socket.on("newUser", () => {
-        addNewUser("sailor", socket.id);
-        io.to(socket.id).emit("onlineUsers", onlineUsers);
-    });
-
     socket.on("page", (page) => {
         currentPage = page;
     });
 
     socket.on("startGame", (boolean) => {
         const user = getOneUser(socket);
-        user.startGame = boolean;
+        // user.startGame = boolean;
 
         const ready = checkUsersReady();
         if (ready) {

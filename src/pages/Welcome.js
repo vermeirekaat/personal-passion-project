@@ -10,8 +10,13 @@ const Welcome = ({ socket }) => {
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
 
+    // useEffect(() => {
+    //     socket?.on("connect");
+    // }, [socket]);
+
     useEffect(() => {
         socket?.on("onlineUsers", (data) => {
+            console.log(data);
             const socketIndex = data.findIndex((user) => user.socketId === socket.id);
             setPlayer(data[socketIndex].username);
         });
