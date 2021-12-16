@@ -116,7 +116,8 @@ board.on("ready", () => {
         });
 
         button.on("press", () => {
-            if (currentPage === "onboarding") {
+            const currentUser = getUserByUsername(button.custom.user);
+            if (currentPage === "onboarding" && currentUser.startGame === false) {
                 handleStepsMessage(button.custom.user); 
 
             } else if (currentPage === "game") {
@@ -153,7 +154,8 @@ board.on("ready", () => {
         });
 
         button.on("hold", () => {
-            if (currentPage === "onboarding") {
+            const currentUser = getUserByUsername(button.custom.user);
+            if (currentPage === "onboarding" && currentUser.startGame === false) {
                 handleSkipMessage(button.custom.user); 
 
             } else if (currentPage === "game") {
@@ -326,6 +328,10 @@ const emitResult = (answer) => {
     morseInput = [];
     inputSim = [];
     io.emit("inputMorse", "");
+    io.emit("options", "");
+    io.emit("obstacles", "");
+    io.emit("direction", "");
+
     checkLevel();
 };
 
@@ -368,9 +374,6 @@ const checkLevel = () => {
     if (arrayLevel.length <= 0) {
         setTimeout(() => {
             io.emit("result", "next level");
-            io.emit("options", "");
-            io.emit("obstacles", "");
-            io.emit("direction", "");
         }, 3000)
         levelAmount++;
 
@@ -391,7 +394,6 @@ const getUserByUsername = (username) => {
 
 const getOneUser = (socketId) => {
     return onlineUsers.find((user) => user.socketId === socketId);
-    // return onlineUsers.findIndex((user) => user.socketId === socketId);
 };
 
 const getOtherUser = (socketId) => {
@@ -423,7 +425,6 @@ io.on("connection", (socket) => {
         user.startGame = boolean;
 
         const ready = checkUsersReady();
-        console.log(ready);
         if (ready) {
             io.emit("navigateGame", true);
             startLevel(true);
