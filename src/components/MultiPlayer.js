@@ -3,12 +3,13 @@ import React, { useState, useEffect } from "react";
 import shortBeep from "./../audio/short.mp3";
 import longBeep from "./../audio/long.mp3";
 
-    const useMultiAudio = () => {
-        const array = ["long", "short", "long", "long"];
+    const useMultiAudio = ({ inputArray, soundReady }) => {
+
+        console.log(soundReady);
 
         const getUrls = () => {
             const urls =[];
-            array.forEach((item) => {
+            inputArray.forEach((item) => {
                 if (item === "short") {
                     urls.push(shortBeep);
                 } else {
@@ -74,7 +75,13 @@ import longBeep from "./../audio/long.mp3";
               });
             });
           };
-        }, []);
+        });
+
+        useEffect(() => {
+            if (soundReady === true) {
+                toggle();
+            }
+        })
       
         return [players, toggle];
       };
@@ -83,7 +90,7 @@ import longBeep from "./../audio/long.mp3";
         const [players, toggle] = useMultiAudio();
       
         return (
-          <div>
+          <div >
             {players.map((player, i) => (
               <Player key={i} player={player} toggle={toggle(i)} />
             ))}

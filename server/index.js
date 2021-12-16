@@ -82,7 +82,7 @@ let options = [];
 let levelDone = false;
 let arrayLevel = [];
 const levels = ["text", "light", "sound"];
-let levelAmount = 0;
+let levelAmount = 3;
 let currentLevel;
 
 let readyToAnswer = false;
@@ -146,6 +146,8 @@ board.on("ready", () => {
                                 answerInput = options[2].word;
                             }
                         };    
+                    } else if (!readyToAnswer && levelAmount === 3) {
+                        io.emit("soundReady", true);
                     } else {
                         io.emit("result", "wait for input");
                     }
@@ -237,6 +239,7 @@ const showMorseLight = (currentInput) => {
 
     if (currentInput.length <= 0) {
         led.stop().off();
+        readyToAnswer = true;
         io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
     } else {
         board.wait(1000, () => {
@@ -362,10 +365,12 @@ const showMorseLevel = () => {
 
     if (currentLevel === "text") {
         io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
-    }
-
-    if (currentLevel === "light") {
+    } else if (currentLevel === "light") {
         showMorseLight(validateAnswer.morse.split(""));    
+    } else if (currentLevel === "sound") {
+        console.log("sound");
+        io.to(sailor.socketId).emit("inputMorse", "druk om te luisteren")
+        io.to(sailor.socketId).emit("inputSound", validateAnswer.morse);
     }
 
 }

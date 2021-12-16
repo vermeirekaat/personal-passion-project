@@ -29,6 +29,8 @@ const Game = () => {
     const [input, setInput] = useState("");
     const [result, setResult] = useState("");
     const [rotation, setRotation] = useState("");
+    const [sound, setSound] = useState([]);
+    const [soundReady, setSoundReady] = useState(false);
 
     useEffect(() => {
         socket?.emit("page", "game");
@@ -63,6 +65,18 @@ const Game = () => {
             setRotation(rotation);
         });
     }, [socket]);
+
+    useEffect(() => {
+        socket?.on("inputSound", (data) => {
+            setSound(data);
+        })
+    });
+
+    useEffect(() => {
+        socket?.on("soundReady", (boolean) => {
+            setSoundReady(boolean);
+        })
+    });
 
     useEffect(() => {
         socket?.on("result", (message) => {
@@ -126,7 +140,7 @@ const Game = () => {
                 </div>
                 <div className={styles.morse}>
                     <Morse morseInput={input} opacity={true}/>
-                    <MultiPlayer/>
+                    {sound.length <= 0 ? "" : <MultiPlayer inputArray={sound} ready={soundReady}/>}
                 </div>
                 <div className={styles.result}>
                     <Result result={result} opacity={true}/>
