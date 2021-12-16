@@ -12,6 +12,7 @@ import Obstacle from "../components/Obstacle";
 import Options from "../components/Options";
 import CheatSheet from "../components/CheatSheet";
 import Controls from "../components/Controls";
+import MultiPlayer from "../components/MultiPlayer";
 
 const Game = () => {
 
@@ -125,6 +126,7 @@ const Game = () => {
                 </div>
                 <div className={styles.morse}>
                     <Morse morseInput={input} opacity={true}/>
+                    <MultiPlayer/>
                 </div>
                 <div className={styles.result}>
                     <Result result={result} opacity={true}/>
