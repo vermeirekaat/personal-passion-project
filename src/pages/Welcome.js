@@ -6,20 +6,20 @@ const Welcome = ({ socket }) => {
 
     const navigate = useNavigate();
     const [player, setPlayer] = useState("");
+    const [ready, setReady] = useState(false);
     
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
 
-    // useEffect(() => {
-    //     socket?.on("connect");
-    // }, [socket]);
-
     useEffect(() => {
         socket?.on("onlineUsers", (data) => {
-            console.log(data);
             const socketIndex = data.findIndex((user) => user.socketId === socket.id);
             setPlayer(data[socketIndex].username);
         });
+
+        socket?.on("boardReady", (boolean) => {
+            setReady(boolean);
+        })
     }, [socket]);
 
     useEffect(() => {
@@ -50,6 +50,15 @@ const Welcome = ({ socket }) => {
     const handleClickButton = () => {
         socket?.emit("newUser", socket.id);
     };
+
+    if (ready !== true) {
+        return (
+            <div>
+                <h1>Het Schip van Morse</h1>
+                <p>Even geduld...</p>
+            </div>
+        )
+    }
 
     return(
         <div>

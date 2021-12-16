@@ -81,7 +81,7 @@ let warning = [];
 let options = [];
 let levelDone = false;
 let arrayLevel = [];
-const levels = ["", "text", "light", "sound"];
+const levels = ["text", "light", "sound"];
 let levelAmount = 0;
 let currentLevel;
 
@@ -91,6 +91,8 @@ let validateAnswer;
 let led;
 
 board.on("ready", () => {
+    io.emit("boardReady", true);
+
     led = new five.Led(10);
     led.on();
 
@@ -174,6 +176,7 @@ board.on("ready", () => {
 
         addNewUser(usernames[amountUsers], socket.id);
         io.to(socket.id).emit("onlineUsers", onlineUsers);
+
         amountUsers++;
     });
 }); 
@@ -183,33 +186,6 @@ const addNewUser = (username, socketId) => {
     !onlineUsers.some((user) => user.socketId === socketId) &&
       onlineUsers.push({ username, socketId, currentStep: 1, startGame: false });
 };
-
-// const checkStepsOther = (socketId) => {
-//     const otherSocket = getOtherUser(socketId);
-
-//     if (otherSocket.currentStep < 4) {
-//         io.to(socketId).emit("result", "wait for other user");
-//     } else if (otherSocket.currentStep === 4) {
-//         io.to(otherSocket.socketId).emit("result", "ready to play");
-//     }
-// }; 
-
-// const handleSteps = (user) => {
-//     const currentUser = getUserByUsername(user);
-//     const nextStep = currentUser.currentStep++;
-//     currentUser.currentStep = nextStep;
-
-//     io.to(currentUser.socketId).emit("message", currentUser.currentStep);
-
-//     if (user === "captain" && nextStep === 4) {
-//         const choosenDirection = myFunctions.getRandomIndex(directions);
-//         validateAnswer = choosenDirection;
-//         io.to(currentUser.socketId).emit("direction", choosenDirection.word);
-//         checkStepsOther(currentUser.socketId);
-//     } else if (user === "sailor" && nextStep === 4) {
-//         checkStepsOther(currentUser.socketId);
-//     }
-// }; 
 
 const handleStepsMessage = (user) => {
     const currentUser = getUserByUsername(user);
@@ -414,6 +390,7 @@ const getUserByUsername = (username) => {
 
 const getOneUser = (socketId) => {
     return onlineUsers.find((user) => user.socketId === socketId);
+    // return onlineUsers.findIndex((user) => user.socketId === socketId);
 };
 
 const getOtherUser = (socketId) => {
@@ -421,11 +398,13 @@ const getOtherUser = (socketId) => {
 };
 
 const checkUsersReady = () => {
+    let ready;
     onlineUsers.forEach((user) => {
         if (user.startGame === true) {
-            return true;
+            ready = true;
         }
     });
+    return ready;
 }
 
 io.on("connection", (socket) => {
@@ -435,12 +414,13 @@ io.on("connection", (socket) => {
     });
 
     socket.on("startGame", (boolean) => {
-        const user = getOneUser(socket);
-        // user.startGame = boolean;
+        const user = getOneUser(socket.id);
+        user.startGame = boolean;
 
         const ready = checkUsersReady();
         if (ready) {
-            checkLevel(true);
+            io.emit("navigateGame", true);
+            startLevel(true);
         }
     });
 
@@ -452,6 +432,7 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
         morseInput = [];
+        amountUsers = onlineUsers.length;
     });
 });
 

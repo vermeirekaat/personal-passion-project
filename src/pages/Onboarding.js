@@ -19,7 +19,6 @@ const Onboarding = () => {
 
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
-    console.log(users);
     const currentUser = users[0].user;
     const socket = users[0].socket;
     const colors = users[0].colors;
@@ -54,12 +53,21 @@ const Onboarding = () => {
 
     useEffect(() => {
         if (amount === 7) {
+            socket?.emit("startGame", true);
             setTimeout(() => {
-                socket?.emit("startGame", true);
-                navigate("/game");
-            }, 1000)
+                // navigate("/game");
+            }, 1000);
         }
-    }, [currentItem, socket, navigate, amount]);
+    }, [currentItem, socket, amount]);
+
+    useEffect(() => {
+        socket?.on("navigateGame", (boolean) => {
+            console.log(boolean);
+            if (boolean) {
+                navigate("/game");
+            }
+        })
+    }, [socket, navigate]);
 
     const checkOpacity = (item) => {
         if (currentItem === "Captain" || currentItem === "Sailor") {

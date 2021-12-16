@@ -14,7 +14,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "concurrently \"PORT=3005 react-scripts start\" \"cd server && pm2 start 'SERVER'\"",
+    "start": "concurrently \"PORT=3005 react-scripts start\" \"cd server && pm2 start 'SERVER' --watch\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
