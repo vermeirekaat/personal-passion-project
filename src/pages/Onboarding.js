@@ -62,7 +62,6 @@ const Onboarding = () => {
 
     useEffect(() => {
         socket?.on("navigateGame", (boolean) => {
-            console.log(boolean);
             if (boolean) {
                 navigate("/game");
             }

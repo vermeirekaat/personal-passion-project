@@ -370,6 +370,7 @@ const checkLevel = () => {
             io.emit("result", "next level");
             io.emit("options", "");
             io.emit("obstacles", "");
+            io.emit("direction", "");
         }, 3000)
         levelAmount++;
 
@@ -398,13 +399,17 @@ const getOtherUser = (socketId) => {
 };
 
 const checkUsersReady = () => {
-    let ready;
+    const ready = [];
     onlineUsers.forEach((user) => {
         if (user.startGame === true) {
-            ready = true;
+            ready.push(true);
+        } else {
+            return;
         }
     });
-    return ready;
+    if (ready.length === 2) {
+        return true;
+    }
 }
 
 io.on("connection", (socket) => {
@@ -418,6 +423,7 @@ io.on("connection", (socket) => {
         user.startGame = boolean;
 
         const ready = checkUsersReady();
+        console.log(ready);
         if (ready) {
             io.emit("navigateGame", true);
             startLevel(true);
