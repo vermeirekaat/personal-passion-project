@@ -79,6 +79,12 @@ const Game = () => {
     });
 
     useEffect(() => {
+        socket?.on("level", (level) => {
+            console.log(level);
+        })
+    })
+
+    useEffect(() => {
         socket?.on("result", (message) => {
             setResult(message);
             if (message === "fail") {

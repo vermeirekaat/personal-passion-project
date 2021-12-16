@@ -82,8 +82,8 @@ let options = [];
 let levelDone = false;
 let arrayLevel = [];
 const levels = ["text", "light", "sound"];
-let levelAmount = 3;
-let currentLevel;
+let levelAmount = 0;
+let currentLevel = levels[levelAmount];
 
 let readyToAnswer = false;
 let validateAnswer;
@@ -194,20 +194,38 @@ const addNewUser = (username, socketId) => {
 const handleStepsMessage = (user) => {
     const currentUser = getUserByUsername(user);
     io.to(currentUser.socketId).emit("nextStep", true);
-}
+};
 const handleSkipMessage = (user) => {
     const currentUser = getUserByUsername(user);
     currentUser.startGame = true;
     io.to(currentUser.socketId).emit("skip", true);
-}
+};
+
+const checkUsersReady = () => {
+    const ready = [];
+    onlineUsers.forEach((user) => {
+        if (user.startGame === true) {
+            ready.push(true);
+        } else {
+            return;
+        }
+    });
+    if (ready.length === 2) {
+       return true;
+    }
+};
 
 const startLevel = (start) => {
+    io.emit("level", [currentLevel, arrayLevel.length]);
     io.emit("result", "");
-    currentLevel = levels[levelAmount];
 
     if (start === true) {
         arrayLevel = generateArray();
     };
+
+    if (arrayLevel.length > 9) {
+        arrayLevel.splice(-8);
+    }
 
     const captain = getUserByUsername("captain");
 
@@ -250,7 +268,7 @@ const showMorseLight = (currentInput) => {
 };
 
 const generateArray = () => {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 4; i++) {
         route.push(myFunctions.getRandomIndex(directions));
     }; 
     const copy = [...obstacles]
@@ -297,7 +315,10 @@ const emitMessageCaptain = (task) => {
 const emitMessageSailor = (task) => {
     const sailor = getUserByUsername("sailor");
 
-    if (task.type === "direction") {
+    if (task === undefined) {
+        console.log(arrayLevel);
+        startLevel(false);
+    } else if (task.type === "direction") {
         io.to(sailor.socketId).emit("options", ["changing direction"]);
     } else if (task.type === "obstacles") {
         options = generateOptions(task);
@@ -368,7 +389,6 @@ const showMorseLevel = () => {
     } else if (currentLevel === "light") {
         showMorseLight(validateAnswer.morse.split(""));    
     } else if (currentLevel === "sound") {
-        console.log("sound");
         io.to(sailor.socketId).emit("inputMorse", "druk om te luisteren")
         io.to(sailor.socketId).emit("inputSound", validateAnswer.morse);
     }
@@ -404,20 +424,6 @@ const getOneUser = (socketId) => {
 const getOtherUser = (socketId) => {
     return onlineUsers.find((user) => user.socketId !== socketId);
 };
-
-const checkUsersReady = () => {
-    const ready = [];
-    onlineUsers.forEach((user) => {
-        if (user.startGame === true) {
-            ready.push(true);
-        } else {
-            return;
-        }
-    });
-    if (ready.length === 2) {
-        return true;
-    }
-}
 
 io.on("connection", (socket) => {
 
