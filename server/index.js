@@ -86,143 +86,10 @@ let levelAmount = 0;
 let currentLevel = levels[levelAmount];
 
 let readyToAnswer = false;
-let validateAnswer;
+let validateAnswer = "";
 
 let led;
-
-board.on("ready", () => {
-    io.emit("boardReady", true);
-
-    led = new five.Led(10);
-    led.on();
-
-    const inputA = new five.Button(14);
-    const inputB = new five.Button(15);
-
-    let waveform = '';
-    let waveformTimeout;
-
-    inputA.on('up', () => {
-        console.log("input A");
-        //waveform += '1';
-        // handleWaveform();
-    });
-
-    inputB.on('up', () => {
-        console.log("input B");
-        // waveform += '0';
-        // handleWaveform();
-    });
-
-    const handleWaveform = () => {
-        if (waveform.length < 2) {
-        waveformTimeout = setTimeout(() => {
-            waveform = '';
-        }, 8);
-        return;
-        }
-
-        if (waveformTimeout) {
-        clearTimeout(waveformTimeout);
-        }
-
-        if (waveform === '01') {
-        console.log("up");
-        } else if (waveform === '10') {
-        console.log("down");
-        }
-
-        waveform = '';
-    }
-
-    const buttonsCollection = {
-        first: { pin: 2, type: "morse", value: ".", user: "captain" },
-        second: { pin: 4, type: "morse", value: "-", user: "captain" },
-        third: { pin: 8, type:"submit", value: 0, user: "sailor" },
-    }; 
-
-    Object.keys(buttonsCollection).forEach((key) => {
-        const pin = buttonsCollection[key].pin; 
-
-        const button = new five.Button({
-            pin: pin,
-            custom: {
-                type: buttonsCollection[key].type,
-                value: buttonsCollection[key].value,
-                sec: buttonsCollection[key].sec,
-                user: buttonsCollection[key].user,
-            }
-        });
-
-        button.on("press", () => {
-            const currentUser = getUserByUsername(button.custom.user);
-            if (currentPage === "onboarding" && currentUser.startGame === false) {
-                handleStepsMessage(button.custom.user); 
-
-            } else if (currentPage === "game") {
-                if (button.custom.type === "morse") {
-                    morseInput.push(button.custom.value);
-                    checkMorseInput();
-    
-                } else if (button.custom.type === "submit") {
-    
-                    if (readyToAnswer) {
-                        button.custom.value++;
-                        if (button.custom.value === 1) {
-                            answerInput = "rechts";
-                        } else if (button.custom.value === 2) {
-                            answerInput = "links";
-                        } else if (button.custom.value === 3) {
-                            if (options.length > 0) {
-                                answerInput = options[0].word;
-                            }
-                        } else if (button.custom.value === 4) {
-                            if (options.length > 0) {
-                                answerInput = options[1].word;
-                            }
-                        } else if (button.custom.value === 5) {
-                            if (options.length > 0) {
-                                answerInput = options[2].word;
-                            }
-                        };    
-                    } else if (!readyToAnswer && levelAmount === 3) {
-                        io.emit("soundReady", true);
-                    } else {
-                        io.emit("result", "wait for input");
-                    }
-                }
-            }
-        });
-
-        button.on("hold", () => {
-            const currentUser = getUserByUsername(button.custom.user);
-            if (currentPage === "onboarding" && currentUser.startGame === false) {
-                handleSkipMessage(button.custom.user); 
-
-            } else if (currentPage === "game") {
-            if (button.custom.type === "morse") {
-                morseInput = [];
-                io.emit("inputMorse", "");
-            } else if (button.custom.type === "submit") {
-                emitResult(answerInput);
-                button.custom.value = 0;
-            }};
-        });
-    });
-
-    io.on('connection', (socket) => {
-        const usernames = ["captain", "sailor"];
-
-        if (amountUsers >= 2) {
-            return;
-        };
-
-        addNewUser(usernames[amountUsers], socket.id);
-        io.to(socket.id).emit("onlineUsers", onlineUsers);
-
-        amountUsers++;
-    });
-}); 
+let rotation = [];
 
 const addNewUser = (username, socketId) => {
 
@@ -355,7 +222,7 @@ const emitMessageSailor = (task) => {
     const sailor = getUserByUsername("sailor");
 
     if (task === undefined) {
-        console.log(arrayLevel);
+        // console.log(arrayLevel);
         startLevel(false);
     } else if (task.type === "direction") {
         io.to(sailor.socketId).emit("options", ["changing direction"]);
@@ -388,6 +255,7 @@ const emitResult = (answer) => {
     } else {
         io.emit("result", "fail");
     };
+    answerInput = "";
     morseInput = [];
     inputSim = [];
     io.emit("inputMorse", "");
@@ -417,6 +285,21 @@ const checkMorseInput = () => {
             readyToAnswer = true;
         }
     }; 
+};
+
+const checkRotation = () => {
+    if (rotation.length > 2) {
+        if (!myFunctions.checkIdentical(rotation)) {
+            if (rotation[0] === "A" && rotation[1] === "B") {
+                // console.log(getOneDirection("rechts"));
+                return getOneDirection("rechts");
+            } else if (rotation[0] === "B" && rotation[1] === "A") {
+                // console.log(getOneDirection("links"));
+                return getOneDirection("links");
+            };
+        }
+        rotation = [];
+    };
 };
 
 const showMorseLevel = () => {
@@ -460,9 +343,129 @@ const getOneUser = (socketId) => {
     return onlineUsers.find((user) => user.socketId === socketId);
 };
 
-const getOtherUser = (socketId) => {
-    return onlineUsers.find((user) => user.socketId !== socketId);
+const getOneDirection = (rotation) => {
+    return directions.find((direction) => direction.word !== rotation);
 };
+
+board.on("ready", () => {
+    io.emit("boardReady", true);
+
+    led = new five.Led(10);
+    led.off();
+
+    const buttonsCollection = {
+        first: { pin: 2, type: "morse", value: ".", user: "captain" },
+        second: { pin: 4, type: "morse", value: "-", user: "captain" },
+        third: { pin: 8, type:"submit", value: 0, user: "sailor" },
+    }; 
+
+    Object.keys(buttonsCollection).forEach((key) => {
+        const pin = buttonsCollection[key].pin; 
+
+        const button = new five.Button({
+            pin: pin,
+            custom: {
+                type: buttonsCollection[key].type,
+                value: buttonsCollection[key].value,
+                sec: buttonsCollection[key].sec,
+                user: buttonsCollection[key].user,
+            }
+        });
+
+        button.on("press", () => {
+            const currentUser = getUserByUsername(button.custom.user);
+            if (currentPage === "onboarding" && currentUser.startGame === false) {
+                handleStepsMessage(button.custom.user); 
+
+            } else if (currentPage === "game") {
+                if (button.custom.type === "morse") {
+                    morseInput.push(button.custom.value);
+                    checkMorseInput();
+    
+                } else if (button.custom.type === "submit") {
+    
+                    if (readyToAnswer) {
+                        button.custom.value++;
+                        // if (button.custom.value === 1) {
+                        //     answerInput = "rechts";
+                        // } else if (button.custom.value === 2) {
+                        //     answerInput = "links";
+                        if (button.custom.value === 1) {
+                            if (options.length > 0) {
+                                answerInput = options[0].word;
+                            }
+                        } else if (button.custom.value === 2) {
+                            if (options.length > 0) {
+                                answerInput = options[1].word;
+                            }
+                        } else if (button.custom.value === 3) {
+                            if (options.length > 0) {
+                                answerInput = options[2].word;
+                            }
+                        };    
+                    } else if (!readyToAnswer && levelAmount === 3) {
+                        io.emit("soundReady", true);
+                    } else {
+                        io.emit("result", "wait for input");
+                    }
+                }
+            }
+        });
+
+        button.on("hold", () => {
+            const currentUser = getUserByUsername(button.custom.user);
+            if (currentPage === "onboarding" && currentUser.startGame === false) {
+                handleSkipMessage(button.custom.user); 
+
+            } else if (currentPage === "game") {
+            if (button.custom.type === "morse") {
+                morseInput = [];
+                io.emit("inputMorse", "");
+            } else if (button.custom.type === "submit") {
+                emitResult(answerInput);
+                button.custom.value = 0;
+            }};
+        });
+    });
+
+    // const inputA = new five.Button({pin: 14, isPullup: true});
+    // const inputB = new five.Button({pin: 15, isPullup: true});
+
+    let counter = 0;
+
+    const inputs = {
+        inputA: {pin: 14, value: null},
+        inputB: {pin: 15, value: null},
+    };
+
+    Object.keys(inputs).forEach((key) => {
+        const pin = inputs[key].pin; 
+
+        inputs[key].pinMode(pin, five.Pin.INPUT);
+        inputs[key].digitalRead(pin, (data) => {
+            if (inputs[key].value === null) {
+                inputs[key].value = data;
+            };
+            if (inputs[key].value !== data) {
+                console.log(pin, key);
+            }
+            inputs[key].value = data;
+        });
+    });
+
+    io.on('connection', (socket) => {
+        const usernames = ["captain", "sailor"];
+
+        if (amountUsers >= 2) {
+            return;
+        };
+
+        addNewUser(usernames[amountUsers], socket.id);
+        io.to(socket.id).emit("onlineUsers", onlineUsers);
+
+        amountUsers++;
+    });
+}); 
 
 io.on("connection", (socket) => {
 
