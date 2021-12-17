@@ -96,6 +96,45 @@ board.on("ready", () => {
     led = new five.Led(10);
     led.on();
 
+    const inputA = new five.Button(14);
+    const inputB = new five.Button(15);
+
+    let waveform = '';
+    let waveformTimeout;
+
+    inputA.on('up', () => {
+        console.log("input A");
+        //waveform += '1';
+        // handleWaveform();
+    });
+
+    inputB.on('up', () => {
+        console.log("input B");
+        // waveform += '0';
+        // handleWaveform();
+    });
+
+    const handleWaveform = () => {
+        if (waveform.length < 2) {
+        waveformTimeout = setTimeout(() => {
+            waveform = '';
+        }, 8);
+        return;
+        }
+
+        if (waveformTimeout) {
+        clearTimeout(waveformTimeout);
+        }
+
+        if (waveform === '01') {
+        console.log("up");
+        } else if (waveform === '10') {
+        console.log("down");
+        }
+
+        waveform = '';
+    }
+
     const buttonsCollection = {
         first: { pin: 2, type: "morse", value: ".", user: "captain" },
         second: { pin: 4, type: "morse", value: "-", user: "captain" },
