@@ -72,6 +72,11 @@ const obstacles = [
     },
 ];
 
+let counter = [];
+let currentState;
+let previousState;
+let counterTimeout;
+
 let morseInput = [];
 let inputSim = [];
 let answerInput;
@@ -95,7 +100,7 @@ board.on("ready", () => {
     io.emit("boardReady", true);
 
     led = new five.Led(10);
-    led.off();
+    led.blink();
 
     const buttonsCollection = {
         first: { pin: 2, type: "morse", value: ".", user: "captain" },
@@ -172,29 +177,18 @@ board.on("ready", () => {
         });
     });
 
-    // const inputA = new five.Button({pin: 14, isPullup: true});
-    // const inputB = new five.Button({pin: 15, isPullup: true});
+    const inputA = new five.Button({pin: 14});
+    const inputB = new five.Button({pin: 15});
 
-    let counter = 0;
+    inputA.on("up", () => {
+        // console.log(inputA.upValue);
+        counter.push("A");
+        // handleCounterChange();
+    });
 
-    const inputs = {
-        inputA: {pin: 14, value: null},
-        inputB: {pin: 15, value: null},
-    };
-
-    Object.keys(inputs).forEach((key) => {
-        const pin = inputs[key].pin; 
-
-        inputs[key].pinMode(pin, five.Pin.INPUT);
-        inputs[key].digitalRead(pin, (data) => {
-            if (inputs[key].value === null) {
-                inputs[key].value = data;
-            };
-            if (inputs[key].value !== data) {
-                console.log(pin, key);
-            }
-            inputs[key].value = data;
-        });
+    inputB.on("up", () => {
+        counter.push("B");
+        // handleCounterChange();
     });
 
     // io.on('connection', (socket) => {
@@ -203,6 +197,23 @@ board.on("ready", () => {
     //     });
     // });
 }); 
+
+const handleCounterChange = () => {
+    currentState = counter[0];
+
+    if (previousState === undefined) {
+        if (counter[0] === "A" && counter[1] === "B") {
+            console.log("rechts");
+        } else if (counter[0] === "B" && counter[1] === "A") {
+            console.log("links");
+        }
+    } else if (currentState === previousState) {
+        console.log("other direction");
+    }
+
+    console.log(counter[counter.length - 1]);
+    counter = [];
+};
 
 const addNewUser = (username, socketId) => {
 
@@ -256,7 +267,6 @@ const startLevel = (start) => {
     }; 
 
     arrayLevel.shift();
-    io.emit("result", "finish");
 };
 
 const showMorseLight = (currentInput) => {

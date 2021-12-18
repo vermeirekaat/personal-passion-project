@@ -28,7 +28,7 @@ const Finish = () => {
     let navigate = useNavigate();
 
     setTimeout(() => {
-        // navigate("/");
+        navigate("/");
     }, 5000);
 
     if (message === "fail") {

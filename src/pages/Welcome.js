@@ -21,6 +21,7 @@ const Welcome = ({ socket }) => {
 
     const handleClickPlayer = (player) => {
         if (!ready) {
+            console.log(player);
             socket?.emit("newPlayer", player.name);
 
             setUsers([{
