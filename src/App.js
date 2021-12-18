@@ -1,6 +1,7 @@
 import './App.css';
 import Users from './context/Users';
-import Welcome from './pages/Welcome';
+import Captain from './pages/Captain';
+import Sailor from './pages/Sailor';
 import Onboarding from './pages/Onboarding';
 import Game from './pages/Game';
 import { io } from 'socket.io-client';
@@ -19,9 +20,10 @@ const App = () => {
   return (
     <Users>
       <Routes>
-        <Route exact path="/" element={<Welcome socket={socket}/>}/>
-        <Route exact path="/onboarding" element={<Onboarding/>}/> 
-        <Route exact path="/game" element={<Game/>}/>
+        <Route exact path="/captain" element={<Captain socket={socket}/>}/>
+        <Route exact path="/sailor" element={<Sailor socket={socket}/>}/>
+        <Route exact path="/onboarding/:player" element={<Onboarding/>}/> 
+        <Route exact path="/game/:player" element={<Game/>}/>
       </Routes>
     </Users>
   );

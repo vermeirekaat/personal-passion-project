@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { usersContext } from "../context/Users";
 import styles from "./Onboarding.module.css";
 
@@ -17,9 +17,12 @@ import CheatSheet from "../components/CheatSheet";
 
 const Onboarding = () => {
 
+    let { player } = useParams();
+    console.log(player);
+
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
-    const currentUser = users[0].user;
+    console.log(users);
     const socket = users[0].socket;
     const colors = users[0].colors;
     const navigate = useNavigate();
@@ -55,18 +58,18 @@ const Onboarding = () => {
         if (amount === 7) {
             socket?.emit("startGame", true);
             setTimeout(() => {
-                // navigate("/game");
+                // navigate(`/game/${player}`);
             }, 1000);
         }
-    }, [currentItem, socket, amount]);
+    }, [currentItem, socket, amount, player]);
 
     useEffect(() => {
         socket?.on("navigateGame", (boolean) => {
             if (boolean) {
-                navigate("/game");
+                navigate(`/game/${player}`);
             }
         })
-    }, [socket, navigate]);
+    }, [socket, navigate, player]);
 
     const checkOpacity = (item) => {
         if (currentItem === "Captain" || currentItem === "Sailor") {
@@ -76,7 +79,7 @@ const Onboarding = () => {
         }
     }
 
-    if (currentUser === "captain") {
+    if (player === "captain") {
         return (
             <div className={styles.grid}>
                 <div className={styles.skipContainer}>
@@ -110,7 +113,7 @@ const Onboarding = () => {
         )
     }; 
 
-    if (currentUser === "sailor") {
+    if (player === "sailor") {
         return (
             <div className={styles.grid}>
                 <div className={styles.skipContainer}>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { usersContext } from "../context/Users";
 import styles from "./Game.module.css";
 
@@ -16,9 +16,10 @@ import MultiPlayer from "../components/MultiPlayer";
 
 const Game = () => {
 
+    let { player } = useParams();
     const [users, setUsers] = useContext(usersContext);
 
-    const currentUser = users[0].user;
+    const usernameNL = users[0].nl;
     const socket = users[0].socket;
     const colors = users[0].colors;
     let currentLives = users[0].lives;
@@ -99,10 +100,10 @@ const Game = () => {
         });
     }, [socket, currentLives, users, setUsers]);
 
-    if (currentUser === "captain") {
+    if (player === "captain") {
         return (
             <div className={styles.grid}>
-                <h2 className={styles.username} style={{ color: colors.reg}}>{currentUser}</h2>
+                <h2 className={styles.username} style={{ color: colors.reg}}>{usernameNL}</h2>
                 <div className={styles.lives}>
                     <Lives opacity={true}/>
                 </div>
@@ -128,10 +129,10 @@ const Game = () => {
         )
     }; 
 
-    if (currentUser === "sailor") {
+    if (player === "sailor") {
         return (
             <div className={styles.grid}>
-                <h2 className={styles.username} style={{ color: colors.reg}}>{currentUser}</h2>
+                <h2 className={styles.username} style={{ color: colors.reg}}>{usernameNL}</h2>
                 <div className={styles.lives}>
                     <Lives opacity={true}/>
                 </div>
