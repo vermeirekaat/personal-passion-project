@@ -18,11 +18,9 @@ import CheatSheet from "../components/CheatSheet";
 const Onboarding = () => {
 
     let { player } = useParams();
-    console.log(player);
 
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
-    console.log(users);
     const socket = users[0].socket;
     const colors = users[0].colors;
     const navigate = useNavigate();
@@ -77,13 +75,13 @@ const Onboarding = () => {
         } else if (currentItem === item) {
             return true;
         }
-    }
+    };
 
     if (player === "captain") {
         return (
             <div className={styles.grid}>
                 <div className={styles.skipContainer}>
-                    <button className={styles.skip} onClick={() => setCurrentItem("Game")} style={{ backgroundColor: colors.dark, color: colors.reg}}>Overslaan</button>
+                    <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.dark, color: colors.reg}}>Overslaan</button>
                 </div>
                 <div className={styles.avatar}>
                     <Avatar currentNumber={(amount)} showItem={(item) => setCurrentItem(item)}/>
@@ -117,7 +115,7 @@ const Onboarding = () => {
         return (
             <div className={styles.grid}>
                 <div className={styles.skipContainer}>
-                    <button className={styles.skip} onClick={() => setCurrentItem("Game")} style={{ backgroundColor: colors.reg, borderColor: colors.dark}}>Overslaan</button>
+                    <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.reg, borderColor: colors.dark}}>Overslaan</button>
                 </div>
                 <div className={styles.avatar}>
                     <Avatar  currentNumber={(amount)} showItem={(item) => setCurrentItem(item)}/>
