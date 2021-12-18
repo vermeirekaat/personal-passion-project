@@ -82,8 +82,7 @@ const Game = () => {
     
                 setUsers(copy);
             } else if (message === "finish") {
-                const boolean = true;
-                navigate(`/finish/${boolean}`);
+                navigate(`/finish/${message}`);
             }
 
         });

@@ -24,12 +24,12 @@ const Lives = ({ opacity }) => {
 
     if (lives.length <= 0) {
 
-        const boolean = false;
+        const message = "fail";
 
         setTimeout(() => {
-            navigate(`/finish/${boolean}`)
-        }, 1000);
-        
+            navigate(`/finish/${message}`)
+        }, 10000);
+
         return (
             <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
                 <div className={styles.inside} style={{ borderColor: colors.reg}}>
