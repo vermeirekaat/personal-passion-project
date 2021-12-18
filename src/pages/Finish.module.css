@@ -1,0 +1,58 @@
+@value values: "../style/values.module.css";
+@value regularFont, bigFont, hugeSize, regularSize, titleSize, regVal, miniVal, bigVal, myBlack from values;
+
+.container {
+    height: 100vh;
+    background-color: myBlack;
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.inside {
+    composes: borderLarge from "../style/borders.module.css";
+    width: 100rem;
+    height: 50rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.border {
+    height: 50rem;
+    padding: regVal;
+    margin: miniVal;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    composes: borderLarge from "../style/borders.module.css";
+}
+
+.title {
+    margin: 0;
+    font-family: bigFont;
+    font-size: hugeSize; 
+    color: white;
+    text-align: center;
+    padding: bigVal 0;
+}
+
+.text {
+    font-family: regularFont;
+    font-size: regularSize;
+    color: white;
+}
+
+.tagline {
+    font-family: bigFont; 
+    font-size: titleSize;
+}
+
+.svg {
+    width: 25rem;
+    height: 20rem;
+}

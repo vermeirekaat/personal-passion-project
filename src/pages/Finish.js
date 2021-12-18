@@ -1,24 +1,64 @@
+import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { usersContext } from "../context/Users";
+import styles from "./Finish.module.css";
+
+import shipBlue from "./../assets/boot-b.svg";
+import shipRed from "./../assets/boot-r.svg";
+
+import islandBlue from "./../assets/eiland-b.svg";
+import islandRed from "./../assets/eiland-r.svg";
 
 const Finish = () => {
 
-    let { message } = useParams();
+    const ship = {
+        captain: shipBlue, 
+        sailor: shipRed,
+    };
+
+    const island = {
+        captain: islandBlue,
+        sailor: islandRed,
+    }
+
+    let { player, message } = useParams();
+    // eslint-disable-next-line no-unused-vars
+    const [users, setUsers] = useContext(usersContext);
+    const colors = users[0].colors;
     let navigate = useNavigate();
 
     setTimeout(() => {
-        navigate("/");
+        // navigate("/");
     }, 5000);
 
     if (message === "fail") {
         return (
-            <div>
-                <p>Helaas, het is je niet gelukt</p>
+            <div className={styles.container}>
+                <div className={styles.inside} style={{ borderColor: colors.dark}}>
+                    <div className={styles.border} style={{ borderColor: colors.reg}}>
+                        <h1 className={styles.title} style={{ color: colors.dark}}>Helaas...</h1>
+                        <p className={styles.text}>Jullie hebben de tocht niet overleefd.</p>
+                        <img className={styles.svg} alt="ship" src={ship[player]}/>
+                        <p className={styles.tagline} style={{ color: colors.reg}}>Volgende keer beter!</p>
+                    </div>
+
+                    </div>
             </div>
         )
     } 
     if (message === "finish") {
-        <div>
-            <h1>Proficiat, je hebt de schat gehaald!</h1>
+        <div className={styles.container}>
+            <div className={styles.inside} style={{ borderColor: colors.dark}}>
+                <div className={styles.border} style={{ borderColor: colors.reg}}>
+                    <div className={styles.textContainer}>
+                        <h1 className={styles.title} style={{ color: colors.dark}}>Ahoy!</h1>
+                        <p className={styles.text}>Jullie hebben de schat bereikt!</p>
+                        <p className={styles.tagline} style={{ color: colors.reg}}>Proficiat!</p>
+                    </div>
+
+                    <img className={styles.svg} alt= "island" src={island[player]}/>
+                </div>
+            </div>
         </div>
     }
 

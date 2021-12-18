@@ -82,11 +82,11 @@ const Game = () => {
     
                 setUsers(copy);
             } else if (message === "finish") {
-                navigate(`/finish/${message}`);
+                navigate(`/finish/${player}/${message}`);
             }
 
         });
-    }, [socket, currentLives, users, setUsers, navigate]);
+    }, [socket, currentLives, users, setUsers, player, navigate]);
 
     const checkOpacity = (item) => {
         if (item !== "") {

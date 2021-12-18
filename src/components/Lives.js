@@ -18,7 +18,7 @@ const Lives = ({ opacity }) => {
 
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
-    const currentUser = users[0].user;
+    const player = users[0].user;
     const colors = users[0].colors;
     const lives = users[0].lives;
 
@@ -27,7 +27,7 @@ const Lives = ({ opacity }) => {
         const message = "fail";
 
         setTimeout(() => {
-            navigate(`/finish/${message}`)
+            navigate(`/finish/${player}/${message}`)
         }, 10000);
 
         return (
@@ -43,7 +43,7 @@ const Lives = ({ opacity }) => {
         <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
             <div className={styles.inside} style={{ borderColor: colors.reg}}>
                 {lives.map((life) => (
-                    <img className={styles.svg} alt="heart" key={life} src={assets[currentUser]}/>
+                    <img className={styles.svg} alt="heart" key={life} src={assets[player]}/>
                 ))}
             </div>
         </div>
