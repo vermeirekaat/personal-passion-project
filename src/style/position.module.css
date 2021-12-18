@@ -1,5 +1,5 @@
 @value values: "../style/values.module.css";
-@value bigVal from values;
+@value bigVal, myBlack, regularSize, regularFont from values;
 
 .columnSpace {
     display: flex; 
@@ -19,5 +19,14 @@
     justify-content: center;
     align-items: flex-end;
     margin-bottom: bigVal;
+}
+
+.button {
+    width: 30rem;
+    height: 5rem;
+    background-color: myBlack;
+    border: none;
+    font-family: regularFont;
+    font-size: regularSize;
 }
 

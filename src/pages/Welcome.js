@@ -1,6 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usersContext } from "../context/Users";
+import styles from "./Welcome.module.css";
+
+import shipBlue from "./../assets/boot-b.svg";
+import shipRed from "./../assets/boot-r.svg";
 
 const Welcome = ({ socket }) => {
 
@@ -32,10 +36,19 @@ const Welcome = ({ socket }) => {
     }
 
     return (
-        <div>
-            <h1>Schip van Morse</h1>
-            <button onClick={() => handleClickPlayer({name: "captain", nl:"kapitein", colors: {reg: "#09edf6", dark: "#043c7a"}})}>Captain</button>
-            <button onClick={() => handleClickPlayer({name: "sailor", nl:"matroos", colors: {reg: "#ff0c0c", dark: "#a00000"}})}>Sailor</button>
+        <div className={styles.container}>
+            <h1 className={styles.title}>Schip van Morse</h1>
+            <div className={styles.buttonContainer}>
+                <div className={styles.border} style={{borderColor: "#043c7a"}}>
+                    <img className={styles.svg} alt="ship-blue" src={shipBlue}/>
+                    <button className={styles.button} onClick={() => handleClickPlayer({name: "captain", nl:"kapitein", colors: {reg: "#09edf6", dark: "#043c7a"}})} style={{ color: "#09edf6"}}>Kapitein</button>
+                </div>
+
+                <div className={styles.border} style={{borderColor: "#a00000"}}>
+                    <img className={styles.svg} alt="ship-red" src={shipRed}/>
+                    <button className={styles.button} onClick={() => handleClickPlayer({name: "sailor", nl:"matroos", colors: {reg: "#ff0c0c", dark: "#a00000"}})} style={{ color: "#ff0c0c", backgroundImage: shipRed}}>Matroos</button>
+                </div>
+            </div>
         </div>
     )
 }; 

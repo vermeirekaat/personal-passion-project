@@ -466,7 +466,7 @@ io.on("connection", (socket) => {
         addNewUser(username, socket.id);
     });
 
-    console.log(onlineUsers);
+    // console.log(onlineUsers);
 
     socket.on("page", (page) => {
         currentPage = page;

@@ -4,6 +4,7 @@
 @value regularFont: 'Kalam', cursive;
 @value bigFont: 'Itim', cursive;
 
+@value hugeSize: 5.5rem;
 @value titleSize: 2rem;
 @value regularSize: 1.7rem;
 @value smallSize: 1.5rem;
