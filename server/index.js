@@ -21,7 +21,6 @@ const io = require('socket.io')(server, {
 });
 
 let onlineUsers = [];
-let amountUsers = 0; 
 let currentPage;
 
 const directions = [
@@ -338,7 +337,7 @@ const emitMessageSailor = (task) => {
         // console.log(arrayLevel);
         startLevel(false);
     } else if (task.type === "direction") {
-        io.to(sailor.socketId).emit("options", ["changing direction"]);
+        io.to(sailor.socketId).emit("options", "");
     } else if (task.type === "obstacles") {
         options = generateOptions(task);
 
@@ -466,8 +465,6 @@ io.on("connection", (socket) => {
         addNewUser(username, socket.id);
     });
 
-    // console.log(onlineUsers);
-
     socket.on("page", (page) => {
         currentPage = page;
     });
@@ -491,7 +488,6 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
         morseInput = [];
-        amountUsers = onlineUsers.length;
     });
 });
 

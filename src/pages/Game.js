@@ -26,7 +26,7 @@ const Game = () => {
 
     const [route, setRoute] = useState("");
     const [obstacle, setObstacle] = useState("");
-    const [options, setOptions] = useState([""]);
+    const [options, setOptions] = useState("");
     const [input, setInput] = useState("");
     const [result, setResult] = useState("");
     const [rotation, setRotation] = useState("");
@@ -101,13 +101,9 @@ const Game = () => {
     }, [socket, currentLives, users, setUsers]);
 
     const checkOpacity = (item) => {
-        if (item === options) {
-            if (item !== [""]) {
-                return true;
-            }
-        } else if (item !== "") {
+        if (item !== "") {
             return true;
-        }
+        };
     };
 
     if (player === "captain") {
@@ -127,7 +123,7 @@ const Game = () => {
                     <Obstacle currentObstacle={obstacle} opacity={checkOpacity(obstacle)}/>
                 </div>
                 <div className={styles.morse}>
-                    <Morse morseInput={input} opacity={true}/>
+                    <Morse morseInput={input} opacity={checkOpacity(input)}/>
                 </div>
                 <div className={styles.result}>
                     <Result result={result} opacity={checkOpacity(result)}/>
@@ -156,7 +152,7 @@ const Game = () => {
                     <Options currentOptions={options} opacity={checkOpacity(options)}/>
                 </div>
                 <div className={styles.morse}>
-                    <Morse morseInput={input} opacity={true}/>
+                    <Morse morseInput={input} opacity={checkOpacity(input)}/>
                     {sound.length <= 0 ? "" : <MultiPlayer inputArray={sound} ready={soundReady}/>}
                 </div>
                 <div className={styles.result}>
