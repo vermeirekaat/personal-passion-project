@@ -47,19 +47,18 @@ const Finish = () => {
         )
     } 
     if (message === "finish") {
+        return (
         <div className={styles.container}>
             <div className={styles.inside} style={{ borderColor: colors.dark}}>
                 <div className={styles.border} style={{ borderColor: colors.reg}}>
-                    <div className={styles.textContainer}>
                         <h1 className={styles.title} style={{ color: colors.dark}}>Ahoy!</h1>
                         <p className={styles.text}>Jullie hebben de schat bereikt!</p>
+                        <img className={styles.svg} alt= "island" src={island[player]}/>
                         <p className={styles.tagline} style={{ color: colors.reg}}>Proficiat!</p>
-                    </div>
-
-                    <img className={styles.svg} alt= "island" src={island[player]}/>
                 </div>
             </div>
         </div>
+        )
     }
 
     return (

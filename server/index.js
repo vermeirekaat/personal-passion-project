@@ -256,6 +256,7 @@ const startLevel = (start) => {
     }; 
 
     arrayLevel.shift();
+    io.emit("result", "finish");
 };
 
 const showMorseLight = (currentInput) => {
