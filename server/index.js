@@ -453,15 +453,19 @@ const showMorseLevel = () => {
     } else if (currentLevel === "sound") {
         showMorseSound(validateAnswer.morse.split(""));
     }
-
-}
+};
 
 const checkLevel = () => {
     if (arrayLevel.length <= 0) {
         setTimeout(() => {
-            io.emit("result", "next level");
+            io.emit("result", "Next Level");
         }, 3000)
         levelAmount++;
+
+        if (levelAmount === 3) {
+            io.emit("result", "finish");
+            return;
+        }
 
         setTimeout(() => {
             startLevel(true);

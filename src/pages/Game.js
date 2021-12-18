@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { usersContext } from "../context/Users";
 import styles from "./Game.module.css";
 
@@ -17,6 +17,7 @@ const Game = () => {
 
     let { player } = useParams();
     const [users, setUsers] = useContext(usersContext);
+    let navigate = useNavigate();
 
     const usernameNL = users[0].nl;
     const socket = users[0].socket;
@@ -80,10 +81,13 @@ const Game = () => {
                 copy[0].lives = currentLives;
     
                 setUsers(copy);
-            };
+            } else if (message === "finish") {
+                const boolean = true;
+                navigate(`/finish/${boolean}`);
+            }
 
         });
-    }, [socket, currentLives, users, setUsers]);
+    }, [socket, currentLives, users, setUsers, navigate]);
 
     const checkOpacity = (item) => {
         if (item !== "") {

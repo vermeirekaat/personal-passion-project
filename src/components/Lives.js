@@ -1,12 +1,15 @@
 import styles from "./Lives.module.css";
 import { usersContext } from "../context/Users";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import heartBlue from "./../assets/hart-b.svg";
 import heartRed from "./../assets/hart-r.svg";
 
 
 const Lives = ({ opacity }) => {
+
+    let navigate = useNavigate();
 
     const assets = {
         captain: heartBlue, 
@@ -20,6 +23,13 @@ const Lives = ({ opacity }) => {
     const lives = users[0].lives;
 
     if (lives.length <= 0) {
+
+        const boolean = false;
+
+        setTimeout(() => {
+            navigate(`/finish/${boolean}`)
+        }, 1000);
+        
         return (
             <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
                 <div className={styles.inside} style={{ borderColor: colors.reg}}>
