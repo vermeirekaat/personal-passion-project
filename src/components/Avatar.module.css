@@ -1,5 +1,5 @@
 @value values: "../style/values.module.css";
-@value bigFont, regSize, miniVal from values;
+@value bigFont, regSize, regVal, miniVal from values;
 
 .container {
     width: 50rem;
@@ -8,9 +8,7 @@
 }
 
 .inside {
-    display: flex; 
-    flex-direction: row;
-    justify-content: space-evenly;
+    padding: regVal;
     margin: miniVal;
     height: 5rem;
     composes: borderSmall from "../style/borders.module.css";
@@ -22,7 +20,7 @@
 
 .caption {
     font-family: bigFont; 
-    font-size: regSize;
+    font-size: regularSize;
     padding: miniVal;
 }
 

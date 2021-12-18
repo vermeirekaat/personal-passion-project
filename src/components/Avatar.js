@@ -7,31 +7,31 @@ const Avatar = ({ currentNumber, showItem }) => {
     const dialogue = {
         captain: [
             {
-                text: "Ahoy maatje, welkom op het Schip van Morse! Help je mee om de schat op te halen op het eiland? Druk op één van de knoppen om verder te gaan.", 
+                text: "Ahoy Kapitein, welkom op het Schip van Morse! Help je mee om de schat op te halen op het eiland? Druk op één van de knoppen om verder te gaan.", 
                 topic: "Captain",
             },
             {
-                text: "Je bent de kapitein en het is jouw taak om het schip in de juiste richting te sturen door boodschappen te sturen naar de matroos. Je krijgt drie levens om de route te voltooien.", 
+                text: "Je bent de kapitein en het is jouw taak om de juiste boodschap te sturen naar de matroos. Je krijgt 3 levens om de route te voltooien.", 
                 topic: "Lives",
             }, 
             {
-                text: "De boodschap die je zal versturen is in morse code. Dit is een verzameling van bolletjes en streepjes die de letters voorstellen. In het onderste venster kan je een overzicht vinden dat je hiermee kan helpen.", 
+                text: "De boodschap die je zal versturen is in morse code. Dit is een verzameling van bolletjes en streepjes die de letters voorstellen. In het onderste venster kan je een overzicht vinden dat je hiermee helpt.", 
                 topic: "Cheatsheet",
             }, 
             {
-                text: "In dit scherm zal je zien welke route het schip moet afleggen. Het is aan jou om te communiceren naar de matroos in welke richting het schip moet varen. Deze boodschap zal je doorgeven in morse code.",
+                text: "In dit scherm zal je zien in welke richting het schip moet varen. Het is aan jou om dit te communiceren naar de matroos.",
                 topic: "Route",
             }, 
             {
-                text: "Gebruik de knoppen om de juiste combinatie te maken van bollen en strepen. Als je een fout hebt gemaakt, kan je de knop lang indrukken om opnieuw te beginnen.",
+                text: "Gebruik de knoppen om de juiste combinatie te maken van bollen en strepen. Als je een fout hebt gemaakt, kan je één van de knoppen lang indrukken om opnieuw te beginnen.",
                 topic: "Morse", 
             }, 
             {
-                text: "In dit venster kan je zien of het al dan niet gelukt is om de code door te sturen en of de matroos het juist heeft ontcijferd.",
+                text: "In dit venster kan je zien of het al dan niet gelukt is om de juiste code door te sturen en of de matroos het juist heeft ontcijferd.",
                 topic: "Result", 
             }, 
             {
-                text: "Tijdens het varen zal je ook enkele obstakels tegenkomen. De obstakels zal je zien in onderstaand venster. Het is jouw taak om de naam van het obstakel door te geven aan de matroos die het zal ontcijferen om het obstakel te vermijden.", 
+                text: "Tijdens het varen zal je ook enkele obstakels tegenkomen. De obstakels zal je zien in het dit venster. Het is jouw taak om de naam van het obstakel door te geven aan de matroos die het zal ontcijferen om het obstakel te vermijden.", 
                 topic: "Obstacle", 
             }, 
             {
@@ -41,7 +41,7 @@ const Avatar = ({ currentNumber, showItem }) => {
         ], 
         sailor: [
             {
-                text: "Ahoy maatje, welkom op het Schip van Morse! Help je mee om de schat op te halen op het eiland? Druk op één van de knoppen om verder te gaan.", 
+                text: "Ahoy Matroos, welkom op het Schip van Morse! Help je mee om de schat op te halen op het eiland? Druk op één van de knoppen om verder te gaan.", 
                 topic: "Sailor",
             },
             {
@@ -53,19 +53,19 @@ const Avatar = ({ currentNumber, showItem }) => {
                 topic: "Cheatsheet",
             }, 
             {
-                text: "In dit venster zal je de boodschap van de kapitein ontvangen. Het is aan jouw om die boodschap te ontcijferen zodat je het schip juist kan besturen.", 
+                text: "In dit venster zal je de boodschap van de kapitein ontvangen. Het is aan jou om die boodschap te ontcijferen zodat je het schip juist kan besturen.",
                 topic: "Morse",
             }, 
             {
-                text: "Wanneer je van richting moet veranderen, draai je het stuur naar de juiste kant.", 
+                text: "Wanneer je van richting moet veranderen, draai je het stuur naar de juiste kant (links of rechts).", 
                 topic: "Wheel",
             }, 
             {
-                text: "In het onderste venster kan je altijd het resultaat zien van je actie, of die al dan niet gelukt is.", 
+                text: "In het onderste venster kan je altijd het resultaat zien. Of de boodschap juist is van de kapitein en of je de juiste actie hebt gekozen.", 
                 topic: "Result",
             }, 
             {
-                text: "Tijdens het varen zal je ook enkele obstakels tegenkomen. Het is jouw taak om deze te ontwijken. Je kan dit doen door de boodschap te ontcijferen zoals in de vorige stap. Om je te helpen krijg je drie verschillende opties te zien in onderstaand venster. Druk één, twee of drie keer op de knop om het juiste antwoord te kiezen.", 
+                text: "Tijdens het varen zal je ook enkele obstakels tegenkomen, het is jouw taak om die te ontwijken door de boodschap te ontcijferen. Je krijgt drie verschillende opties te zien in onderstaand venster. Druk 1, 2 of 3 keer op de knop om het juiste antwoord te kiezen. ! OPGELET, om je antwoord te bevestigen moet je langer op de knop drukken!", 
                 topic: "Options",
             }, 
             {

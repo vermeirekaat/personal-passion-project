@@ -234,16 +234,13 @@ const checkUsersReady = () => {
 };
 
 const startLevel = (start) => {
-    io.emit("level", [currentLevel, arrayLevel.length]);
     io.emit("result", "");
 
     if (start === true) {
         arrayLevel = generateArray();
     };
 
-    if (arrayLevel.length > 9) {
-        arrayLevel.splice(-8);
-    }
+    io.emit("level", [currentLevel, arrayLevel]);
 
     const captain = getUserByUsername("captain");
 
