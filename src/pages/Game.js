@@ -100,6 +100,16 @@ const Game = () => {
         });
     }, [socket, currentLives, users, setUsers]);
 
+    const checkOpacity = (item) => {
+        if (item === options) {
+            if (item !== [""]) {
+                return true;
+            }
+        } else if (item !== "") {
+            return true;
+        }
+    };
+
     if (player === "captain") {
         return (
             <div className={styles.grid}>
@@ -111,16 +121,16 @@ const Game = () => {
                     <Controls opacity={true}/>
                 </div>
                 <div className={styles.route}>
-                    <Route currentDirection={route} opacity={true}/>
+                    <Route currentDirection={route} opacity={checkOpacity(route)}/>
                 </div>
                 <div className={styles.obstacle}>
-                    <Obstacle currentObstacle={obstacle} opacity={true}/>
+                    <Obstacle currentObstacle={obstacle} opacity={checkOpacity(obstacle)}/>
                 </div>
                 <div className={styles.morse}>
                     <Morse morseInput={input} opacity={true}/>
                 </div>
                 <div className={styles.result}>
-                    <Result result={result} opacity={true}/>
+                    <Result result={result} opacity={checkOpacity(result)}/>
                 </div>
                 <div className={styles.cheatsheet}>
                     <CheatSheet opacity={true}/>
@@ -140,17 +150,17 @@ const Game = () => {
                     <Controls opacity={true}/>
                 </div>
                 <div className={styles.wheel}>
-                    <Wheel currentRotation={rotation} opacity={true}/>
+                    <Wheel currentRotation={rotation} opacity={checkOpacity(rotation)}/>
                 </div>
                 <div className={styles.options}>
-                    <Options currentOptions={options} opacity={true}/>
+                    <Options currentOptions={options} opacity={checkOpacity(options)}/>
                 </div>
                 <div className={styles.morse}>
                     <Morse morseInput={input} opacity={true}/>
                     {sound.length <= 0 ? "" : <MultiPlayer inputArray={sound} ready={soundReady}/>}
                 </div>
                 <div className={styles.result}>
-                    <Result result={result} opacity={true}/>
+                    <Result result={result} opacity={checkOpacity(result)}/>
                 </div>
                 <div className={styles.cheatsheet}>
                     <CheatSheet opacity={true}/>
