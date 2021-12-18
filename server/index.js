@@ -6,6 +6,7 @@ const app = express();
 const server = require('http').Server(app);
 const port = process.env.PORT || 5000;
 const board = new five.Board();
+const player = require('play-sound')();
 
 const myFunctions = require('./controller');
 const io = require('socket.io')(server, {
@@ -282,6 +283,36 @@ const showMorseLight = (currentInput) => {
     }; 
 };
 
+const showMorseSound = (currentInput) => {
+
+    const sailor = getUserByUsername("sailor");
+    const singleInput = currentInput[0];
+    console.log(singleInput);
+
+    if (singleInput === ".") {
+        player.play('./audio/short.mp3', (err) => {
+            if (err) console.log(`Could not play sound: ${err}`);
+        });
+        inputSim.push(singleInput);
+    } else if (singleInput === "-") {
+        player.play('./audio/long.pm3', (err) => {
+            if (err) console.log(`Could not play sound: ${err}`);
+        });
+        inputSim.push(singleInput);
+    }
+    currentInput.shift();
+
+    if (currentInput.length <= 0) {
+        readyToAnswer = true;
+        io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
+    } else {
+        setTimeout(() => {
+            showMorseSound(currentInput);
+            io.to(sailor.socketId).emit("inputMorse", inputSim);
+        }, 1000);
+    }; 
+}
+
 const generateArray = () => {
     for (let i = 0; i < 4; i++) {
         route.push(myFunctions.getRandomIndex(directions));
@@ -420,8 +451,7 @@ const showMorseLevel = () => {
     } else if (currentLevel === "light") {
         showMorseLight(validateAnswer.morse.split(""));    
     } else if (currentLevel === "sound") {
-        io.to(sailor.socketId).emit("inputMorse", "druk om te luisteren")
-        io.to(sailor.socketId).emit("inputSound", validateAnswer.morse);
+        showMorseSound(validateAnswer.morse.split(""));
     }
 
 }
