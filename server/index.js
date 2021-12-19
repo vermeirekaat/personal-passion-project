@@ -11,8 +11,8 @@ const player = require('play-sound')();
 const myFunctions = require('./controller');
 const io = require('socket.io')(server, {
     cors: {
-        // origin: "http://localhost:3005", 
-        origin: "http://192.168.0.252:3005",
+        origin: "http://localhost:3005", 
+        // origin: "http://192.168.0.252:3005",
         methods: ["GET", "POST"],
     }, 
     options: {
@@ -81,8 +81,8 @@ let warning = [];
 let options = [];
 let levelDone = false;
 let arrayLevel = [];
-const levels = ["text", "light", "sound"];
-let levelAmount = 2;
+const levels = ["text", "sound"];
+let levelAmount = 0;
 let currentLevel;
 
 let readyToAnswer = false;
@@ -308,9 +308,9 @@ const showMorseSound = (currentInput) => {
 }
 
 const generateArray = () => {
-    for (let i = 0; i < 4; i++) {
-        route.push(myFunctions.getRandomIndex(directions));
-    }; 
+    // for (let i = 0; i < 4; i++) {
+    //     route.push(myFunctions.getRandomIndex(directions));
+    // }; 
     const copy = [...obstacles]
     const newArray = route.concat(copy);
 
@@ -441,7 +441,7 @@ const checkLevel = () => {
         }, 3000)
         levelAmount++;
 
-        if (levelAmount === 3) {
+        if (levelAmount === 2) {
             io.emit("result", "finish");
             return;
         }

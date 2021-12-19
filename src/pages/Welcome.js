@@ -28,7 +28,7 @@ const Welcome = ({ socket }) => {
                 user: player.name, 
                 nl: player.nl,
                 socket: socket,
-                lives: [2, 1], 
+                lives: [3, 2, 1], 
                 colors: player.colors,
             }]); 
 

@@ -29,7 +29,7 @@ const Finish = () => {
 
     setTimeout(() => {
         navigate("/");
-    }, 5000);
+    }, 20000);
 
     if (message === "fail") {
         return (
