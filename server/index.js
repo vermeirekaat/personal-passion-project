@@ -94,13 +94,14 @@ let readyToAnswer = false;
 let validateAnswer = "";
 
 let led;
+let input;
 let rotation = [];
 
 board.on("ready", () => {
     io.emit("boardReady", true);
 
     led = new five.Led(10);
-    led.blink();
+    led.on();
 
     const buttonsCollection = {
         first: { pin: 2, type: "morse", value: ".", user: "captain" },
@@ -177,40 +178,29 @@ board.on("ready", () => {
         });
     });
 
-    const inputA = new five.Pin({pin: 14, mode: 0});
-    const inputB = new five.Pin({pin: 15, mode: 0});
-
-    five.Pin.read(inputA, (value) => {
-        console.log(value);
-    });
-
-    prevState = inputA.INPUT;
-
-    handleCounterChange(inputA, inputB);
-
-    // // io.on('connection', (socket) => {
-    // //     socket.on("connect", (username) => {
-    // //         addNewUser(username, socket.id);
-    // //     });
-    // // });
-}); 
-
-const handleCounterChange = (inputA, inputB) => {
-
-    // Reads the "current" state of the outputA
-    currentState = inputA.INPUT; 
-    // If the previous and the current state of the outputA are different, that means a Pulse has occured
-    if (currentState !== prevState) {     
-    // If the outputB state is different to the outputA state, that means the encoder is rotating clockwise
-        if (inputB.INPUT !== currentState) { 
-            console.log("rechts");
-        } else {
-            console.log("links");
-        }
+    const pinsCollection = {
+        inputA: { pin: 14, mode: 0},
+        inputB: { pin: 15, mode: 0},
     }; 
-    // Updates the previous state of the outputA with the current state``
-    prevState = currentState;
-};
+
+    Object.keys(pinsCollection).forEach((key) => {
+        const pin = pinsCollection[key].pin; 
+
+        input = new five.Pin({
+            pin: pin,
+            mode: 0,
+        });
+
+        input.on("high", () => {
+            if (validateAnswer.type === "direction") {
+                const correctAnswer = validateAnswer.word;
+                answerInput = correctAnswer;
+                emitResult(answerInput);
+            };
+        })
+
+    });
+});
 
 const addNewUser = (username, socketId) => {
 
@@ -242,18 +232,21 @@ const checkUsersReady = () => {
     }
 };
 
-const startLevel = (start) => {
+const startLevel = (start, user) => {
     io.emit("result", "");
 
     if (start === true) {
-        arrayLevel = generateArray();
+        if ( user.username === "captain" || user.username === "sailor") {
+            arrayLevel = generateArray();
+        }
     };
 
-    io.emit("level", [currentLevel, arrayLevel]);
+    io.emit("level", [currentLevel, arrayLevel.length]);
 
     const captain = getUserByUsername("captain");
 
     const currentTask = arrayLevel[0]; 
+    console.log(currentTask);
 
     if (currentTask.type === "direction") {
         io.to(captain.socketId).emit("obstacles", "");
@@ -261,9 +254,7 @@ const startLevel = (start) => {
     } else if (currentTask.type === "obstacles") {
         io.to(captain.socketId).emit("direction", "");
         emitMessageCaptain(currentTask);
-    }; 
-
-    io.emit("result", "finish");
+    };
 
     arrayLevel.shift();
 };
@@ -297,7 +288,7 @@ const showMorseSound = (currentInput) => {
 
     const sailor = getUserByUsername("sailor");
     const singleInput = currentInput[0];
-    console.log(singleInput);
+    // console.log(singleInput);
 
     if (singleInput === ".") {
         player.play('./audio/short.mp3', (err) => {
@@ -437,21 +428,6 @@ const checkMorseInput = () => {
     }; 
 };
 
-const checkRotation = () => {
-    if (rotation.length > 2) {
-        if (!myFunctions.checkIdentical(rotation)) {
-            if (rotation[0] === "A" && rotation[1] === "B") {
-                // console.log(getOneDirection("rechts"));
-                return getOneDirection("rechts");
-            } else if (rotation[0] === "B" && rotation[1] === "A") {
-                // console.log(getOneDirection("links"));
-                return getOneDirection("links");
-            };
-        }
-        rotation = [];
-    };
-};
-
 const showMorseLevel = () => {
     const sailor = getUserByUsername("sailor");
     io.emit("result", "correct");
@@ -478,7 +454,7 @@ const checkLevel = () => {
         }
 
         setTimeout(() => {
-            startLevel(true);
+            startLevel(true, onlineUsers[0]);
         }, 10000)
     } else {
         setTimeout(() => {
@@ -517,7 +493,7 @@ io.on("connection", (socket) => {
         const ready = checkUsersReady();
         if (ready) {
             io.emit("navigateGame", true);
-            startLevel(true);
+            startLevel(true, onlineUsers[0]);
         }
     });
 
