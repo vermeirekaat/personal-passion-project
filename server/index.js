@@ -11,8 +11,8 @@ const player = require('play-sound')();
 const myFunctions = require('./controller');
 const io = require('socket.io')(server, {
     cors: {
-        origin: "http://localhost:3005", 
-        // origin: "http://192.168.0.252:3005",
+        // origin: "http://localhost:3005", 
+        origin: "http://192.168.0.252:3005",
         methods: ["GET", "POST"],
     }, 
     options: {
@@ -82,7 +82,7 @@ let options = [];
 let levelDone = false;
 let arrayLevel = [];
 const levels = ["text", "light", "sound"];
-let levelAmount = 0;
+let levelAmount = 2;
 let currentLevel;
 
 let readyToAnswer = false;
@@ -95,7 +95,7 @@ board.on("ready", () => {
     io.emit("boardReady", true);
 
     led = new five.Led(10);
-    led.on();
+    // led.blink();
 
     const buttonsCollection = {
         first: { pin: 2, type: "morse", value: ".", user: "captain" },
@@ -238,6 +238,10 @@ const startLevel = (start) => {
 
     const currentTask = arrayLevel[0]; 
 
+    if (currentTask === undefined) {
+        startLevel(true);
+    }
+
     if (currentTask.type === "direction") {
         io.to(captain.socketId).emit("obstacles", "");
         emitMessageCaptain(currentTask);
@@ -285,7 +289,7 @@ const showMorseSound = (currentInput) => {
         });
         inputSim.push(singleInput);
     } else if (singleInput === "-") {
-        player.play('./audio/long.pm3', (err) => {
+        player.play('./audio/long.mp3', (err) => {
             if (err) console.log(`Could not play sound: ${err}`);
         });
         inputSim.push(singleInput);
@@ -425,6 +429,7 @@ const showMorseLevel = () => {
     } else if (currentLevel === "light") {
         showMorseLight(validateAnswer.morse.split(""));    
     } else if (currentLevel === "sound") {
+        console.log("sound");
         showMorseSound(validateAnswer.morse.split(""));
     }
 };

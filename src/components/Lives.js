@@ -22,7 +22,7 @@ const Lives = ({ opacity }) => {
     const colors = users[0].colors;
     const lives = users[0].lives;
 
-    if (lives.length <= 0) {
+    if (lives.length === 0) {
 
         const message = "fail";
 
