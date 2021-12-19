@@ -74,7 +74,7 @@ const obstacles = [
 
 let counter = [];
 let currentState;
-let previousState;
+let prevState;
 let counterTimeout;
 
 let morseInput = [];
@@ -177,42 +177,39 @@ board.on("ready", () => {
         });
     });
 
-    const inputA = new five.Button({pin: 14});
-    const inputB = new five.Button({pin: 15});
+    const inputA = new five.Pin({pin: 14, mode: 0});
+    const inputB = new five.Pin({pin: 15, mode: 0});
 
-    inputA.on("up", () => {
-        // console.log(inputA.upValue);
-        counter.push("A");
-        // handleCounterChange();
+    five.Pin.read(inputA, (value) => {
+        console.log(value);
     });
 
-    inputB.on("up", () => {
-        counter.push("B");
-        // handleCounterChange();
-    });
+    prevState = inputA.INPUT;
 
-    // io.on('connection', (socket) => {
-    //     socket.on("connect", (username) => {
-    //         addNewUser(username, socket.id);
-    //     });
-    // });
+    handleCounterChange(inputA, inputB);
+
+    // // io.on('connection', (socket) => {
+    // //     socket.on("connect", (username) => {
+    // //         addNewUser(username, socket.id);
+    // //     });
+    // // });
 }); 
 
-const handleCounterChange = () => {
-    currentState = counter[0];
+const handleCounterChange = (inputA, inputB) => {
 
-    if (previousState === undefined) {
-        if (counter[0] === "A" && counter[1] === "B") {
+    // Reads the "current" state of the outputA
+    currentState = inputA.INPUT; 
+    // If the previous and the current state of the outputA are different, that means a Pulse has occured
+    if (currentState !== prevState) {     
+    // If the outputB state is different to the outputA state, that means the encoder is rotating clockwise
+        if (inputB.INPUT !== currentState) { 
             console.log("rechts");
-        } else if (counter[0] === "B" && counter[1] === "A") {
+        } else {
             console.log("links");
         }
-    } else if (currentState === previousState) {
-        console.log("other direction");
-    }
-
-    console.log(counter[counter.length - 1]);
-    counter = [];
+    }; 
+    // Updates the previous state of the outputA with the current state``
+    prevState = currentState;
 };
 
 const addNewUser = (username, socketId) => {
