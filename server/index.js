@@ -72,11 +72,6 @@ const obstacles = [
     },
 ];
 
-let counter = [];
-let currentState;
-let prevState;
-let counterTimeout;
-
 let morseInput = [];
 let inputSim = [];
 let answerInput;
@@ -88,14 +83,13 @@ let levelDone = false;
 let arrayLevel = [];
 const levels = ["text", "light", "sound"];
 let levelAmount = 0;
-let currentLevel = levels[levelAmount];
+let currentLevel;
 
 let readyToAnswer = false;
 let validateAnswer = "";
 
 let led;
 let input;
-let rotation = [];
 
 board.on("ready", () => {
     io.emit("boardReady", true);
@@ -136,10 +130,6 @@ board.on("ready", () => {
     
                     if (readyToAnswer) {
                         button.custom.value++;
-                        // if (button.custom.value === 1) {
-                        //     answerInput = "rechts";
-                        // } else if (button.custom.value === 2) {
-                        //     answerInput = "links";
                         if (button.custom.value === 1) {
                             if (options.length > 0) {
                                 answerInput = options[0].word;
@@ -191,13 +181,15 @@ board.on("ready", () => {
             mode: 0,
         });
 
-        input.on("high", () => {
-            if (validateAnswer.type === "direction") {
-                const correctAnswer = validateAnswer.word;
-                answerInput = correctAnswer;
-                emitResult(answerInput);
-            };
-        })
+        if (validateAnswer !== undefined) {
+            input.on("high", () => {
+                if (validateAnswer.type === "direction") {
+                    const correctAnswer = validateAnswer.word;
+                    answerInput = correctAnswer;
+                    emitResult(answerInput);
+                };
+            })
+        }
 
     });
 });
@@ -232,13 +224,12 @@ const checkUsersReady = () => {
     }
 };
 
-const startLevel = (start, user) => {
+const startLevel = (start) => {
     io.emit("result", "");
 
     if (start === true) {
-        if ( user.username === "captain" || user.username === "sailor") {
-            arrayLevel = generateArray();
-        }
+        currentLevel = levels[levelAmount];
+        arrayLevel = generateArray();
     };
 
     io.emit("level", [currentLevel, arrayLevel.length]);
@@ -246,7 +237,6 @@ const startLevel = (start, user) => {
     const captain = getUserByUsername("captain");
 
     const currentTask = arrayLevel[0]; 
-    console.log(currentTask);
 
     if (currentTask.type === "direction") {
         io.to(captain.socketId).emit("obstacles", "");
@@ -288,7 +278,6 @@ const showMorseSound = (currentInput) => {
 
     const sailor = getUserByUsername("sailor");
     const singleInput = currentInput[0];
-    // console.log(singleInput);
 
     if (singleInput === ".") {
         player.play('./audio/short.mp3', (err) => {
@@ -363,7 +352,6 @@ const emitMessageSailor = (task) => {
     const sailor = getUserByUsername("sailor");
 
     if (task === undefined) {
-        // console.log(arrayLevel);
         startLevel(false);
     } else if (task.type === "direction") {
         io.to(sailor.socketId).emit("options", "");
@@ -442,7 +430,7 @@ const showMorseLevel = () => {
 };
 
 const checkLevel = () => {
-    if (arrayLevel.length <= 0) {
+    if (arrayLevel.length <= 1) {
         setTimeout(() => {
             io.emit("result", "Next Level");
         }, 3000)
@@ -454,7 +442,7 @@ const checkLevel = () => {
         }
 
         setTimeout(() => {
-            startLevel(true, onlineUsers[0]);
+            startLevel(true);
         }, 10000)
     } else {
         setTimeout(() => {
@@ -493,7 +481,7 @@ io.on("connection", (socket) => {
         const ready = checkUsersReady();
         if (ready) {
             io.emit("navigateGame", true);
-            startLevel(true, onlineUsers[0]);
+            startLevel(true);
         }
     });
 
