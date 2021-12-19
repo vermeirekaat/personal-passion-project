@@ -6,8 +6,8 @@ import styles from "./Finish.module.css";
 import shipBlue from "./../assets/boot-b.svg";
 import shipRed from "./../assets/boot-r.svg";
 
-import islandBlue from "./../assets/eiland-b.svg";
-import islandRed from "./../assets/eiland-r.svg";
+import treasureBlue from "./../assets/schat-b.svg";
+import treasureRed from "./../assets/schat-r.svg";
 
 const Finish = () => {
 
@@ -16,9 +16,9 @@ const Finish = () => {
         sailor: shipRed,
     };
 
-    const island = {
-        captain: islandBlue,
-        sailor: islandRed,
+    const treasure = {
+        captain: treasureBlue,
+        sailor: treasureRed,
     }
 
     let { player, message } = useParams();
@@ -53,7 +53,7 @@ const Finish = () => {
                 <div className={styles.border} style={{ borderColor: colors.reg}}>
                         <h1 className={styles.title} style={{ color: colors.dark}}>Ahoy!</h1>
                         <p className={styles.text}>Jullie hebben de schat bereikt!</p>
-                        <img className={styles.svg} alt= "island" src={island[player]}/>
+                        <img className={styles.svg} alt= "treasure" src={treasure[player]}/>
                         <p className={styles.tagline} style={{ color: colors.reg}}>Proficiat!</p>
                 </div>
             </div>

@@ -263,6 +263,8 @@ const startLevel = (start) => {
         emitMessageCaptain(currentTask);
     }; 
 
+    io.emit("result", "finish");
+
     arrayLevel.shift();
 };
 
