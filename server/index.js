@@ -488,6 +488,7 @@ io.on("connection", (socket) => {
     socket.on("startGame", (boolean) => {
         const user = getOneUser(socket.id);
         user.startGame = boolean;
+        
 
         const ready = checkUsersReady();
         if (ready) {

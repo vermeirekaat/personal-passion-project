@@ -43,7 +43,6 @@ const Onboarding = () => {
         socket?.on("handleChange", (data) => {
             setSettings(data);
         });
-
     }, [socket]);
 
     useEffect(() => {
@@ -64,11 +63,8 @@ const Onboarding = () => {
     useEffect(() => {
         if (amount === 7) {
             socket?.emit("startGame", true);
-            setTimeout(() => {
-                // navigate(`/game/${player}`);
-            }, 1000);
         }
-    }, [currentItem, socket, amount, player]);
+    }, [currentItem, socket, amount, settings]);
 
     useEffect(() => {
         socket?.on("navigateGame", (boolean) => {
@@ -94,7 +90,7 @@ const Onboarding = () => {
         return (
             <div className={styles.grid}>
                 <div className={styles.skipContainer}>
-                    {/* <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.dark, color: colors.reg}}>Overslaan</button> */}
+                    <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.dark, color: colors.reg}}>Overslaan</button>
                     <Settings setChange={(settings) => handleChangeSettings(settings)} player={player}/>
                 </div>
                 <div className={styles.avatar}>
@@ -129,7 +125,7 @@ const Onboarding = () => {
         return (
             <div className={styles.grid}>
                 <div className={styles.skipContainer}>
-                    {/* <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.reg, borderColor: colors.dark}}>Overslaan</button> */}
+                    <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.reg, borderColor: colors.dark}}>Overslaan</button>
                     <Settings handleSettings={settings} player={player}/>
                 </div>
                 <div className={styles.avatar}>

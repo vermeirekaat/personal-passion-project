@@ -9,21 +9,6 @@ const Settings = ({ setChange, handleSettings, player}) => {
     // const [led, setLed] = useState(true);
     // const [sound, setSound] = useState(true);
     const [settings, setSettings] = useState({led: true, sound: true});
-
-    const handleState = (setting) => {
-        if (setting === "led") {
-            // setLed(!led);
-            const copy = {...settings};
-            copy.led = !settings.led; 
-            setSettings(copy);
-        } else if (setting === "sound") {
-            const copy = {...settings};
-            copy.sound = !settings.sound; 
-            setSettings(copy);
-        };
-
-        setChange(settings);
-    }
     
     const soundAsset = {
         true: soundOn,
@@ -31,6 +16,22 @@ const Settings = ({ setChange, handleSettings, player}) => {
     }
     
     if (player === "captain") {
+
+        const handleState = (setting) => {
+            if (setting === "led") {
+                // setLed(!led);
+                const copy = {...settings};
+                copy.led = !settings.led; 
+                setSettings(copy);
+            } else if (setting === "sound") {
+                const copy = {...settings};
+                copy.sound = !settings.sound; 
+                setSettings(copy);
+            };
+        };
+
+        setChange(settings);
+
         return (
             <div className={styles.container}>
                 <div className={`${settings.led === true ? styles.setting : `${styles.setting} ${styles.opacity}`}`} onClick={() => handleState("led")}>
