@@ -83,6 +83,7 @@ let levelDone = false;
 let arrayLevel = [];
 const levels = ["text"];
 let levelAmount = 0;
+let totalAmountLevels;
 let currentLevel;
 
 let readyToAnswer = false;
@@ -226,13 +227,12 @@ const checkUsersReady = () => {
 
 const startLevel = (start) => {
     io.emit("result", "");
+    totalAmountLevels = levels.length;
 
     if (start === true) {
         currentLevel = levels[levelAmount];
         arrayLevel = generateArray();
     };
-
-    io.emit("level", [currentLevel, arrayLevel.length]);
 
     const captain = getUserByUsername("captain");
 
@@ -429,7 +429,6 @@ const showMorseLevel = () => {
     } else if (currentLevel === "light") {
         showMorseLight(validateAnswer.morse.split(""));    
     } else if (currentLevel === "sound") {
-        console.log("sound");
         showMorseSound(validateAnswer.morse.split(""));
     }
 };
@@ -441,7 +440,7 @@ const checkLevel = () => {
         }, 3000)
         levelAmount++;
 
-        if (levelAmount === 2) {
+        if (levelAmount === totalAmountLevels) {
             io.emit("result", "finish");
             return;
         }
@@ -456,6 +455,15 @@ const checkLevel = () => {
         }, 3000);
     }
 };
+
+const addLevelToArray = (data) => {
+    if (data.led === true) {
+        levels.push("light");
+    };
+    if (data.sound === true) {
+        levels.push("sound");
+    };
+}
 
 const getUserByUsername = (username) => {
     return onlineUsers.find((user) => user.username === username);
@@ -480,22 +488,30 @@ io.on("connection", (socket) => {
     });
 
     socket.on("settingsChange", (data) => {
-        const sailor = getUserByUsername("sailor")
-        io.to(sailor.socketId).emit("handleChange", (data));
-        // levels.push(data);
+        if (onlineUsers.length > 1) {
+            const sailor = getUserByUsername("sailor")
+            io.to(sailor.socketId).emit("handleChange", (data));
+        }
     })
 
     socket.on("startGame", (boolean) => {
         const user = getOneUser(socket.id);
         user.startGame = boolean;
         
-
         const ready = checkUsersReady();
         if (ready) {
             io.emit("navigateGame", true);
             startLevel(true);
         }
     });
+
+    socket.on("saveLevels", (data) => {
+        const user = getOneUser(socket.id);
+
+        if (user.username === "captain") {
+            addLevelToArray(data);
+        }
+    })
 
     socket.on("inputAnswer", (answer) => {
         emitResult(answer);

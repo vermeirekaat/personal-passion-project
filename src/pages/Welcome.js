@@ -17,15 +17,13 @@ const Welcome = ({ socket }) => {
     useEffect(() => {
         socket?.on("boardReady", (boolean) => {
             setReady(boolean);
+            console.log("ready");
         });
     }, [socket]);
 
     const handleClickPlayer = (player) => {
         if (!ready) {
-            console.log(player);
             socket?.emit("newPlayer", player.name);
-
-            // socket?.emit("settings", settings);
 
             setUsers([{
                 user: player.name, 
@@ -38,6 +36,7 @@ const Welcome = ({ socket }) => {
             navigate(`/onboarding/${player.name}`)
         }
     };
+
     return (
         <div className={styles.container}>
             <h1 className={styles.title}>Schip van Morse</h1>

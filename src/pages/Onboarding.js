@@ -53,7 +53,6 @@ const Onboarding = () => {
         });
 
         socket?.on("skip", (boolean) => {
-            console.log("skip");
             if (boolean) {
                 setAmount(7);
             }
@@ -63,8 +62,9 @@ const Onboarding = () => {
     useEffect(() => {
         if (amount === 7) {
             socket?.emit("startGame", true);
+            socket?.emit("saveLevels", settings);
         }
-    }, [currentItem, socket, amount, settings]);
+    }, [socket, amount, settings]);
 
     useEffect(() => {
         socket?.on("navigateGame", (boolean) => {
@@ -83,6 +83,7 @@ const Onboarding = () => {
     };
 
     const handleChangeSettings = (data) => {
+        setSettings(data);
         socket?.emit("settingsChange", data);
     };
 
@@ -90,7 +91,7 @@ const Onboarding = () => {
         return (
             <div className={styles.grid}>
                 <div className={styles.skipContainer}>
-                    <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.dark, color: colors.reg}}>Overslaan</button>
+                    {/* <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.dark, color: colors.reg}}>Overslaan</button> */}
                     <Settings setChange={(settings) => handleChangeSettings(settings)} player={player}/>
                 </div>
                 <div className={styles.avatar}>
@@ -125,7 +126,7 @@ const Onboarding = () => {
         return (
             <div className={styles.grid}>
                 <div className={styles.skipContainer}>
-                    <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.reg, borderColor: colors.dark}}>Overslaan</button>
+                    {/* <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.reg, borderColor: colors.dark}}>Overslaan</button> */}
                     <Settings handleSettings={settings} player={player}/>
                 </div>
                 <div className={styles.avatar}>
