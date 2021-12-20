@@ -90,7 +90,8 @@ let readyToAnswer = false;
 let validateAnswer = "";
 
 let led;
-let input;
+let inputA;
+let inputB;
 
 board.on("ready", () => {
     io.emit("boardReady", true);
@@ -169,30 +170,31 @@ board.on("ready", () => {
         });
     });
 
-    const pinsCollection = {
-        inputA: { pin: 14, mode: 0},
-        inputB: { pin: 15, mode: 0},
-    }; 
+    const inputA = new five.Pin(14);
+    const inputB = new five.Pin(15);
 
-    Object.keys(pinsCollection).forEach((key) => {
-        const pin = pinsCollection[key].pin; 
-
-        input = new five.Pin({
-            pin: pin,
-            mode: 0,
+    let defaultValue;
+        five.Pin.read(inputA, (value) => {
+            defaultValue = value;
         });
 
-        if (validateAnswer !== undefined) {
-            input.on("high", () => {
-                if (validateAnswer.type === "direction") {
-                    const correctAnswer = validateAnswer.word;
-                    answerInput = correctAnswer;
-                    emitResult(answerInput);
-                };
-            })
-        }
-
-    });
+        inputA.on("low", () => {
+            if (validateAnswer.type === "direction") { 
+                let currentState = inputA.value;
+    
+                if (defaultValue !== currentState) {
+                    if (inputB.value !== currentState) {
+                        // console.log("rechts");
+                        emitResult("rechts");
+                    } else {
+                        // console.log("links");
+                        emitResult("links");
+                    }
+                }; 
+    
+                defaultValue = currentState;
+            }
+        });
 });
 
 const addNewUser = (username, socketId) => {
@@ -311,9 +313,9 @@ const showMorseSound = (currentInput) => {
 }
 
 const generateArray = () => {
-    // for (let i = 0; i < 4; i++) {
-    //     route.push(myFunctions.getRandomIndex(directions));
-    // }; 
+    for (let i = 0; i < 3; i++) {
+        route.push(myFunctions.getRandomIndex(directions));
+    }; 
     const copy = [...obstacles]
     const newArray = route.concat(copy);
 
