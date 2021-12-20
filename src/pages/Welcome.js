@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usersContext } from "../context/Users";
-import Settings from "../components/Settings";
+// import Settings from "../components/Settings";
 import styles from "./Welcome.module.css";
 
 import shipBlue from "./../assets/boot-b.svg";
@@ -13,33 +13,19 @@ const Welcome = ({ socket }) => {
     const [users, setUsers] = useContext(usersContext);
     const navigate = useNavigate();
     const [ready, setReady] = useState(false);
-    // const [led, setLed] = useState(true);
-    // const [sound, setSound] = useState(true);
-
-    const [settings, setSettings] = useState();
-    // console.log(settings);
 
     useEffect(() => {
         socket?.on("boardReady", (boolean) => {
             setReady(boolean);
         });
-
-        socket?.on("handleChange", (data) => {
-            setSettings(data);
-        })
     }, [socket]);
-
-    // useEffect(() => {
-    //     socket?.emit("settingsChange", settings);
-
-    // }, [socket, settings]);
 
     const handleClickPlayer = (player) => {
         if (!ready) {
             console.log(player);
             socket?.emit("newPlayer", player.name);
 
-            socket?.emit("settings", settings);
+            // socket?.emit("settings", settings);
 
             setUsers([{
                 user: player.name, 
@@ -52,16 +38,8 @@ const Welcome = ({ socket }) => {
             navigate(`/onboarding/${player.name}`)
         }
     };
-
-    const handleChangeSettings = (data) => {
-        socket?.emit("settingsChange", data);
-    };
-
     return (
         <div className={styles.container}>
-            <div className={styles.settings}>
-                <Settings setChange={(settings) => handleChangeSettings(settings)}/>
-            </div>
             <h1 className={styles.title}>Schip van Morse</h1>
             <div className={styles.buttonContainer}>
                 <div className={styles.border} style={{borderColor: "#043c7a"}}>

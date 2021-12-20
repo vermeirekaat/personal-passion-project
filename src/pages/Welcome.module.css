@@ -9,13 +9,6 @@
     justify-content: space-evenly;
 }
 
-.settings {
-    display: flex; 
-    justify-content: flex-end;
-    margin-top: 2rem;
-    margin-right: 2rem;
-}
-
 .title {
     margin: 0;
     font-family: bigFont;

@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { usersContext } from "../context/Users";
 import styles from "./Onboarding.module.css";
 
+import Settings from "../components/Settings";
 import Avatar from "../components/Avatar";
 import Lives from "../components/Lives";
 import Controls from "../components/Controls";
@@ -26,6 +27,7 @@ const Onboarding = () => {
     const navigate = useNavigate();
 
     const [currentItem, setCurrentItem] = useState("");
+    const [settings, setSettings] = useState({led: true, sound: true});
     const [amount, setAmount] = useState(0);
     const route = "rechts";
     const obstacle = "vuurtoren";
@@ -36,6 +38,13 @@ const Onboarding = () => {
     useEffect(() => {
         socket?.emit("page", "onboarding");
     });
+
+    useEffect(() => {
+        socket?.on("handleChange", (data) => {
+            setSettings(data);
+        });
+
+    }, [socket]);
 
     useEffect(() => {
         socket?.on("nextStep", (boolean) => {
@@ -77,11 +86,16 @@ const Onboarding = () => {
         }
     };
 
+    const handleChangeSettings = (data) => {
+        socket?.emit("settingsChange", data);
+    };
+
     if (player === "captain") {
         return (
             <div className={styles.grid}>
                 <div className={styles.skipContainer}>
-                    <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.dark, color: colors.reg}}>Overslaan</button>
+                    {/* <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.dark, color: colors.reg}}>Overslaan</button> */}
+                    <Settings setChange={(settings) => handleChangeSettings(settings)} player={player}/>
                 </div>
                 <div className={styles.avatar}>
                     <Avatar currentNumber={(amount)} showItem={(item) => setCurrentItem(item)}/>
@@ -115,7 +129,8 @@ const Onboarding = () => {
         return (
             <div className={styles.grid}>
                 <div className={styles.skipContainer}>
-                    <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.reg, borderColor: colors.dark}}>Overslaan</button>
+                    {/* <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.reg, borderColor: colors.dark}}>Overslaan</button> */}
+                    <Settings handleSettings={settings} player={player}/>
                 </div>
                 <div className={styles.avatar}>
                     <Avatar  currentNumber={(amount)} showItem={(item) => setCurrentItem(item)}/>

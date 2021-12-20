@@ -480,8 +480,8 @@ io.on("connection", (socket) => {
     });
 
     socket.on("settingsChange", (data) => {
-        console.log(data);
-        io.emit("handleChange", (data));
+        const sailor = getUserByUsername("sailor")
+        io.to(sailor.socketId).emit("handleChange", (data));
         // levels.push(data);
     })
 
