@@ -13,21 +13,33 @@ const Welcome = ({ socket }) => {
     const [users, setUsers] = useContext(usersContext);
     const navigate = useNavigate();
     const [ready, setReady] = useState(false);
-    const [led, setLed] = useState(true);
-    const [sound, setSound] = useState(true);
+    // const [led, setLed] = useState(true);
+    // const [sound, setSound] = useState(true);
+
+    const [settings, setSettings] = useState();
+    // console.log(settings);
 
     useEffect(() => {
         socket?.on("boardReady", (boolean) => {
             setReady(boolean);
         });
+
+        socket?.on("handleChange", (data) => {
+            setSettings(data);
+        })
     }, [socket]);
+
+    // useEffect(() => {
+    //     socket?.emit("settingsChange", settings);
+
+    // }, [socket, settings]);
 
     const handleClickPlayer = (player) => {
         if (!ready) {
             console.log(player);
             socket?.emit("newPlayer", player.name);
 
-            socket?.emit("settings", [led, sound]);
+            socket?.emit("settings", settings);
 
             setUsers([{
                 user: player.name, 
@@ -39,12 +51,16 @@ const Welcome = ({ socket }) => {
 
             navigate(`/onboarding/${player.name}`)
         }
-    }
+    };
+
+    const handleChangeSettings = (data) => {
+        socket?.emit("settingsChange", data);
+    };
 
     return (
         <div className={styles.container}>
             <div className={styles.settings}>
-                <Settings ledState={(led) => setLed(led)} soundState={(sound) => setSound(sound)} led={led} sound={sound}/>
+                <Settings setChange={(settings) => handleChangeSettings(settings)}/>
             </div>
             <h1 className={styles.title}>Schip van Morse</h1>
             <div className={styles.buttonContainer}>

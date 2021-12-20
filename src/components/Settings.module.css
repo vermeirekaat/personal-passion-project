@@ -3,18 +3,23 @@
     display: flex; 
     flex-direction: row; 
     justify-content: space-between;
-}; 
+}
+
+.opacity {
+    opacity: .2;
+}
 
 .setting {
     border-color: white;
-    width: 5rem;
+    width: 3rem;
+    height: 3rem;
     display: flex; 
     justify-content: center;
     align-items: center;
 
     composes: borderFull from "../style/borders.module.css";
-};
+}
 
 .svg {
-    width: 3rem;
+    width: 1.5rem;
 }

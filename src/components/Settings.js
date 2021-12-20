@@ -1,24 +1,28 @@
 import styles from "./Settings.module.css";
-
+import { useState } from "react";
 import ledAsset from "./../assets/light-off.svg";
 import soundOn from "./../assets/sound-on.svg";
 import soundOff from "./../assets/sound-off.svg";
 
-const Settings = ({ ledState, soundState, led, sound }) => {
+const Settings = ({ setChange }) => {
 
     // const [led, setLed] = useState(true);
     // const [sound, setSound] = useState(true);
+    const [settings, setSettings] = useState({led: true, sound: true});
 
-    console.log(led);
-    console.log(sound);
     const handleState = (setting) => {
         if (setting === "led") {
             // setLed(!led);
-            ledState(!led);
+            const copy = {...settings};
+            copy.led = !settings.led; 
+            setSettings(copy);
         } else if (setting === "sound") {
-            // setSound(!sound);
-            soundState(!sound);
-        }
+            const copy = {...settings};
+            copy.sound = !settings.sound; 
+            setSettings(copy);
+        };
+
+        setChange(settings);
     }
     
     const soundAsset = {
@@ -28,11 +32,11 @@ const Settings = ({ ledState, soundState, led, sound }) => {
     
     return (
         <div className={styles.container}>
-            <div className={styles.setting} onClick={() => handleState("led")} style={{ width: "3rem", height: "3rem", borderColor: "white", display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <div className={`${settings.led === true ? styles.setting : `${styles.setting} ${styles.opacity}`}`} onClick={() => handleState("led")}>
                 <img className={styles.svg} alt="led-icon"src={ledAsset} style={{ width: "1.5rem", padding: ".2rem"}}/>
             </div>
-            <div className={styles.setting} onClick={() => handleState("sound")} style={{ width: "3rem", height: "3rem", borderColor: "white", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <img className={styles.svg} alt="sound-icon"src={soundAsset[sound]} style={{ width: "1.5rem", padding: ".2rem"}}/>
+            <div className={`${settings.sound === true ? styles.setting : `${styles.setting} ${styles.opacity}`}`} onClick={() => handleState("sound")}>
+                <img className={styles.svg} alt="sound-icon"src={soundAsset[settings.sound]} style={{ width: "1.5rem", padding: ".2rem"}}/>
             </div>
         </div>
     )

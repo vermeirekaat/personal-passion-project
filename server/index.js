@@ -479,8 +479,9 @@ io.on("connection", (socket) => {
         currentPage = page;
     });
 
-    socket.on("settings", (data) => {
+    socket.on("settingsChange", (data) => {
         console.log(data);
+        io.emit("handleChange", (data));
         // levels.push(data);
     })
 
