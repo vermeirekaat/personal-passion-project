@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usersContext } from "../context/Users";
+import Settings from "../components/Settings";
 import styles from "./Welcome.module.css";
 
 import shipBlue from "./../assets/boot-b.svg";
@@ -12,6 +13,8 @@ const Welcome = ({ socket }) => {
     const [users, setUsers] = useContext(usersContext);
     const navigate = useNavigate();
     const [ready, setReady] = useState(false);
+    const [led, setLed] = useState(true);
+    const [sound, setSound] = useState(true);
 
     useEffect(() => {
         socket?.on("boardReady", (boolean) => {
@@ -23,6 +26,8 @@ const Welcome = ({ socket }) => {
         if (!ready) {
             console.log(player);
             socket?.emit("newPlayer", player.name);
+
+            socket?.emit("settings", [led, sound]);
 
             setUsers([{
                 user: player.name, 
@@ -38,6 +43,9 @@ const Welcome = ({ socket }) => {
 
     return (
         <div className={styles.container}>
+            <div className={styles.settings}>
+                <Settings ledState={(led) => setLed(led)} soundState={(sound) => setSound(sound)} led={led} sound={sound}/>
+            </div>
             <h1 className={styles.title}>Schip van Morse</h1>
             <div className={styles.buttonContainer}>
                 <div className={styles.border} style={{borderColor: "#043c7a"}}>

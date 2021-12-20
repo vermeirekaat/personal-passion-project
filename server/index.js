@@ -81,7 +81,7 @@ let warning = [];
 let options = [];
 let levelDone = false;
 let arrayLevel = [];
-const levels = ["text", "sound"];
+const levels = ["text"];
 let levelAmount = 0;
 let currentLevel;
 
@@ -478,6 +478,11 @@ io.on("connection", (socket) => {
     socket.on("page", (page) => {
         currentPage = page;
     });
+
+    socket.on("settings", (data) => {
+        console.log(data);
+        // levels.push(data);
+    })
 
     socket.on("startGame", (boolean) => {
         const user = getOneUser(socket.id);
