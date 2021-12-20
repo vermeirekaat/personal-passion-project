@@ -230,6 +230,9 @@ const startLevel = (start) => {
     totalAmountLevels = levels.length;
 
     if (start === true) {
+        player.play('./audio/start.mp3', (err) => {
+            if (err) console.log(`Could not play sound: ${err}`);
+        });
         currentLevel = levels[levelAmount];
         arrayLevel = generateArray();
     };
@@ -379,6 +382,9 @@ const emitMessageSailor = (task) => {
 const emitResult = (answer) => {
     const sailor = getUserByUsername("sailor");
     if (answer === validateAnswer.word) {
+        player.play('./audio/success.mp3', (err) => {
+            if (err) console.log(`Could not play sound: ${err}`);
+        });
         io.emit("result", "success");
         options = []; 
         readyToAnswer = false;
@@ -386,6 +392,9 @@ const emitResult = (answer) => {
             io.to(sailor.socketId).emit("getRotation", answer);
         }
     } else {
+        player.play('./audio/fail-short.mp3', (err) => {
+            if (err) console.log(`Could not play sound: ${err}`);
+        });
         io.emit("result", "fail");
     };
     answerInput = "";
@@ -416,6 +425,9 @@ const checkMorseInput = () => {
             io.to(sailor.socketId).emit("inputMorse", "");
             showMorseLevel();
             readyToAnswer = true;
+            player.play('./audio/correct.mp3', (err) => {
+                if (err) console.log(`Could not play sound: ${err}`);
+            });
         }
     }; 
 };
@@ -442,6 +454,9 @@ const checkLevel = () => {
 
         if (levelAmount === totalAmountLevels) {
             io.emit("result", "finish");
+            player.play('./audio/finish.mp3', (err) => {
+                if (err) console.log(`Could not play sound: ${err}`);
+            });
             return;
         }
 
@@ -516,6 +531,16 @@ io.on("connection", (socket) => {
     socket.on("inputAnswer", (answer) => {
         emitResult(answer);
         morseInput = [];
+    });
+
+    socket.on("gameOver", (boolean) => {
+        if (boolean === true) {
+            setTimeout(() => {
+                player.play('./audio/fail-long.mp3', (err) => {
+                    if (err) console.log(`Could not play sound: ${err}`);
+                });
+            }, 1050)
+        }
     });
 
     socket.on("disconnect", () => {
