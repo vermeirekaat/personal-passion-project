@@ -23,7 +23,6 @@ const Onboarding = () => {
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
     const socket = users[0].socket;
-    const colors = users[0].colors;
     const navigate = useNavigate();
 
     const [currentItem, setCurrentItem] = useState("");
