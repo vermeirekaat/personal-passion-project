@@ -23,6 +23,7 @@ const io = require('socket.io')(server, {
 
 let onlineUsers = [];
 let currentPage;
+let boardReady;
 
 const directions = [
     {
@@ -90,10 +91,9 @@ let readyToAnswer = false;
 let validateAnswer = "";
 
 let led;
-let inputA;
-let inputB;
 
 board.on("ready", () => {
+    boardReady = true;
     io.emit("boardReady", true);
 
     led = new five.Led(10);
@@ -229,6 +229,7 @@ const checkUsersReady = () => {
 
 const startLevel = (start) => {
     io.emit("result", "");
+    answerInput = "";
     totalAmountLevels = levels.length;
 
     if (start === true) {
@@ -238,6 +239,8 @@ const startLevel = (start) => {
         currentLevel = levels[levelAmount];
         arrayLevel = generateArray();
     };
+
+    console.log(arrayLevel.length);
 
     const captain = getUserByUsername("captain");
 
@@ -257,60 +260,6 @@ const startLevel = (start) => {
 
     arrayLevel.shift();
 };
-
-const showMorseLight = (currentInput) => {
-    const sailor = getUserByUsername("sailor");
-    const singleInput = currentInput[0];
-
-    if (singleInput === ".") {
-        five.Led.prototype["blink"].apply(led);
-        inputSim.push(singleInput);
-    } else if (singleInput === "-") {
-        five.Led.prototype["pulse"].apply(led);
-        inputSim.push(singleInput);
-    }
-    currentInput.shift();
-
-    if (currentInput.length <= 0) {
-        led.stop().off();
-        readyToAnswer = true;
-        io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
-    } else {
-        board.wait(1000, () => {
-            showMorseLight(currentInput);
-            io.to(sailor.socketId).emit("inputMorse", inputSim);
-        });
-    }; 
-};
-
-const showMorseSound = (currentInput) => {
-
-    const sailor = getUserByUsername("sailor");
-    const singleInput = currentInput[0];
-
-    if (singleInput === ".") {
-        player.play('./audio/short.mp3', (err) => {
-            if (err) console.log(`Could not play sound: ${err}`);
-        });
-        inputSim.push(singleInput);
-    } else if (singleInput === "-") {
-        player.play('./audio/long.mp3', (err) => {
-            if (err) console.log(`Could not play sound: ${err}`);
-        });
-        inputSim.push(singleInput);
-    }
-    currentInput.shift();
-
-    if (currentInput.length <= 0) {
-        readyToAnswer = true;
-        io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
-    } else {
-        setTimeout(() => {
-            showMorseSound(currentInput);
-            io.to(sailor.socketId).emit("inputMorse", inputSim);
-        }, 1000);
-    }; 
-}
 
 const generateArray = () => {
     for (let i = 0; i < 3; i++) {
@@ -381,35 +330,6 @@ const emitMessageSailor = (task) => {
     };
 }; 
 
-const emitResult = (answer) => {
-    const sailor = getUserByUsername("sailor");
-    if (answer === validateAnswer.word) {
-        player.play('./audio/success.mp3', (err) => {
-            if (err) console.log(`Could not play sound: ${err}`);
-        });
-        io.emit("result", "success");
-        options = []; 
-        readyToAnswer = false;
-        if (answer === "links" || answer === "rechts") {
-            io.to(sailor.socketId).emit("getRotation", answer);
-        }
-    } else {
-        player.play('./audio/fail-short.mp3', (err) => {
-            if (err) console.log(`Could not play sound: ${err}`);
-        });
-        io.emit("result", "fail");
-    };
-    answerInput = "";
-    morseInput = [];
-    inputSim = [];
-    io.emit("inputMorse", "");
-    io.emit("options", "");
-    io.emit("obstacles", "");
-    io.emit("direction", "");
-
-    checkLevel();
-};
-
 const checkMorseInput = () => {
     let correctInput;
     const captain = getUserByUsername("captain");
@@ -445,6 +365,88 @@ const showMorseLevel = () => {
     } else if (currentLevel === "sound") {
         showMorseSound(validateAnswer.morse.split(""));
     }
+};
+
+const showMorseLight = (currentInput) => {
+    const sailor = getUserByUsername("sailor");
+    const singleInput = currentInput[0];
+
+    if (singleInput === ".") {
+        five.Led.prototype["blink"].apply(led);
+        inputSim.push(singleInput);
+    } else if (singleInput === "-") {
+        five.Led.prototype["pulse"].apply(led);
+        inputSim.push(singleInput);
+    }
+    currentInput.shift();
+
+    if (currentInput.length <= 0) {
+        led.stop().off();
+        readyToAnswer = true;
+        io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
+    } else {
+        board.wait(1000, () => {
+            showMorseLight(currentInput);
+            io.to(sailor.socketId).emit("inputMorse", inputSim);
+        });
+    }; 
+};
+
+const showMorseSound = (currentInput) => {
+
+    const sailor = getUserByUsername("sailor");
+    const singleInput = currentInput[0];
+
+    if (singleInput === ".") {
+        player.play('./audio/short.mp3', (err) => {
+            if (err) console.log(`Could not play sound: ${err}`);
+        });
+        inputSim.push(singleInput);
+    } else if (singleInput === "-") {
+        player.play('./audio/long.mp3', (err) => {
+            if (err) console.log(`Could not play sound: ${err}`);
+        });
+        inputSim.push(singleInput);
+    }
+    currentInput.shift();
+
+    if (currentInput.length <= 0) {
+        readyToAnswer = true;
+        io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
+    } else {
+        setTimeout(() => {
+            showMorseSound(currentInput);
+            io.to(sailor.socketId).emit("inputMorse", inputSim);
+        }, 1000);
+    }; 
+}
+
+const emitResult = (answer) => {
+    const sailor = getUserByUsername("sailor");
+    if (answer === validateAnswer.word) {
+        player.play('./audio/success.mp3', (err) => {
+            if (err) console.log(`Could not play sound: ${err}`);
+        });
+        io.emit("result", "success");
+        if (answer === "links" || answer === "rechts") {
+            io.to(sailor.socketId).emit("getRotation", answer);
+        }
+        options = []; 
+        readyToAnswer = false;
+    } else {
+        player.play('./audio/fail-short.mp3', (err) => {
+            if (err) console.log(`Could not play sound: ${err}`);
+        });
+        io.emit("result", "fail");
+    };
+    morseInput = [];
+    inputSim = [];
+    io.emit("inputMorse", "");
+    io.emit("options", "");
+    io.emit("obstacles", "");
+    io.emit("direction", "");
+
+    checkLevel();
 };
 
 const checkLevel = () => {
@@ -490,11 +492,15 @@ const getOneUser = (socketId) => {
     return onlineUsers.find((user) => user.socketId === socketId);
 };
 
-const getOneDirection = (rotation) => {
-    return directions.find((direction) => direction.word !== rotation);
-};
+const removeUser = (socketId) => {
+    onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
+}
 
 io.on("connection", (socket) => {
+
+    if (boardReady) {
+        io.emit("boardReady", true);
+    }
 
     socket.on("newPlayer", (username) => {
         addNewUser(username, socket.id);
@@ -530,11 +536,6 @@ io.on("connection", (socket) => {
         }
     })
 
-    socket.on("inputAnswer", (answer) => {
-        emitResult(answer);
-        morseInput = [];
-    });
-
     socket.on("gameOver", (boolean) => {
         if (boolean === true) {
             setTimeout(() => {
@@ -545,9 +546,14 @@ io.on("connection", (socket) => {
         }
     });
 
+    socket.on("removeUser", () => {
+        removeUser(socket.id);
+    })
+
     socket.on("disconnect", () => {
-        onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);
+        removeUser(socket.id);
         morseInput = [];
+        arrayLevel = [];
     });
 });
 

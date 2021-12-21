@@ -25,9 +25,11 @@ const Finish = () => {
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
     const colors = users[0].colors;
+    const socket = users[0].socket;
     let navigate = useNavigate();
 
     setTimeout(() => {
+        socket.emit("removeUser");
         navigate("/");
     }, 20000);
 
