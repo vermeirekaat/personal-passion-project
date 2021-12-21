@@ -1,12 +1,19 @@
 @value values: "../style/values.module.css";
 @value titleFont, regularFont, titleSize, hugeSize, myBlack, bigVal from values;
 
-.container {
+.background {
     height: 100vh;
     background-color: myBlack;
+}
+
+.container {
     display: flex; 
     flex-direction: column;
     justify-content: space-evenly;
+}
+
+.opacity {
+    opacity: .2;
 }
 
 .title {

@@ -13,6 +13,7 @@ const Welcome = ({ socket }) => {
     const [users, setUsers] = useContext(usersContext);
     const navigate = useNavigate();
     const [ready, setReady] = useState(false);
+    const [opacity, setOpacity] = useState(false);
 
     const { boolean } = useParams();
 
@@ -20,18 +21,18 @@ const Welcome = ({ socket }) => {
         if (boolean !== null) {
             if (boolean) {
                 setReady(true);
+                setOpacity(true);
                 for (let i; i < 1; i++) {
                     window.location.reload();
                 }
             }
         }
-
     }, [setReady, boolean]);
 
     useEffect(() => {
         socket?.on("boardReady", (boolean) => {
             setReady(boolean);
-            console.log("ready");
+            setOpacity(true);
         });
     }, [socket]);
 
@@ -52,7 +53,8 @@ const Welcome = ({ socket }) => {
     };
 
     return (
-        <div className={styles.container}>
+        <div className={styles.background}>
+             <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`}>
             <h1 className={styles.title}>Schip van Morse</h1>
             <div className={styles.buttonContainer}>
                 <div className={styles.border} style={{borderColor: "#043c7a"}}>
@@ -65,6 +67,7 @@ const Welcome = ({ socket }) => {
                     <button className={styles.button} onClick={() => handleClickPlayer({name: "sailor", nl:"matroos", colors: {reg: "#ff0c0c", dark: "#a00000"}})} style={{ color: "#ff0c0c", backgroundImage: shipRed}}>Matroos</button>
                 </div>
             </div>
+        </div>
         </div>
     )
 }; 
