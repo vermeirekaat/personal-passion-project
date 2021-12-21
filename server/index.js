@@ -145,8 +145,6 @@ board.on("ready", () => {
                                 answerInput = options[2].word;
                             }
                         };    
-                    } else if (!readyToAnswer && levelAmount === 3) {
-                        io.emit("soundReady", true);
                     } else {
                         io.emit("result", "wait for input");
                     }
@@ -178,23 +176,25 @@ board.on("ready", () => {
             defaultValue = value;
         });
 
-        inputA.on("low", () => {
-            if (validateAnswer.type === "direction") { 
-                let currentState = inputA.value;
-    
-                if (defaultValue !== currentState) {
-                    if (inputB.value !== currentState) {
-                        // console.log("rechts");
-                        emitResult("rechts");
-                    } else {
-                        // console.log("links");
-                        emitResult("links");
-                    }
-                }; 
-    
-                defaultValue = currentState;
-            }
-        });
+        if (readyToAnswer) {
+            inputA.on("low", () => {
+                if (validateAnswer.type === "direction") { 
+                    let currentState = inputA.value;
+        
+                    if (defaultValue !== currentState) {
+                        if (inputB.value !== currentState) {
+                            // console.log("rechts");
+                            emitResult("rechts");
+                        } else {
+                            // console.log("links");
+                            emitResult("links");
+                        }
+                    }; 
+        
+                    defaultValue = currentState;
+                }
+            });
+        }
 });
 
 const addNewUser = (username, socketId) => {
