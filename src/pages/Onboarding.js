@@ -15,10 +15,12 @@ import Result from "../components/Result";
 import Obstacle from "../components/Obstacle";
 import Options from "../components/Options";
 import CheatSheet from "../components/CheatSheet";
+import Wait from "../components/Wait";
 
 const Onboarding = () => {
 
     let { player } = useParams();
+
 
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
@@ -87,75 +89,88 @@ const Onboarding = () => {
     };
 
     if (player === "captain") {
-        return (
-            <div className={styles.grid}>
-                <div className={styles.skipContainer}>
-                    {/* <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.dark, color: colors.reg}}>Overslaan</button> */}
-                    <Settings setChange={(settings) => handleChangeSettings(settings)} player={player}/>
+        if (amount <= 6) {
+            return (
+                <div className={styles.grid}>
+                    <div className={styles.skipContainer}>
+                        <Settings setChange={(settings) => handleChangeSettings(settings)} player={player}/>
+                    </div>
+                    <div className={styles.avatar}>
+                        <Avatar currentNumber={(amount)} showItem={(item) => setCurrentItem(item)}/>
+                    </div>
+                    <div className={styles.lives}>
+                        <Lives opacity={checkOpacity("Lives")}/>
+                    </div>
+                    <div className={styles.controls}>
+                        <Controls opacity={checkOpacity("Morse")}/>
+                    </div>
+                    <div className={styles.route}>
+                        <Route currentDirection={route} opacity={checkOpacity("Route")}/>
+                    </div>
+                    <div className={styles.morse}>
+                        <Morse morseInput={input} opacity={checkOpacity("Morse")}/>
+                    </div>
+                    <div className={styles.result}>
+                        <Result result={result} opacity={checkOpacity("Result")}/>
+                    </div>
+                    <div className={styles.obstacle}>
+                        <Obstacle currentObstacle={obstacle} opacity={checkOpacity("Obstacle")}/>
+                    </div>
+                    <div className={styles.cheatsheet}>
+                        <CheatSheet opacity={checkOpacity("Cheatsheet")}/>
+                    </div>
                 </div>
-                <div className={styles.avatar}>
-                    <Avatar currentNumber={(amount)} showItem={(item) => setCurrentItem(item)}/>
-                </div>
-                <div className={styles.lives}>
-                    <Lives opacity={checkOpacity("Lives")}/>
-                </div>
-                <div className={styles.controls}>
-                    <Controls opacity={checkOpacity("Morse")}/>
-                </div>
-                <div className={styles.route}>
-                    <Route currentDirection={route} opacity={checkOpacity("Route")}/>
-                </div>
-                <div className={styles.morse}>
-                    <Morse morseInput={input} opacity={checkOpacity("Morse")}/>
-                </div>
-                <div className={styles.result}>
-                    <Result result={result} opacity={checkOpacity("Result")}/>
-                </div>
-                <div className={styles.obstacle}>
-                    <Obstacle currentObstacle={obstacle} opacity={checkOpacity("Obstacle")}/>
-                </div>
-                <div className={styles.cheatsheet}>
-                    <CheatSheet opacity={checkOpacity("Cheatsheet")}/>
-                </div>
-            </div>
-        )
+            )
+        }; 
+        if (amount === 7) {
+            return (
+                <Wait/>
+            )
+        }
+        
     }; 
 
     if (player === "sailor") {
-        return (
-            <div className={styles.grid}>
-                <div className={styles.skipContainer}>
-                    {/* <button className={styles.skip} onClick={() => setAmount(7)} style={{ backgroundColor: colors.reg, borderColor: colors.dark}}>Overslaan</button> */}
-                    <Settings handleSettings={settings} player={player}/>
+        if (amount <= 6) {
+            return (
+                <div className={styles.grid}>
+                    <div className={styles.skipContainer}>
+                        <Settings handleSettings={settings} player={player}/>
+                    </div>
+                    <div className={styles.avatar}>
+                        <Avatar  currentNumber={(amount)} showItem={(item) => setCurrentItem(item)}/>
+                    </div>
+                    <div className={styles.lives}>
+                        <Lives opacity={checkOpacity("Lives")}/>
+                    </div>
+                    <div className={styles.controls}>
+                        <Controls opacity={checkOpacity("Options")}/>
+                    </div>
+                    <div className={styles.wheel}>
+                        <Wheel currentRotation={""} opacity={checkOpacity("Wheel")}/>
+                    </div>
+                    <div className={styles.morse}>
+                        <Morse morseInput={input} opacity={checkOpacity("Morse")}/>
+                    </div>
+                    <div className={styles.result}>
+                        <Result result={result} opacity={checkOpacity("Result")}/>
+                    </div>
+                    <div className={styles.options}>
+                        <Options currentOptions={options} opacity={checkOpacity("Options")}/>
+                    </div>
+                    <div className={styles.cheatsheet}>
+                        <CheatSheet opacity={checkOpacity("Cheatsheet")}/>
+                    </div>
                 </div>
-                <div className={styles.avatar}>
-                    <Avatar  currentNumber={(amount)} showItem={(item) => setCurrentItem(item)}/>
-                </div>
-                <div className={styles.lives}>
-                    <Lives opacity={checkOpacity("Lives")}/>
-                </div>
-                <div className={styles.controls}>
-                    <Controls opacity={checkOpacity("Options")}/>
-                </div>
-                <div className={styles.wheel}>
-                    <Wheel currentRotation={""} opacity={checkOpacity("Wheel")}/>
-                </div>
-                <div className={styles.morse}>
-                    <Morse morseInput={input} opacity={checkOpacity("Morse")}/>
-                </div>
-                <div className={styles.result}>
-                    <Result result={result} opacity={checkOpacity("Result")}/>
-                </div>
-                <div className={styles.options}>
-                    <Options currentOptions={options} opacity={checkOpacity("Options")}/>
-                </div>
-                <div className={styles.cheatsheet}>
-                    <CheatSheet opacity={checkOpacity("Cheatsheet")}/>
-                </div>
-            </div>
-        )
-    };
+            )
+        }
 
+        if (amount === 7) {
+            return (
+                <Wait/>
+            )
+        }
+    };
 
     return (
         <Link to="/">No user was found</Link>

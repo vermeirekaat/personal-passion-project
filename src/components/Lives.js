@@ -30,7 +30,7 @@ const Lives = ({ opacity }) => {
         const message = "fail";
 
         setTimeout(() => {
-            navigate(`/finish/${player}/${message}`)
+            navigate(`/finish/${message}`)
         }, 1000);
 
         return (

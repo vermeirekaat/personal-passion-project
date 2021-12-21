@@ -6,7 +6,7 @@ import Game from './pages/Game';
 import Finish from './pages/Finish';
 import { io } from 'socket.io-client';
 import { useEffect, useState } from 'react';
-import { Route, Routes, R } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 const App = () => {
 
@@ -24,7 +24,7 @@ const App = () => {
         <Route exact path="/:boolean" element={<Welcome socket={socket}/>}/>
         <Route exact path="/onboarding/:player" element={<Onboarding/>}/> 
         <Route exact path="/game/:player" element={<Game/>}/>
-        <Route exact path="/finish/:player/:message" element={<Finish/>}/>
+        <Route exact path="/finish/:message" element={<Finish/>}/>
       </Routes>
     </Users>
   );

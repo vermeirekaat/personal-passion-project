@@ -21,9 +21,10 @@ const Finish = () => {
         sailor: treasureRed,
     }
 
-    let { player, message } = useParams();
+    let { message } = useParams();
     // eslint-disable-next-line no-unused-vars
     const [users, setUsers] = useContext(usersContext);
+    const player = users[0].username;
     const colors = users[0].colors;
     const socket = users[0].socket;
     let navigate = useNavigate();

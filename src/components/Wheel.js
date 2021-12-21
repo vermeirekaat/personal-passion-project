@@ -2,7 +2,7 @@ import styles from "./Wheel.module.css";
 import { usersContext } from "../context/Users";
 import { useContext } from "react";
 
-import steeringWheel from "./../assets/stuur.svg";
+import steeringWheel from "./../assets/stuur-r.svg";
 
 const Wheel = ({ currentRotation, opacity }) => {
      // eslint-disable-next-line no-unused-vars

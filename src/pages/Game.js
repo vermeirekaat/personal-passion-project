@@ -82,7 +82,7 @@ const Game = () => {
     
                 setUsers(copy);
             } else if (message === "finish") {
-                navigate(`/finish/${player}/${message}`);
+                navigate(`/finish/${message}`);
             }
 
         });
