@@ -96,7 +96,6 @@ board.on("ready", () => {
     io.emit("boardReady", true);
 
     led = new five.Led(10);
-    // led.blink();
 
     const buttonsCollection = {
         first: { pin: 2, type: "morse", value: ".", user: "captain" },
@@ -167,41 +166,32 @@ board.on("ready", () => {
         });
     });
 
-    const inputA = new five.Pin(14);
-    const inputB = new five.Pin(15);
+    const inputA = new five.Button(14);
+    const inputB = new five.Button(15);
 
-    let defaultValue;
-        five.Pin.read(inputA, (value) => {
-            defaultValue = value;
-        });
-
-        // if (readyToAnswer) {
-            inputA.on("low", () => {
-                if (validateAnswer.type === "direction") { 
-                    let currentState = inputA.value;
-        
-                    if (defaultValue !== currentState) {
-                        if (inputB.value !== currentState) {
-                            // console.log("rechts");
-                            emitResult("rechts");
-                        } else {
-                            // console.log("links");
-                            emitResult("links");
-                        }
-                    }; 
-        
-                    defaultValue = currentState;
+    inputA.on("up", () => {
+            if (!answerInput) { 
+                console.log("turn wheel");
+                const valueA = inputA.value;
+                const valueB = inputB.value;
+    
+                if (valueA === valueB) {
+                    answerInput = "links"; 
+                } else {
+                    answerInput = "rechts";
                 }
-            });
-        // }
+            } else {
+                return;
+            }
+        emitResult(answerInput);
+        return;
+    });
 });
 
 const addNewUser = (username, socketId) => {
-
     !onlineUsers.some((user) => user.socketId === socketId) &&
       onlineUsers.push({ username, socketId, currentStep: 1, startGame: false });
 };
-
 const handleStepsMessage = (user) => {
     const currentUser = getUserByUsername(user);
     io.to(currentUser.socketId).emit("nextStep", true);
@@ -211,7 +201,6 @@ const handleSkipMessage = (user) => {
     currentUser.startGame = true;
     io.to(currentUser.socketId).emit("skip", true);
 };
-
 const checkUsersReady = () => {
     const ready = [];
     onlineUsers.forEach((user) => {
@@ -234,7 +223,9 @@ const startLevel = (start) => {
     if (start === true) {
         myFunctions.playAudio("start");
         currentLevel = levels[levelAmount];
-        arrayLevel = generateArray();
+        if (arrayLevel.length === 0) {
+            arrayLevel = generateArray();
+        };
     };
 
     console.log(arrayLevel.length);
@@ -242,10 +233,6 @@ const startLevel = (start) => {
     const captain = getUserByUsername("captain");
 
     const currentTask = arrayLevel[0]; 
-
-    if (currentTask === undefined) {
-        startLevel(true);
-    }
 
     if (currentTask.type === "direction") {
         io.to(captain.socketId).emit("obstacles", "");
@@ -256,32 +243,6 @@ const startLevel = (start) => {
     };
 
     arrayLevel.shift();
-};
-
-const generateArray = () => {
-    for (let i = 0; i < 3; i++) {
-        route.push(myFunctions.getRandomIndex(directions));
-    }; 
-    const copy = [...obstacles]
-    const newArray = route.concat(copy);
-
-    return myFunctions.shuffleArray(newArray);
-}
-
-const generateOptions = (task) => {
-    options.push(validateAnswer);
-    const exNumber = obstacles.findIndex((item) => item.word === validateAnswer.word);
-
-    for (let i = 0; i < 2; i++) {
-        const newOption = myFunctions.getRandomIndexEx(obstacles, exNumber);
-        if (newOption === false) {
-            options = [];
-            emitMessageSailor(task);
-        } else {
-            options.push(newOption);
-        }
-    };
-    return options;
 };
 
 const emitMessageCaptain = (task) => {
@@ -309,7 +270,7 @@ const emitMessageSailor = (task) => {
     if (task === undefined) {
         startLevel(false);
     } else if (task.type === "direction") {
-        io.to(sailor.socketId).emit("options", "");
+        io.to(sailor.socketId).emit("options", ["richting veranderen"]);
     } else if (task.type === "obstacles") {
         options = generateOptions(task);
 
@@ -347,7 +308,6 @@ const checkMorseInput = () => {
         }
     }; 
 };
-
 const showMorseLevel = () => {
     const sailor = getUserByUsername("sailor");
     io.emit("result", "correct");
@@ -361,7 +321,6 @@ const showMorseLevel = () => {
         showMorseSound(validateAnswer.morse.split(""));
     }
 };
-
 const showMorseLight = (currentInput) => {
     const sailor = getUserByUsername("sailor");
     const singleInput = currentInput[0];
@@ -386,7 +345,6 @@ const showMorseLight = (currentInput) => {
         });
     }; 
 };
-
 const showMorseSound = (currentInput) => {
 
     const sailor = getUserByUsername("sailor");
@@ -410,7 +368,7 @@ const showMorseSound = (currentInput) => {
             io.to(sailor.socketId).emit("inputMorse", inputSim);
         }, 1000);
     }; 
-}
+};
 
 const emitResult = (answer) => {
     const sailor = getUserByUsername("sailor");
@@ -435,7 +393,6 @@ const emitResult = (answer) => {
 
     checkLevel();
 };
-
 const checkLevel = () => {
     if (arrayLevel.length <= 1) {
         setTimeout(() => {
@@ -450,7 +407,11 @@ const checkLevel = () => {
         }
 
         setTimeout(() => {
-            startLevel(true);
+            if (onlineUsers.length === 2) {
+                startLevel(true);
+            } else {
+                return;
+            }
         }, 10000)
     } else {
         setTimeout(() => {
@@ -468,15 +429,36 @@ const addLevelToArray = (data) => {
         levels.push("sound");
     };
 }
+const generateArray = () => {
+    for (let i = 0; i < 3; i++) {
+        route.push(myFunctions.getRandomIndex(directions));
+    }; 
+    const copy = [...obstacles]
+    const newArray = route.concat(copy);
 
+    return myFunctions.shuffleArray(newArray);
+}
+const generateOptions = (task) => {
+    options.push(validateAnswer);
+    const exNumber = obstacles.findIndex((item) => item.word === validateAnswer.word);
+
+    for (let i = 0; i < 2; i++) {
+        const newOption = myFunctions.getRandomIndexEx(obstacles, exNumber);
+        if (newOption === false) {
+            options = [];
+            emitMessageSailor(task);
+        } else {
+            options.push(newOption);
+        }
+    };
+    return options;
+};
 const getUserByUsername = (username) => {
     return onlineUsers.find((user) => user.username === username);
 };
-
 const getOneUser = (socketId) => {
     return onlineUsers.find((user) => user.socketId === socketId);
 };
-
 const removeUser = (socketId) => {
     onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
 }
@@ -509,7 +491,10 @@ io.on("connection", (socket) => {
         const ready = checkUsersReady();
         if (ready) {
             io.emit("navigateGame", true);
-            startLevel(true);
+
+            if (onlineUsers.length === 2) {
+                startLevel(true);
+            }
         }
     });
 
