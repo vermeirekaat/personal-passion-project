@@ -15,7 +15,7 @@ import Result from "../components/Result";
 import Obstacle from "../components/Obstacle";
 import Options from "../components/Options";
 import CheatSheet from "../components/CheatSheet";
-import Wait from "../components/Wait";
+import Wait from "../components/PopUp";
 
 const Onboarding = () => {
 

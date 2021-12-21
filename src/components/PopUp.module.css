@@ -56,3 +56,14 @@
     width: 25rem;
     height: 20rem;
 }
+
+.rotation {
+    animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate { 
+    100% { 
+        -webkit-transform: rotate(360deg); 
+        transform:rotate(360deg); 
+    } 
+}
