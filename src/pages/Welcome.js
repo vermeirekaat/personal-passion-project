@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { usersContext } from "../context/Users";
 // import Settings from "../components/Settings";
 import styles from "./Welcome.module.css";
@@ -13,6 +13,20 @@ const Welcome = ({ socket }) => {
     const [users, setUsers] = useContext(usersContext);
     const navigate = useNavigate();
     const [ready, setReady] = useState(false);
+
+    const { boolean } = useParams();
+
+    useEffect(() => {
+        if (boolean !== null) {
+            if (boolean) {
+                setReady(true);
+                for (let i; i < 1; i++) {
+                    window.location.reload();
+                }
+            }
+        }
+
+    }, [setReady, boolean]);
 
     useEffect(() => {
         socket?.on("boardReady", (boolean) => {

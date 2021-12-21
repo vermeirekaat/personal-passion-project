@@ -29,8 +29,9 @@ const Finish = () => {
     let navigate = useNavigate();
 
     setTimeout(() => {
+        const boolean = true;
         socket.emit("removeUser");
-        navigate("/");
+        navigate(`/${boolean}`);
     }, 20000);
 
     if (message === "fail") {
