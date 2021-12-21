@@ -346,7 +346,6 @@ const checkMorseInput = () => {
         if (morseInput.join("") === correctInput) {
             io.to(sailor.socketId).emit("inputMorse", "");
             showMorseLevel();
-            readyToAnswer = true;
             player.play('./audio/correct.mp3', (err) => {
                 if (err) console.log(`Could not play sound: ${err}`);
             });
@@ -359,6 +358,7 @@ const showMorseLevel = () => {
     io.emit("result", "correct");
 
     if (currentLevel === "text") {
+        readyToAnswer = true;
         io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
     } else if (currentLevel === "light") {
         showMorseLight(validateAnswer.morse.split(""));    
