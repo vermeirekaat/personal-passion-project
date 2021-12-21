@@ -1,3 +1,16 @@
+const player = require('play-sound')();
+
+const sounds = {
+    correct: "./audio/correct.mp3",
+    failShort: "./audio/fail-short.mp3",
+    failLong: "./audio/fail-long.mp3",
+    finish: "./audio/finish.mp3", 
+    long: "./audio/long.mp3",
+    short: "./audio/short.mp3",
+    start: "./audio/start.mp3",
+    success: "./audio/success.mp3",
+}
+
 module.exports = {
     getRandomIndex: function (array) {
         let copy = array.slice(0);
@@ -46,4 +59,14 @@ module.exports = {
             };
         };   
     },
+    playAudio: function (audio) {
+        const play = player.play(sounds[audio], function(err){
+            if (err && !err.killed) throw err
+        });
+
+        setTimeout(() => {
+            play.kill();
+        }, 50000);
+        // play.kill()
+    }
 };

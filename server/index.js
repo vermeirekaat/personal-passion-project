@@ -6,7 +6,6 @@ const app = express();
 const server = require('http').Server(app);
 const port = process.env.PORT || 5000;
 const board = new five.Board();
-const player = require('play-sound')();
 
 const myFunctions = require('./controller');
 const io = require('socket.io')(server, {
@@ -176,7 +175,7 @@ board.on("ready", () => {
             defaultValue = value;
         });
 
-        if (readyToAnswer) {
+        // if (readyToAnswer) {
             inputA.on("low", () => {
                 if (validateAnswer.type === "direction") { 
                     let currentState = inputA.value;
@@ -194,7 +193,7 @@ board.on("ready", () => {
                     defaultValue = currentState;
                 }
             });
-        }
+        // }
 });
 
 const addNewUser = (username, socketId) => {
@@ -233,9 +232,7 @@ const startLevel = (start) => {
     totalAmountLevels = levels.length;
 
     if (start === true) {
-        player.play('./audio/start.mp3', (err) => {
-            if (err) console.log(`Could not play sound: ${err}`);
-        });
+        myFunctions.playAudio("start");
         currentLevel = levels[levelAmount];
         arrayLevel = generateArray();
     };
@@ -346,9 +343,7 @@ const checkMorseInput = () => {
         if (morseInput.join("") === correctInput) {
             io.to(sailor.socketId).emit("inputMorse", "");
             showMorseLevel();
-            player.play('./audio/correct.mp3', (err) => {
-                if (err) console.log(`Could not play sound: ${err}`);
-            });
+            myFunctions.playAudio("correct");
         }
     }; 
 };
@@ -398,14 +393,10 @@ const showMorseSound = (currentInput) => {
     const singleInput = currentInput[0];
 
     if (singleInput === ".") {
-        player.play('./audio/short.mp3', (err) => {
-            if (err) console.log(`Could not play sound: ${err}`);
-        });
+        myFunctions.playAudio("short");
         inputSim.push(singleInput);
     } else if (singleInput === "-") {
-        player.play('./audio/long.mp3', (err) => {
-            if (err) console.log(`Could not play sound: ${err}`);
-        });
+        myFunctions.playAudio("long");
         inputSim.push(singleInput);
     }
     currentInput.shift();
@@ -424,9 +415,7 @@ const showMorseSound = (currentInput) => {
 const emitResult = (answer) => {
     const sailor = getUserByUsername("sailor");
     if (answer === validateAnswer.word) {
-        player.play('./audio/success.mp3', (err) => {
-            if (err) console.log(`Could not play sound: ${err}`);
-        });
+        myFunctions.playAudio("success");
         io.emit("result", "success");
         if (answer === "links" || answer === "rechts") {
             io.to(sailor.socketId).emit("getRotation", answer);
@@ -434,9 +423,7 @@ const emitResult = (answer) => {
         options = []; 
         readyToAnswer = false;
     } else {
-        player.play('./audio/fail-short.mp3', (err) => {
-            if (err) console.log(`Could not play sound: ${err}`);
-        });
+        myFunctions.playAudio("failShort");
         io.emit("result", "fail");
     };
     morseInput = [];
@@ -457,10 +444,8 @@ const checkLevel = () => {
         levelAmount++;
 
         if (levelAmount === totalAmountLevels) {
+            myFunctions.playAudio("finish");
             io.emit("result", "finish");
-            player.play('./audio/finish.mp3', (err) => {
-                if (err) console.log(`Could not play sound: ${err}`);
-            });
             return;
         }
 
@@ -539,9 +524,7 @@ io.on("connection", (socket) => {
     socket.on("gameOver", (boolean) => {
         if (boolean === true) {
             setTimeout(() => {
-                player.play('./audio/fail-long.mp3', (err) => {
-                    if (err) console.log(`Could not play sound: ${err}`);
-                });
+                myFunctions.playAudio("failLong");
             }, 1050)
         }
     });
