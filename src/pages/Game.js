@@ -39,7 +39,6 @@ const Game = () => {
 
     useEffect(() => {
         socket?.on("userLost", () => {
-            console.log("lost");
             setUserLost(true);
         });
     });
@@ -75,14 +74,7 @@ const Game = () => {
     }, [socket]);
 
     useEffect(() => {
-        socket?.on("level", (level) => {
-            console.log(level);
-        })
-    })
-
-    useEffect(() => {
         socket?.on("result", (message) => {
-            setResult(message);
             if (message === "fout") {
                 currentLives.shift();
     
@@ -93,11 +85,12 @@ const Game = () => {
             } else if (message === "finish") {
                 navigate(`/finish/${message}`);
             }
+            setResult(message);
         });
     }, [socket, currentLives, users, setUsers, player, navigate]);
 
     const checkOpacity = (item) => {
-        if (item !== "") {
+        if (item !== "" || item === "opacity") {
             return true;
         };
     };

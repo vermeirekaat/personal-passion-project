@@ -151,7 +151,7 @@ board.on("ready", () => {
                     } else {
                         io.to(sailor.socketId).emit("result", "wacht op boodschap");
                         setTimeout(() => {
-                            io.to(sailor.socketId).emit("result", "answer");
+                            io.to(sailor.socketId).emit("result", "");
                         }, 500);
                     }
                 }
@@ -283,7 +283,7 @@ const emitMessageSailor = (task) => {
         startLevel(false);
     } else if (task.type === "direction") {
         io.to(sailor.socketId).emit("options", "");
-        io.to(sailor.socketId).emit("getRotation", "");
+        io.to(sailor.socketId).emit("getRotation", "opacity");
     } else if (task.type === "obstacles") {
         options = generateOptions(task);
 
@@ -332,10 +332,14 @@ const showMorseLevel = () => {
         io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
     } else if (currentLevel === "light") {
         io.to(captain.socketId).emit("result", "correct");
-        showMorseLight(validateAnswer.morse.split(""));    
+        setTimeout(() => {
+            showMorseLight(validateAnswer.morse.split(""));
+        }, 500);    
     } else if (currentLevel === "sound") {
         io.to(captain.socketId).emit("result", "correct");
-        showMorseSound(validateAnswer.morse.split(""));
+        setTimeout(() => {
+            showMorseSound(validateAnswer.morse.split(""));
+        }, 500);
     }
 };
 const showMorseLight = (currentInput) => {

@@ -13,7 +13,7 @@ const Wheel = ({ currentRotation, opacity }) => {
         <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
              <div className={styles.inside} style={{ borderColor: colors.reg}}>
 
-                { currentRotation === "" ? <img alt="steering-wheel" src={steeringWheel}/> : ""}
+                { currentRotation === "" || currentRotation === "opacity" ? <img alt="steering-wheel" src={steeringWheel}/> : ""}
              
                 { currentRotation === "links" ? <img className={styles.links} alt="steering-wheel" src={steeringWheel}/> : ""}
 
