@@ -167,19 +167,20 @@ board.on("ready", () => {
                 handleSkipMessage(button.custom.user); 
 
             } else if (currentPage === "game") {
-                if (readyToAnswer) {
+                
                     if (button.custom.type === "morse") {
                         morseInput = [];
                         io.emit("inputMorse", "");
                     } else if (button.custom.type === "submit") {
-                        emitResult(answerInput);
-                        button.custom.value = 0;
-                    }
-                } else {
-                    io.to(sailor.socketId).emit("result", "wacht op boodschap");
-                    setTimeout(() => {
-                        io.to(sailor.socketId).emit("result", "");
-                    }, 500);
+                        if (readyToAnswer) {
+                            emitResult(answerInput);
+                            button.custom.value = 0;
+                        } else {
+                            io.to(sailor.socketId).emit("result", "wacht op boodschap");
+                            setTimeout(() => {
+                                io.to(sailor.socketId).emit("result", "");
+                            }, 500);
+                        };
             }}
         });
     });
