@@ -81,7 +81,7 @@ let warning = [];
 let options = [];
 let levelDone = false;
 let arrayLevel = [];
-const levels = ["text"];
+const levels = [];
 let levelAmount = 0;
 let totalAmountLevels;
 let currentLevel;
@@ -218,7 +218,10 @@ const checkUsersReady = () => {
 };
 
 const startLevel = (start) => {
+    const sailor = getUserByUsername("sailor");
     io.emit("result", "");
+    io.to(sailor.socketId).emit("getRotation", "");
+    
     answerInput = "";
     totalAmountLevels = levels.length;
 
@@ -230,7 +233,7 @@ const startLevel = (start) => {
         };
     };
 
-    console.log(currentLevel, arrayLevel.length);
+    console.log(levels[levelAmount], arrayLevel.length);
 
     const captain = getUserByUsername("captain");
 
@@ -311,15 +314,18 @@ const checkMorseInput = () => {
     }; 
 };
 const showMorseLevel = () => {
+    const captain = getUserByUsername("captain");
     const sailor = getUserByUsername("sailor");
-    io.emit("result", "correct");
 
     if (currentLevel === "text") {
         readyToAnswer = true;
+        io.emit("result", "correct");
         io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
     } else if (currentLevel === "light") {
+        io.to(captain.socketId).emit("result", "correct");
         showMorseLight(validateAnswer.morse.split(""));    
     } else if (currentLevel === "sound") {
+        io.to(captain.socketId).emit("result", "correct");
         showMorseSound(validateAnswer.morse.split(""));
     }
 };
@@ -339,6 +345,7 @@ const showMorseLight = (currentInput) => {
     if (currentInput.length <= 0) {
         led.stop().off();
         readyToAnswer = true;
+        io.to(sailor.socketId).emit("result", "correct");
         io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
     } else {
         board.wait(1000, () => {
@@ -363,6 +370,7 @@ const showMorseSound = (currentInput) => {
 
     if (currentInput.length <= 0) {
         readyToAnswer = true;
+        io.to(sailor.socketId).emit("result", "correct");
         io.to(sailor.socketId).emit("inputMorse", validateAnswer.space);
     } else {
         setTimeout(() => {
@@ -399,7 +407,7 @@ const emitResult = (answer) => {
 const checkLevel = () => {
     if (arrayLevel.length < 1) {
         setTimeout(() => {
-            io.emit("result", `Volgend Level`);
+            io.emit("result", "Volgend Level");
         }, 3000)
         levelAmount++;
 
@@ -425,6 +433,7 @@ const checkLevel = () => {
 };
 
 const addLevelToArray = (data) => {
+    levels.push("text");
     if (data.led === true) {
         levels.push("light");
     };
@@ -438,6 +447,8 @@ const generateArray = () => {
     }; 
     const copy = [...obstacles]
     const newArray = route.concat(copy);
+
+    route = [];
 
     return myFunctions.shuffleArray(newArray);
 }
