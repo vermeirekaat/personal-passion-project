@@ -183,8 +183,9 @@ board.on("ready", () => {
                 } else {
                     return;
                 }
+                emitResult(answerInput);
             }
-        emitResult(answerInput);
+        // emitResult(answerInput);
         return;
     });
 });
@@ -222,7 +223,7 @@ const startLevel = (start) => {
     totalAmountLevels = levels.length;
 
     if (start === true) {
-        myFunctions.playAudio("start");
+        // myFunctions.playAudio("start");
         currentLevel = levels[levelAmount];
         if (arrayLevel.length === 0) {
             arrayLevel = generateArray();
@@ -305,7 +306,7 @@ const checkMorseInput = () => {
         if (morseInput.join("") === correctInput) {
             io.to(sailor.socketId).emit("inputMorse", "");
             showMorseLevel();
-            myFunctions.playAudio("correct");
+            // myFunctions.playAudio("correct");
         }
     }; 
 };
@@ -352,10 +353,10 @@ const showMorseSound = (currentInput) => {
     const singleInput = currentInput[0];
 
     if (singleInput === ".") {
-        myFunctions.playAudio("short");
+        // myFunctions.playAudio("short");
         inputSim.push(singleInput);
     } else if (singleInput === "-") {
-        myFunctions.playAudio("long");
+        // myFunctions.playAudio("long");
         inputSim.push(singleInput);
     }
     currentInput.shift();
@@ -374,7 +375,7 @@ const showMorseSound = (currentInput) => {
 const emitResult = (answer) => {
     const sailor = getUserByUsername("sailor");
     if (answer === validateAnswer.word) {
-        myFunctions.playAudio("success");
+        // myFunctions.playAudio("success");
         io.emit("result", "success");
         if (answer === "links" || answer === "rechts") {
             io.to(sailor.socketId).emit("getRotation", answer);
@@ -382,7 +383,7 @@ const emitResult = (answer) => {
         options = []; 
         readyToAnswer = false;
     } else {
-        myFunctions.playAudio("failShort");
+        // myFunctions.playAudio("failShort");
         io.emit("result", "fail");
     };
     morseInput = [];
@@ -394,6 +395,7 @@ const emitResult = (answer) => {
 
     checkLevel();
 };
+
 const checkLevel = () => {
     if (arrayLevel.length < 1) {
         setTimeout(() => {
@@ -402,7 +404,7 @@ const checkLevel = () => {
         levelAmount++;
 
         if (levelAmount === totalAmountLevels) {
-            myFunctions.playAudio("finish");
+            // myFunctions.playAudio("finish");
             io.emit("result", "finish");
             return;
         }
@@ -510,7 +512,7 @@ io.on("connection", (socket) => {
     socket.on("gameOver", (boolean) => {
         if (boolean === true) {
             setTimeout(() => {
-                myFunctions.playAudio("failLong");
+                // myFunctions.playAudio("failLong");
             }, 1050)
         }
     });
