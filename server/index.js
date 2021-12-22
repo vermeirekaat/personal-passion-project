@@ -162,17 +162,25 @@ board.on("ready", () => {
 
         button.on("hold", () => {
             const currentUser = getUserByUsername(button.custom.user);
+            const sailor = getUserByUsername("sailor");
             if (currentPage === "onboarding" && currentUser.startGame === false) {
                 handleSkipMessage(button.custom.user); 
 
             } else if (currentPage === "game") {
-            if (button.custom.type === "morse") {
-                morseInput = [];
-                io.emit("inputMorse", "");
-            } else if (button.custom.type === "submit") {
-                emitResult(answerInput);
-                button.custom.value = 0;
-            }};
+                if (readyToAnswer) {
+                    if (button.custom.type === "morse") {
+                        morseInput = [];
+                        io.emit("inputMorse", "");
+                    } else if (button.custom.type === "submit") {
+                        emitResult(answerInput);
+                        button.custom.value = 0;
+                    }
+                } else {
+                    io.to(sailor.socketId).emit("result", "wacht op boodschap");
+                    setTimeout(() => {
+                        io.to(sailor.socketId).emit("result", "");
+                    }, 500);
+            }}
         });
     });
 
