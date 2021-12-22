@@ -17,7 +17,7 @@
 }
 
 .title {
-    margin: 0;
+    margin-top: 2rem;
     font-family: bigFont;
     font-size: hugeSize; 
     color: white;

@@ -228,7 +228,7 @@ const checkUsersReady = () => {
 
 const startLevel = (start) => {
     const sailor = getUserByUsername("sailor");
-    io.emit("result", "finish");
+    io.emit("result", "");
     io.to(sailor.socketId).emit("getRotation", "");
 
     answerInput = "";
