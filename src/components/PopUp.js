@@ -1,5 +1,5 @@
 import styles from "./PopUp.module.css";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { usersContext } from "../context/Users";
 
 import shipBlue from "./../assets/boot-b.svg";
@@ -9,8 +9,21 @@ import treasureBlue from "./../assets/schat-b.svg";
 import treasureRed from "./../assets/schat-r.svg";
 import wheelBlue from "./../assets/stuur-b.svg";
 import wheelRed from "./../assets/stuur-r.svg";
+import { useNavigate } from "react-router";
 
 const PopUp = ({ message }) => {
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (message === "lost") {
+            const boolean = true;
+
+            setTimeout(() => {
+                navigate(`/${boolean}`);
+            }, 10000)
+        }
+    }, [navigate, message]);
 
     const ship = {
         captain: shipBlue, 
@@ -46,9 +59,7 @@ const PopUp = ({ message }) => {
                 </div>
             </div>
             )
-    }
-
-    if (message === "fail") {
+    } else if (message === "fail") {
         return (
             <div className={styles.container}>
                 <div className={styles.inside} style={{ borderColor: colors.dark}}>
@@ -70,6 +81,7 @@ const PopUp = ({ message }) => {
                 <div className={styles.border} style={{ borderColor: colors.reg}}>
                         <h1 className={styles.title} style={{ color: colors.dark}}>Even geduld...</h1>
                         <p className={styles.text}>Wachten op andere speler...</p>
+                        <p className={styles.text}>Om dit spel te spelen moet je met twee spelers zijn</p>
                         <img className={`${styles.svg} + ${styles.rotation}`} alt="wheel" src={wheel[player]}/>
                 </div>
             </div>

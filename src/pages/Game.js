@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { usersContext } from "../context/Users";
 import styles from "./Game.module.css";
 
+import PopUp from "../components/PopUp";
 import Lives from "../components/Lives";
 import Route from "../components/Route";
 import Wheel from "../components/Wheel";
@@ -24,6 +25,7 @@ const Game = () => {
     const colors = users[0].colors;
     let currentLives = users[0].lives;
 
+    const [userLost, setUserLost] = useState(false);
     const [route, setRoute] = useState("");
     const [obstacle, setObstacle] = useState("");
     const [options, setOptions] = useState("");
@@ -33,6 +35,13 @@ const Game = () => {
 
     useEffect(() => {
         socket?.emit("page", "game");
+    });
+
+    useEffect(() => {
+        socket?.on("userLost", () => {
+            console.log("lost");
+            setUserLost(true);
+        });
     });
 
     useEffect(() => {
@@ -92,6 +101,13 @@ const Game = () => {
             return true;
         };
     };
+
+    if (userLost === true) {
+        console.log("user lost");
+        return(
+            <PopUp message="lost"/>
+        )
+    }
 
     if (player === "captain") {
         return (

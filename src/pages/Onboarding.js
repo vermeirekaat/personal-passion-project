@@ -15,7 +15,7 @@ import Result from "../components/Result";
 import Obstacle from "../components/Obstacle";
 import Options from "../components/Options";
 import CheatSheet from "../components/CheatSheet";
-import Wait from "../components/PopUp";
+import PopUp from "../components/PopUp";
 
 const Onboarding = () => {
 
@@ -30,6 +30,7 @@ const Onboarding = () => {
     const [currentItem, setCurrentItem] = useState("");
     const [settings, setSettings] = useState({led: true, sound: true});
     const [amount, setAmount] = useState(0);
+    const [userLost, setUserLost] = useState(false);
     const route = "rechts";
     const obstacle = "vuurtoren";
     const options = [{"word": "eiland"}, {"word": "vuurtoren"}, {"word": "tegenligger"}];
@@ -38,6 +39,13 @@ const Onboarding = () => {
 
     useEffect(() => {
         socket?.emit("page", "onboarding");
+    });
+
+    useEffect(() => {
+        socket?.on("userLost", () => {
+            console.log("lost");
+            setUserLost(true);
+        });
     });
 
     useEffect(() => {
@@ -88,6 +96,13 @@ const Onboarding = () => {
         socket?.emit("settingsChange", data);
     };
 
+    if (userLost === true) {
+        console.log("user lost");
+        return(
+            <PopUp message="lost"/>
+        )
+    }
+
     if (player === "captain") {
         if (amount <= 6) {
             return (
@@ -121,13 +136,11 @@ const Onboarding = () => {
                     </div>
                 </div>
             )
-        }; 
-        if (amount === 7) {
+        } else if (amount === 7) {
             return (
-                <Wait/>
+                <PopUp/>
             )
-        }
-        
+        };    
     }; 
 
     if (player === "sailor") {
@@ -163,11 +176,9 @@ const Onboarding = () => {
                     </div>
                 </div>
             )
-        }
-
-        if (amount === 7) {
+        } else if (amount === 7) {
             return (
-                <Wait/>
+                <PopUp/>
             )
         }
     };

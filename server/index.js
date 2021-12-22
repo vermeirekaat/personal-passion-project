@@ -544,6 +544,8 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         removeUser(socket.id);
+
+        io.emit("userLost", true);
         morseInput = [];
         arrayLevel = [];
     });
