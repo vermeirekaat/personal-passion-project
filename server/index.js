@@ -88,6 +88,7 @@ let currentLevel;
 
 let readyToAnswer = false;
 let validateAnswer = "";
+let inputCorrect = false;
 
 let led;
 
@@ -124,8 +125,11 @@ board.on("ready", () => {
 
             } else if (currentPage === "game") {
                 if (button.custom.type === "morse") {
-                    morseInput.push(button.custom.value);
-                    checkMorseInput();
+                    if (!inputCorrect) {
+                        morseInput.push(button.custom.value);
+                        checkMorseInput();
+                    }
+                    
     
                 } else if (button.custom.type === "submit") {
     
@@ -311,6 +315,7 @@ const checkMorseInput = () => {
         correctInput = validateAnswer.morse;
 
         if (morseInput.join("") === correctInput) {
+            inputCorrect = true;
             io.to(sailor.socketId).emit("inputMorse", "");
             showMorseLevel();
             // myFunctions.playAudio("correct");
@@ -400,6 +405,7 @@ const emitResult = (answer) => {
     };
     morseInput = [];
     inputSim = [];
+    inputCorrect = false;
     io.emit("inputMorse", "");
     io.emit("options", "");
     io.emit("obstacles", "");
