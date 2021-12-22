@@ -155,6 +155,8 @@ board.on("ready", () => {
                         }, 500);
                     }
                 }
+            } else if (currentPage === "finish") {
+                io.emit("restartGame", true);
             }
         });
 
@@ -226,7 +228,7 @@ const checkUsersReady = () => {
 
 const startLevel = (start) => {
     const sailor = getUserByUsername("sailor");
-    io.emit("result", "");
+    io.emit("result", "finish");
     io.to(sailor.socketId).emit("getRotation", "");
 
     answerInput = "";

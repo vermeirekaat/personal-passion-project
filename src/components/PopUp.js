@@ -39,8 +39,9 @@ const PopUp = ({ message }) => {
                     <div className={styles.border} style={{ borderColor: colors.reg}}>
                             <h1 className={styles.title} style={{ color: colors.dark}}>Ahoy!</h1>
                             <p className={styles.text}>Jullie hebben de schat bereikt!</p>
+                            <p className={styles.text}>Proficiat!</p>
                             <img className={styles.svg} alt= "treasure" src={treasure[player]}/>
-                            <p className={styles.tagline} style={{ color: colors.reg}}>Proficiat!</p>
+                            <p className={styles.tagline} style={{ color: colors.reg}}>Klik op een knop om opnieuw te spelen</p>
                     </div>
                 </div>
             </div>
@@ -54,11 +55,11 @@ const PopUp = ({ message }) => {
                     <div className={styles.border} style={{ borderColor: colors.reg}}>
                         <h1 className={styles.title} style={{ color: colors.dark}}>Helaas...</h1>
                         <p className={styles.text}>Jullie hebben de tocht niet overleefd.</p>
+                        <p className={styles.text}>Volgende keer beter!</p>
                         <img className={styles.svg} alt="ship" src={ship[player]}/>
-                        <p className={styles.tagline} style={{ color: colors.reg}}>Volgende keer beter!</p>
+                        <p className={styles.tagline} style={{ color: colors.reg}}>Klik op een knop om opnieuw te spelen</p>
                     </div>
-
-                    </div>
+                </div>
             </div>
         )
     };
