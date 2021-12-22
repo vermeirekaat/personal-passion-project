@@ -7,7 +7,7 @@ const Avatar = ({ currentNumber, showItem }) => {
     const dialogue = {
         captain: [
             {
-                text: "Ahoy Kapitein, welkom op het Schip van Morse! Help je mee om de schat op te halen op het eiland? Druk op één van de knoppen om verder te gaan.", 
+                text: "Ahoy Kapitein, welkom op het Schip van Morse! Help je mee om de schat op te halen op het eiland? Druk op één van de knoppen om verder te gaan. Druk lang op een knop om over te gaan naar het spel.", 
                 topic: "Captain",
             },
             {
@@ -31,17 +31,13 @@ const Avatar = ({ currentNumber, showItem }) => {
                 topic: "Result", 
             }, 
             {
-                text: "Tijdens het varen zal je ook enkele obstakels tegenkomen. De obstakels zal je zien in het dit venster. Het is jouw taak om de naam van het obstakel door te geven aan de matroos die het zal ontcijferen om het obstakel te vermijden.", 
+                text: "Tijdens het varen zal je ook enkele obstakels tegenkomen. Het is jouw taak om de naam van het obstakel door te geven aan de matroos die het zal ontcijferen om het obstakel te vermijden.", 
                 topic: "Obstacle", 
             }, 
-            {
-                text: "Nu ben je helemaal klaar om aan het spel te beginnen. Ahoy, veel succes!", 
-                topic: "Captain", 
-            },
         ], 
         sailor: [
             {
-                text: "Ahoy Matroos, welkom op het Schip van Morse! Help je mee om de schat op te halen op het eiland? Druk op één van de knoppen om verder te gaan.", 
+                text: "Ahoy Matroos, welkom op het Schip van Morse! Help je mee om de schat op te halen op het eiland? Druk op één van de knoppen om verder te gaan. Druk lang op een knop om over te gaan naar het spel.", 
                 topic: "Sailor",
             },
             {
@@ -65,13 +61,9 @@ const Avatar = ({ currentNumber, showItem }) => {
                 topic: "Result",
             }, 
             {
-                text: "Tijdens het varen zal je ook enkele obstakels tegenkomen, het is jouw taak om die te ontwijken door de boodschap te ontcijferen. Je krijgt drie verschillende opties te zien in onderstaand venster. Druk 1, 2 of 3 keer op de knop om het juiste antwoord te kiezen. ! OPGELET, om je antwoord te bevestigen moet je langer op de knop drukken!", 
+                text: "Tijdens het varen zal je ook enkele obstakels tegenkomen, het is jouw taak om die te ontwijken door de boodschap te ontcijferen. Druk 1, 2 of 3 keer op de knop om het juiste antwoord te kiezen. !OPGELET, om je antwoord te bevestigen moet je langer op de knop drukken!", 
                 topic: "Options",
             }, 
-            {
-                text: "Goed zo, nu ben je helemaal klaar om aan het spel te beginnen. Ahoy, veel succes!", 
-                topic: "Sailor",
-            }
         ]
     };
 
@@ -99,7 +91,7 @@ const Avatar = ({ currentNumber, showItem }) => {
     return (
         <div className={styles.container} style={{ borderColor: colors.dark}}>
             <div className={styles.inside} style={{ borderColor: colors.reg}}>
-                <p className={styles.caption} style={{ color: colors.reg}}>{newArray[currentNumber].text}</p>
+                <p className={styles.caption} style={{ color: "white"}}>{newArray[currentNumber].text}</p>
             </div>
         </div>
     )
