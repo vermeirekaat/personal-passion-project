@@ -171,16 +171,18 @@ board.on("ready", () => {
 
     inputA.on("up", () => {
             if (!answerInput) { 
-                const valueA = inputA.value;
-                const valueB = inputB.value;
-    
-                if (valueA === valueB) {
-                    answerInput = "links"; 
+                if (readyToAnswer) {
+                    const valueA = inputA.value;
+                    const valueB = inputB.value;
+        
+                    if (valueA === valueB) {
+                        answerInput = "links"; 
+                    } else {
+                        answerInput = "rechts";
+                    }
                 } else {
-                    answerInput = "rechts";
+                    return;
                 }
-            } else {
-                return;
             }
         emitResult(answerInput);
         return;
