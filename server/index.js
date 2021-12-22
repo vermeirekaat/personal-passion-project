@@ -171,7 +171,6 @@ board.on("ready", () => {
 
     inputA.on("up", () => {
             if (!answerInput) { 
-                console.log("turn wheel");
                 const valueA = inputA.value;
                 const valueB = inputB.value;
     
@@ -228,7 +227,7 @@ const startLevel = (start) => {
         };
     };
 
-    console.log(arrayLevel.length);
+    console.log(currentLevel, arrayLevel.length);
 
     const captain = getUserByUsername("captain");
 
@@ -394,9 +393,9 @@ const emitResult = (answer) => {
     checkLevel();
 };
 const checkLevel = () => {
-    if (arrayLevel.length <= 1) {
+    if (arrayLevel.length < 1) {
         setTimeout(() => {
-            io.emit("result", "Next Level");
+            io.emit("result", `Volgend Level`);
         }, 3000)
         levelAmount++;
 
