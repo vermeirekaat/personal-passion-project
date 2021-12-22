@@ -74,7 +74,7 @@ const Game = () => {
     useEffect(() => {
         socket?.on("result", (message) => {
             setResult(message);
-            if (message === "fail") {
+            if (message === "fout") {
                 currentLives.shift();
     
                 const copy = [...users]; 
@@ -84,7 +84,6 @@ const Game = () => {
             } else if (message === "finish") {
                 navigate(`/finish/${message}`);
             }
-
         });
     }, [socket, currentLives, users, setUsers, player, navigate]);
 

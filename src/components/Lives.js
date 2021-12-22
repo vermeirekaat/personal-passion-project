@@ -23,6 +23,8 @@ const Lives = ({ opacity }) => {
     const colors = users[0].colors;
     const lives = users[0].lives;
 
+    console.log(lives);
+
     if (lives.length === 0) {
 
         socket?.emit("gameOver", true);

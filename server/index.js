@@ -118,6 +118,7 @@ board.on("ready", () => {
 
         button.on("press", () => {
             const currentUser = getUserByUsername(button.custom.user);
+            const sailor = getUserByUsername("sailor");
             if (currentPage === "onboarding" && currentUser.startGame === false) {
                 handleStepsMessage(button.custom.user); 
 
@@ -144,7 +145,10 @@ board.on("ready", () => {
                             }
                         };    
                     } else {
-                        io.emit("result", "wait for input");
+                        io.to(sailor.socketId).emit("result", "wacht op boodschap");
+                        setTimeout(() => {
+                            io.to(sailor.socketId).emit("result", "answer");
+                        }, 500);
                     }
                 }
             }
@@ -185,7 +189,6 @@ board.on("ready", () => {
                 }
                 emitResult(answerInput);
             }
-        // emitResult(answerInput);
         return;
     });
 });
@@ -221,7 +224,7 @@ const startLevel = (start) => {
     const sailor = getUserByUsername("sailor");
     io.emit("result", "");
     io.to(sailor.socketId).emit("getRotation", "");
-    
+
     answerInput = "";
     totalAmountLevels = levels.length;
 
@@ -275,7 +278,8 @@ const emitMessageSailor = (task) => {
     if (task === undefined) {
         startLevel(false);
     } else if (task.type === "direction") {
-        io.to(sailor.socketId).emit("options", ["richting veranderen"]);
+        io.to(sailor.socketId).emit("options", "");
+        io.to(sailor.socketId).emit("getRotation", ".");
     } else if (task.type === "obstacles") {
         options = generateOptions(task);
 
@@ -392,7 +396,7 @@ const emitResult = (answer) => {
         readyToAnswer = false;
     } else {
         // myFunctions.playAudio("failShort");
-        io.emit("result", "fail");
+        io.emit("result", "fout");
     };
     morseInput = [];
     inputSim = [];

@@ -40,7 +40,7 @@ const Options = ({ currentOptions, opacity }) => {
     return (
         <div className={`${opacity === true ? styles.container : `${styles.container} ${styles.opacity}`}`} style={{ borderColor: colors.dark}}>
             <div className={styles.inside} style={{ borderColor: colors.reg, minHeight: "49rem"}}>
-                <p className={styles.text} style={{ color: colors.reg }}>Options</p>
+                <p className={styles.text} style={{ color: colors.reg }}>Opties</p>
                 <p className={styles.text} style={{ color: colors.dark }}>{currentOptions[0]}</p>
             </div>
         </div>
