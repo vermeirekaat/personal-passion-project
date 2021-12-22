@@ -233,14 +233,12 @@ const startLevel = (start) => {
     totalAmountLevels = levels.length;
 
     if (start === true) {
-        // myFunctions.playAudio("start");
+        myFunctions.playAudio("start");
         currentLevel = levels[levelAmount];
         if (arrayLevel.length === 0) {
             arrayLevel = generateArray();
         };
     };
-
-    console.log(levels[levelAmount], arrayLevel.length);
 
     const captain = getUserByUsername("captain");
 
@@ -283,7 +281,7 @@ const emitMessageSailor = (task) => {
         startLevel(false);
     } else if (task.type === "direction") {
         io.to(sailor.socketId).emit("options", "");
-        io.to(sailor.socketId).emit("getRotation", ".");
+        io.to(sailor.socketId).emit("getRotation", "");
     } else if (task.type === "obstacles") {
         options = generateOptions(task);
 
@@ -318,7 +316,7 @@ const checkMorseInput = () => {
             inputCorrect = true;
             io.to(sailor.socketId).emit("inputMorse", "");
             showMorseLevel();
-            // myFunctions.playAudio("correct");
+            myFunctions.playAudio("correct");
         }
     }; 
 };
@@ -369,10 +367,10 @@ const showMorseSound = (currentInput) => {
     const singleInput = currentInput[0];
 
     if (singleInput === ".") {
-        // myFunctions.playAudio("short");
+        myFunctions.playAudio("short");
         inputSim.push(singleInput);
     } else if (singleInput === "-") {
-        // myFunctions.playAudio("long");
+        myFunctions.playAudio("long");
         inputSim.push(singleInput);
     }
     currentInput.shift();
@@ -392,7 +390,7 @@ const showMorseSound = (currentInput) => {
 const emitResult = (answer) => {
     const sailor = getUserByUsername("sailor");
     if (answer === validateAnswer.word) {
-        // myFunctions.playAudio("success");
+        myFunctions.playAudio("success");
         io.emit("result", "success");
         if (answer === "links" || answer === "rechts") {
             io.to(sailor.socketId).emit("getRotation", answer);
@@ -400,7 +398,7 @@ const emitResult = (answer) => {
         options = []; 
         readyToAnswer = false;
     } else {
-        // myFunctions.playAudio("failShort");
+        myFunctions.playAudio("failShort");
         io.emit("result", "fout");
     };
     morseInput = [];
@@ -422,7 +420,7 @@ const checkLevel = () => {
         levelAmount++;
 
         if (levelAmount === totalAmountLevels) {
-            // myFunctions.playAudio("finish");
+            myFunctions.playAudio("finish");
             io.emit("result", "finish");
             return;
         }
@@ -533,7 +531,7 @@ io.on("connection", (socket) => {
     socket.on("gameOver", (boolean) => {
         if (boolean === true) {
             setTimeout(() => {
-                // myFunctions.playAudio("failLong");
+                myFunctions.playAudio("failLong");
             }, 1050)
         }
     });
